@@ -22,7 +22,6 @@ export interface InitThreeProps {
 	axesSizes?: number;
 	sceneSizes?: SceneSizesType;
 	autoSceneResize?: boolean;
-	canvas?: any;
 }
 
 export default class ThreeApp {
