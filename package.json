@@ -29,7 +29,7 @@
 		"preversion": "npm run lint",
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"publish": "np --no-yarn --branch master"
+		"release": "np"
 	},
 	"dependencies": {
 		"@babel/preset-env": "^7.22.4",
