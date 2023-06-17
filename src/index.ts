@@ -12,7 +12,7 @@ import Renderer from "./Renderer";
 import Resources from "./utils/Resoureces";
 import Debug from "./utils/Debug";
 
-let intense: ThreeApp;
+let instance: ThreeApp;
 let tickEvent: () => unknown | undefined;
 let resizeEvent: () => unknown | undefined;
 
@@ -33,7 +33,7 @@ export default class ThreeApp {
 	scene!: THREE.Scene;
 	canvas?: HTMLCanvasElement;
 	_camera!: Camera;
-	rendererIntense!: Renderer;
+	rendererInstance!: Renderer;
 	control?: OrbitControls;
 	sizes!: Sizes;
 	time!: Time;
@@ -42,11 +42,11 @@ export default class ThreeApp {
 	updateCallbacks: { [key: string]: () => unknown } = {};
 
 	constructor(props?: InitThreeProps, appDom = "canvas#app") {
-		if (intense) {
-			return intense;
+		if (instance) {
+			return instance;
 		}
 
-		intense = this;
+		instance = this;
 
 		const DOM_APP = document.querySelector<HTMLCanvasElement>(appDom)!;
 		const SCENE_SIZES = props?.sceneSizes ?? this.viewPortSizes;
@@ -72,7 +72,7 @@ export default class ThreeApp {
 			defaultCamera: "Perspective",
 		});
 		this.control = this._camera.controls;
-		this.rendererIntense = new Renderer();
+		this.rendererInstance = new Renderer();
 		this.resources = new Resources(SOURCES);
 
 		if (typeof props?.axesSizes === "number") {
@@ -94,12 +94,12 @@ export default class ThreeApp {
 	resize() {
 		this._camera.resize();
 
-		this.rendererIntense.resize();
+		this.rendererInstance.resize();
 	}
 
 	update() {
 		this._camera.update();
-		this.rendererIntense.update();
+		this.rendererInstance.update();
 
 		if (this.debug?.stats) this.debug.stats.begin();
 
@@ -154,6 +154,6 @@ export default class ThreeApp {
 	}
 
 	get renderer() {
-		return this.rendererIntense.intense;
+		return this.rendererInstance.instance;
 	}
 }
