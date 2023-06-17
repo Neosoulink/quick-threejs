@@ -67,7 +67,10 @@ export default class ThreeApp {
 			width: SIZES_INSTANCE.width,
 		};
 		this.canvas = DOM_APP;
-		this._camera = new Camera({ enableControls: !!props?.enableControls });
+		this._camera = new Camera({
+			enableControls: !!props?.enableControls,
+			defaultCamera: "Perspective",
+		});
 		this.control = this._camera.controls;
 		this.rendererIntense = new Renderer();
 		this.resources = new Resources(SOURCES);
