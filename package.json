@@ -19,6 +19,10 @@
 		"url": "https://github.com/Neosoulink/quick-threejs/issues"
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
+	"np": {
+		"yarn": false,
+		"branch": "master"
+	},
 	"scripts": {
 		"test": "jest",
 		"build": "tsc",
@@ -28,12 +32,14 @@
 		"prepublishOnly": "npm test && npm run lint",
 		"preversion": "npm run lint",
 		"version": "npm run format && git add -A src",
-		"postversion": "git push && git push --tags"
+		"postversion": "git push && git push --tags",
+		"publish": "np --branch develop"
 	},
 	"dependencies": {
 		"@babel/preset-env": "^7.22.4",
 		"babel-jest": "^29.5.0",
 		"events": "^3.3.0",
+		"np": "^8.0.4",
 		"stats.js": "^0.17.0",
 		"three": "^0.152.2"
 	},
