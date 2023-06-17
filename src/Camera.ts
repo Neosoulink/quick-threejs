@@ -59,14 +59,15 @@ export default class Camera {
 	setOrthographicCamera() {
 		this.clearCamera();
 		this.instance = new THREE.OrthographicCamera(
-			75,
-			this.app.sizes.width / this.app.sizes.height,
-			0.1,
-			1000
+			(-this.app.sizes.aspect * this.app.sizes.frustrum) / 2,
+			(this.app.sizes.aspect * this.app.sizes.frustrum) / 2,
+			this.app.sizes.frustrum / 2,
+			-this.app.sizes.frustrum / 2,
+			-50,
+			50
 		);
-		this.instance.position.z = 8;
+
 		this.setOrbitControl();
-		this.app.scene.add(this.instance);
 	}
 
 	clearCamera() {

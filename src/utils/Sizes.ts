@@ -12,10 +12,12 @@ export interface SizesProps {
 }
 
 export default class Sizes extends EventEmitter {
-	width = window.innerWidth;
-	height = window.innerHeight;
-	listenResize: boolean;
+	width: number = window.innerWidth;
+	height: number = window.innerHeight;
+	aspect: number;
 	pixelRatio = Math.min(window.devicePixelRatio, 2);
+	listenResize: boolean;
+	frustrum = 5;
 
 	constructor({ height, width, listenResize = true }: SizesProps) {
 		super();
@@ -23,6 +25,7 @@ export default class Sizes extends EventEmitter {
 		// SETUP
 		this.height = Number(height ?? this.height);
 		this.width = Number(width ?? this.width);
+		this.aspect = this.width / this.height;
 		this.listenResize = !!listenResize;
 
 		if (this.listenResize) {
