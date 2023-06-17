@@ -32,7 +32,7 @@ export default class ThreeApp {
 	sceneSizes!: SceneSizesType;
 	scene!: THREE.Scene;
 	canvas?: HTMLCanvasElement;
-	camera2!: Camera;
+	_camera!: Camera;
 	rendererIntense!: Renderer;
 	control?: OrbitControls;
 	sizes!: Sizes;
@@ -67,8 +67,8 @@ export default class ThreeApp {
 			width: SIZES_INSTANCE.width,
 		};
 		this.canvas = DOM_APP;
-		this.camera2 = new Camera({ enableControls: !!props?.enableControls });
-		this.control = this.camera2.controls;
+		this._camera = new Camera({ enableControls: !!props?.enableControls });
+		this.control = this._camera.controls;
 		this.rendererIntense = new Renderer();
 		this.resources = new Resources(SOURCES);
 
@@ -89,13 +89,13 @@ export default class ThreeApp {
 	}
 
 	resize() {
-		this.camera2.resize();
+		this._camera.resize();
 
 		this.rendererIntense.resize();
 	}
 
 	update() {
-		this.camera2.update();
+		this._camera.update();
 		this.rendererIntense.update();
 
 		if (this.debug?.stats) this.debug.stats.begin();
@@ -147,7 +147,7 @@ export default class ThreeApp {
 	}
 
 	get camera() {
-		return this.camera2.intense;
+		return this._camera.instance;
 	}
 
 	get renderer() {

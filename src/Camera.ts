@@ -6,36 +6,85 @@ import ThreeApp from ".";
 
 export interface CameraProps {
 	enableControls: boolean;
+	defaultCamera?: "Perspective" | "Orthographic";
 }
 
 export default class Camera {
 	app = new ThreeApp({});
-	intense: THREE.PerspectiveCamera;
+	instance?: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 	controls?: OrbitControls;
+	enableControls = false;
 
 	constructor(props: CameraProps) {
-		this.intense = new THREE.PerspectiveCamera(
+		this.enableControls = !!props.enableControls;
+
+		switch (props.defaultCamera) {
+			case "Perspective":
+				this.setPerspectiveCamera();
+				break;
+
+			case "Orthographic":
+				this.setOrthographicCamera();
+				break;
+		}
+	}
+
+	resize() {
+		if (this.instance instanceof THREE.Camera) {
+			if (this.instance instanceof THREE.PerspectiveCamera) {
+				this.instance.aspect = this.app.sizes.width / this.app.sizes.height;
+			}
+
+			this.instance.updateProjectionMatrix();
+		}
+	}
+
+	update() {
+		this.controls?.update();
+	}
+
+	setPerspectiveCamera() {
+		this.clearCamera();
+		this.instance = new THREE.PerspectiveCamera(
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
 			1000
 		);
+		this.instance.position.z = 8;
+		this.setOrbitControl();
+		this.app.scene.add(this.instance);
+	}
 
-		this.intense.position.z = 8;
-		this.app.scene.add(this.intense);
+	setOrthographicCamera() {
+		this.clearCamera();
+		this.instance = new THREE.OrthographicCamera(
+			75,
+			this.app.sizes.width / this.app.sizes.height,
+			0.1,
+			1000
+		);
+		this.instance.position.z = 8;
+		this.setOrbitControl();
+		this.app.scene.add(this.instance);
+	}
 
-		if (props.enableControls) {
-			this.controls = new OrbitControls(this.intense, this.app.canvas);
-			this.controls.enableDamping = true;
+	clearCamera() {
+		if (this.instance instanceof THREE.Camera) {
+			this.app.scene.remove(this.instance);
+			this.instance = undefined;
 		}
 	}
 
-	resize() {
-		this.intense.aspect = this.app.sizes.width / this.app.sizes.height;
-		this.intense.updateProjectionMatrix();
-	}
+	setOrbitControl() {
+		if (this.controls) {
+			this.controls.dispose();
+			this.controls = undefined;
+		}
 
-	update() {
-		this.controls?.update();
+		if (this.enableControls && this.instance instanceof THREE.Camera) {
+			this.controls = new OrbitControls(this.instance, this.app.canvas);
+			this.controls.enableDamping = true;
+		}
 	}
 }
