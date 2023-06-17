@@ -20,6 +20,7 @@ export interface InitThreeProps {
 	enableControls?: boolean;
 	enableDebug?: boolean;
 	axesSizes?: number;
+	gridSizes?: number;
 	sceneSizes?: SceneSizesType;
 	autoSceneResize?: boolean;
 	camera?: CameraProps["defaultCamera"];
@@ -79,6 +80,14 @@ export default class ThreeApp {
 		if (typeof props?.axesSizes === "number") {
 			const AXES_HELPER = new THREE.AxesHelper(props?.axesSizes);
 			this.scene.add(AXES_HELPER);
+		}
+
+		if (typeof props?.gridSizes === "number") {
+			const GRID_HELPER = new THREE.GridHelper(
+				props?.gridSizes,
+				props?.gridSizes
+			);
+			this.scene.add(GRID_HELPER);
 		}
 
 		tickEvent = () => {
