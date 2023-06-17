@@ -27,7 +27,7 @@ export class Experience {
 
 	constructor(props: ExperienceProps) {
 		this.app = new QuickThreejs(
-			{ enableControls: true, axesSizes: 6, enableDebug: true },
+			{ enableControls: true, axesSizes: 5, enableDebug: true },
 			props.domElementRef
 		);
 		this.gui = this.app.debug?.ui?.addFolder("Experience");

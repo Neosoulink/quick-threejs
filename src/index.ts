@@ -7,7 +7,7 @@ import SOURCES from "./sources";
 // HELPERS
 import Sizes, { SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
-import Camera from "./Camera";
+import Camera, { CameraProps } from "./Camera";
 import Renderer from "./Renderer";
 import Resources from "./utils/Resoureces";
 import Debug from "./utils/Debug";
@@ -22,6 +22,7 @@ export interface InitThreeProps {
 	axesSizes?: number;
 	sceneSizes?: SceneSizesType;
 	autoSceneResize?: boolean;
+	camera?: CameraProps["defaultCamera"];
 }
 
 export default class ThreeApp {
@@ -69,7 +70,7 @@ export default class ThreeApp {
 		this.canvas = DOM_APP;
 		this._camera = new Camera({
 			enableControls: !!props?.enableControls,
-			defaultCamera: "Perspective",
+			defaultCamera: props?.camera || "Perspective",
 		});
 		this.control = this._camera.controls;
 		this.rendererInstance = new Renderer();
