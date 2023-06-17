@@ -93,8 +93,12 @@ export class Experience {
 			this.mainGroup = new THREE.Group();
 
 			// APP
-			this.app.camera.fov = 35;
-			this.app.camera.updateProjectionMatrix();
+			if (this.app.camera) {
+				if (this.app.camera instanceof THREE.PerspectiveCamera) {
+					this.app.camera.fov = 35;
+				}
+				this.app.camera.updateProjectionMatrix();
+			}
 
 			// LIGHTS
 			const AMBIENT_LIGHT = new THREE.AmbientLight(0xffffff, 0.1);
@@ -114,7 +118,9 @@ export class Experience {
 			this.app.scene.add(this.mainGroup);
 
 			// CAMERA
-			this.app.camera.position.z = 20;
+			if (this.app.camera) {
+				this.app.camera.position.z = 20;
+			}
 
 			// ANIMATIONS
 			this.app.setUpdateCallback("root", () => {

@@ -32,7 +32,7 @@ export default class Renderer {
 	}
 
 	update() {
-		if (this.enabled) {
+		if (this.enabled && this.app.camera instanceof THREE.Camera) {
 			this.intense.render(this.app.scene, this.app.camera);
 		}
 	}
