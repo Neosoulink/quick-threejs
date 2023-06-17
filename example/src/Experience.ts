@@ -131,6 +131,26 @@ export class Experience {
 
 			// GUI
 			this.gui = this.app.debug?.ui?.addFolder("Experience");
+			this.gui
+				?.add({ cameraType: "Perspective" }, "cameraType", [
+					"Perspective",
+					"Orthographic",
+					"None",
+				])
+				.onChange((value: string) => {
+					switch (value) {
+						case "Perspective":
+							this.app._camera.setPerspectiveCamera();
+							break;
+						case "Orthographic":
+							this.app._camera.setOrthographicCamera();
+							break;
+						default:
+							this.app._camera.clearCamera();
+							break;
+					}
+				})
+				.name("Camera type");
 			this.gui?.addColor(TORUS_KNOT.material, "color").name("Torus knot color");
 		}
 	}

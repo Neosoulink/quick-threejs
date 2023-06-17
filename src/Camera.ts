@@ -49,7 +49,7 @@ export default class Camera {
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
-			1000
+			500
 		);
 		this.instance.position.z = 8;
 		this.setOrbitControl();
@@ -68,13 +68,7 @@ export default class Camera {
 		);
 
 		this.setOrbitControl();
-	}
-
-	clearCamera() {
-		if (this.instance instanceof THREE.Camera) {
-			this.app.scene.remove(this.instance);
-			this.instance = undefined;
-		}
+		this.app.scene.add(this.instance);
 	}
 
 	setOrbitControl() {
@@ -86,6 +80,15 @@ export default class Camera {
 		if (this.enableControls && this.instance instanceof THREE.Camera) {
 			this.controls = new OrbitControls(this.instance, this.app.canvas);
 			this.controls.enableDamping = true;
+		}
+	}
+
+	clearCamera() {
+		if (this.instance instanceof THREE.Camera) {
+			this.instance.clearViewOffset();
+			this.instance.clear();
+			this.app.scene.remove(this.instance);
+			this.instance = undefined;
 		}
 	}
 }
