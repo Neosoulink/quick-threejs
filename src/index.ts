@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 // CONSTANTS
 import SOURCES from "./sources";
@@ -24,6 +23,7 @@ export interface InitThreeProps {
 	sceneSizes?: SceneSizesType;
 	autoSceneResize?: boolean;
 	camera?: CameraProps["defaultCamera"];
+	withMiniCamera?: boolean;
 }
 
 export default class ThreeApp {
@@ -36,7 +36,6 @@ export default class ThreeApp {
 	canvas?: HTMLCanvasElement;
 	_camera!: Camera;
 	rendererInstance!: Renderer;
-	control?: OrbitControls;
 	sizes!: Sizes;
 	time!: Time;
 	resources!: Resources;
@@ -72,9 +71,11 @@ export default class ThreeApp {
 		this._camera = new Camera({
 			enableControls: !!props?.enableControls,
 			defaultCamera: props?.camera || "Perspective",
+			miniCamera: !!props?.withMiniCamera,
 		});
-		this.control = this._camera.controls;
-		this.rendererInstance = new Renderer();
+		this.rendererInstance = new Renderer({
+			enableMiniRender: !!props?.withMiniCamera,
+		});
 		this.resources = new Resources(SOURCES);
 
 		if (typeof props?.axesSizes === "number") {
@@ -149,7 +150,8 @@ export default class ThreeApp {
 			}
 		});
 
-		this.control?.dispose();
+		this._camera.controls?.dispose();
+		this._camera.miniCameraControls?.dispose();
 		this.renderer.dispose();
 
 		if (this.debug?.active) this.debug.ui?.destroy();
