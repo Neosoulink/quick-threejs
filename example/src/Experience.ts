@@ -29,15 +29,22 @@ export class Experience {
 		this.app = new QuickThreejs(
 			{
 				enableControls: true,
+				enableCameraHelper: true,
 				axesSizes: 5,
 				gridSizes: 10,
 				enableDebug: true,
+				withMiniCamera: true,
 			},
 			props.domElementRef
 		);
 		this.gui = this.app.debug?.ui?.addFolder("Experience");
 		this.gui?.add({ fn: () => this.construct() }, "fn").name("Enable");
 		this.gui?.close();
+
+		if (this.app._camera.controls) {
+			this.app._camera.controls.enabled = false;
+			this.app._camera.controls.autoRotate = true;
+		}
 
 		if (props?.onConstruct) this.onConstruct = props?.onConstruct;
 		if (props?.onDestruct) this.onDestruct = props?.onDestruct;
@@ -101,6 +108,7 @@ export class Experience {
 			if (this.app.camera) {
 				if (this.app.camera instanceof THREE.PerspectiveCamera) {
 					this.app.camera.fov = 35;
+					this.app.camera.far = 35;
 				}
 				this.app.camera.updateProjectionMatrix();
 			}
@@ -146,6 +154,7 @@ export class Experience {
 					switch (value) {
 						case "Perspective":
 							this.app._camera.setPerspectiveCamera();
+
 							break;
 						case "Orthographic":
 							this.app._camera.setOrthographicCamera();
@@ -153,6 +162,16 @@ export class Experience {
 						default:
 							this.app._camera.clearCamera();
 							break;
+					}
+					if (this.app.camera) {
+						this.app.camera.far = 35;
+					}
+					if (this.app.camera instanceof THREE.PerspectiveCamera) {
+						this.app.camera.fov = 35;
+					}
+					if (this.app._camera.controls) {
+						this.app._camera.controls.enabled = false;
+						this.app._camera.controls.autoRotate = true;
 					}
 				})
 				.name("Camera type");

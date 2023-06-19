@@ -17,6 +17,7 @@ let resizeEvent: () => unknown | undefined;
 
 export interface InitThreeProps {
 	enableControls?: boolean;
+	enableCameraHelper?: boolean;
 	enableDebug?: boolean;
 	axesSizes?: number;
 	gridSizes?: number;
@@ -77,6 +78,11 @@ export default class ThreeApp {
 			enableMiniRender: !!props?.withMiniCamera,
 		});
 		this.resources = new Resources(SOURCES);
+
+		if (props?.enableCameraHelper && this.camera) {
+			const CAMERA_HELPER = new THREE.CameraHelper(this.camera);
+			this.scene.add(CAMERA_HELPER);
+		}
 
 		if (typeof props?.axesSizes === "number") {
 			const AXES_HELPER = new THREE.AxesHelper(props?.axesSizes);

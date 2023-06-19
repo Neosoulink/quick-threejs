@@ -57,7 +57,7 @@ export default class Camera {
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
-			500
+			100
 		);
 		this.instance.position.z = 8;
 		this.setOrbitControl();
