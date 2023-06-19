@@ -122,7 +122,7 @@ export class Experience {
 			const TORUS_KNOT = new THREE.Mesh(
 				new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
 				new THREE.MeshToonMaterial({
-					color: 0x1c6d2a,
+					color: 0x454545,
 				})
 			);
 
