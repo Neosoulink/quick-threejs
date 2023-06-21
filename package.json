@@ -29,7 +29,7 @@
 		"preversion": "npm run lint",
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"release": "np"
+		"release": "npm run prepare && np"
 	},
 	"dependencies": {
 		"@babel/preset-env": "^7.22.4",
