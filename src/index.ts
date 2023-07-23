@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 // CONSTANTS
-import SOURCES from "./sources";
 
 // HELPERS
 import Sizes, { SceneSizesType } from "./utils/Sizes";
@@ -77,7 +76,7 @@ export default class ThreeApp {
 		this.rendererInstance = new Renderer({
 			enableMiniRender: !!props?.withMiniCamera,
 		});
-		this.resources = new Resources(SOURCES);
+		this.resources = new Resources();
 
 		if (props?.enableCameraHelper && this.camera) {
 			const CAMERA_HELPER = new THREE.CameraHelper(this.camera);
