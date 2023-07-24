@@ -7,7 +7,7 @@
 	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"project": "tsconfig.json",
+		"project": "./tsconfig.json",
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
@@ -18,5 +18,6 @@
 		"semi": ["error", "always"],
 		"eqeqeq": "error",
 		"@typescript-eslint/no-this-alias": "off"
-	}
+	},
+	"ignorePatterns": ["node_modules", "**/__tests__/*"]
 }
