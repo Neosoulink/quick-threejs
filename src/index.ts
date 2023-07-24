@@ -5,7 +5,7 @@ import Sizes, { SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
 import Camera, { CameraProps } from "./Camera";
 import Renderer from "./Renderer";
-import Resources from "./utils/Resoureces";
+import Resources, { SourceType } from "./utils/Resoureces";
 import Debug from "./utils/Debug";
 
 let instance: ThreeApp;
@@ -22,6 +22,7 @@ export interface InitThreeProps {
 	autoSceneResize?: boolean;
 	camera?: CameraProps["defaultCamera"];
 	withMiniCamera?: boolean;
+	sources?: SourceType[];
 }
 
 export default class ThreeApp {
@@ -74,7 +75,7 @@ export default class ThreeApp {
 		this.rendererInstance = new Renderer({
 			enableMiniRender: !!props?.withMiniCamera,
 		});
-		this.resources = new Resources();
+		this.resources = new Resources(props?.sources);
 
 		if (props?.enableCameraHelper && this.camera) {
 			const CAMERA_HELPER = new THREE.CameraHelper(this.camera);
