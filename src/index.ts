@@ -1,7 +1,5 @@
 import * as THREE from "three";
 
-// CONSTANTS
-
 // HELPERS
 import Sizes, { SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
@@ -143,13 +141,11 @@ export default class ThreeApp {
 
 				// Loop through the material properties
 				for (const key in child.material) {
-					if (child.material.hasOwnProperty(key)) {
-						const value = child.material[key];
+					const value = child.material[key];
 
-						// Test if there is a dispose function
-						if (value && typeof value.dispose === "function") {
-							value.dispose();
-						}
+					// Test if there is a dispose function
+					if (value && typeof value.dispose === "function") {
+						value.dispose();
 					}
 				}
 			}

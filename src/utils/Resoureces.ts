@@ -51,12 +51,12 @@ export default class Resources extends EventEmitter {
 	}
 
 	getSource(sourceName: string): SourceType | undefined {
-		return this.sources.filter((source) => source.name == sourceName)[0];
+		return this.sources.filter((source) => source.name === sourceName)[0];
 	}
 
 	removeSource(sourceName: string) {
 		this.toLoad = (this.sources = this.sources.filter(
-			(source) => source.name == sourceName
+			(source) => source.name === sourceName
 		)).length;
 
 		if (this.toLoad > this.loaded) this.loaded = this.toLoad;

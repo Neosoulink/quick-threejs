@@ -2,7 +2,7 @@ import EventEmitter from "events";
 
 export default class Time extends EventEmitter {
 	start: number;
-	current: any;
+	current: number;
 	elapsed: number;
 	delta: number;
 

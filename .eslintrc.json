@@ -1,0 +1,22 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "tsconfig.json",
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint"],
+	"overrides": [],
+	"rules": {
+		"quotes": ["error", "double"],
+		"semi": ["error", "always"],
+		"eqeqeq": "error",
+		"@typescript-eslint/no-this-alias": "off"
+	}
+}
