@@ -1,26 +1,33 @@
 {
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
+		"lib": ["ESNext", "DOM",  "DOM.Iterable"],
 		"target": "ESNext",
 		"module": "commonjs",
-
-		"strict": true,
 		"useDefineForClassFields": true,
 
 		"resolveJsonModule": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"outDir": "./lib",
-		"declaration": true
+		"declaration": true,
+
+		/* Bundler mode */
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true,
+		"noEmit": true,
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
 	},
 	"ts-node": {
 		"esm": true,
 		"experimentalSpecifierResolution": "node"
 	},
-	"exclude": ["node_modules", "**/__tests__/*"],
-	"include": ["src", "example"]
+	"exclude": ["node_modules", "lib", "example", "**/__tests__/*"],
+	"include": ["src"]
 }

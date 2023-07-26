@@ -1,0 +1,9 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"root": true,
+	"parserOptions": {
+		"project": "./example/tsconfig.json",
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	}
+}
