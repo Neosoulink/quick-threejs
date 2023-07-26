@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM",  "DOM.Iterable"],
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"target": "ESNext",
 		"module": "commonjs",
 		"useDefineForClassFields": true,
@@ -10,13 +10,8 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"outDir": "./lib",
 		"declaration": true,
-
-		/* Bundler mode */
-		"allowImportingTsExtensions": true,
-		"isolatedModules": true,
-		"noEmit": true,
+		"outDir": "./lib",
 
 		/* Linting */
 		"strict": true,
