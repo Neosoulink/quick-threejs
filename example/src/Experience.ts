@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import GUI from "lil-gui";
 
-import QuickThreejs from "../../src/index";
+import QuickThreejs from "../../lib";
 
 export interface ExperienceProps {
 	/**
@@ -28,8 +28,6 @@ export class Experience {
 	constructor(props: ExperienceProps) {
 		this.app = new QuickThreejs(
 			{
-				enableControls: true,
-				enableCameraHelper: true,
 				axesSizes: 5,
 				gridSizes: 10,
 				enableDebug: true,

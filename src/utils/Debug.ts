@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { GUI } from "lil-gui";
 import Stats from "stats.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 // CLASSES
 import ThreeApp from "..";
