@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import GUI from "lil-gui";
+import GUI from "lil-gui/dist/lil-gui.esm";
 
 import QuickThreejs from "../../lib";
 
