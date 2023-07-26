@@ -5,7 +5,7 @@ import Sizes, { SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
 import Camera, { CameraProps } from "./Camera";
 import Renderer from "./Renderer";
-import Resources, { SourceType } from "./utils/Resoureces";
+import Resources, { SourceType } from "./utils/Resources";
 import Debug from "./utils/Debug";
 
 export interface InitThreeProps {
