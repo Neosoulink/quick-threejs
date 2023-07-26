@@ -19,5 +19,5 @@
 		"eqeqeq": "error",
 		"@typescript-eslint/no-this-alias": "off"
 	},
-	"ignorePatterns": ["node_modules", "**/__tests__/*"]
+	"ignorePatterns": ["node_modules", "**/__tests__/*", "*.config.js"]
 }

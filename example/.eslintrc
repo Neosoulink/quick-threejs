@@ -1,5 +1,5 @@
 {
-	"extends": ["../.eslintrc.json"],
+	"extends": ["./example/.eslintrc"],
 	"root": true,
 	"parserOptions": {
 		"project": "./example/tsconfig.json",
