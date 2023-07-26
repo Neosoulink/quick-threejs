@@ -41,11 +41,10 @@ export default class Resources extends EventEmitter {
 	}
 
 	setSources(sources: SourceType[]) {
-		if (this.toLoad > this.loaded) this.loaded = this.toLoad;
-
 		this.toLoad = (this.sources = sources ?? []).length;
+		this.loaded = 0;
 
-		return (this.toLoad = this.sources.length);
+		return this.toLoad;
 	}
 
 	addSource(source: SourceType) {
@@ -62,7 +61,7 @@ export default class Resources extends EventEmitter {
 			(source) => source.name === sourceName
 		)).length;
 
-		if (this.toLoad > this.loaded) this.loaded = this.toLoad;
+		if (this.loaded > this.toLoad) this.loaded = this.toLoad - 1;
 
 		return this.toLoad;
 	}
@@ -85,7 +84,7 @@ export default class Resources extends EventEmitter {
 	}
 
 	startLoading() {
-		this.emit("start");
+		this.emit("start", this.loaded);
 
 		for (const source of this.sources) {
 			if (!this.items[source.name]) {
@@ -111,6 +110,7 @@ export default class Resources extends EventEmitter {
 	sourceLoaded(source: SourceType, file: LoadedItemType) {
 		this.items[source.name] = file;
 		this.loaded++;
+		this.emit("progress", this.loaded);
 
 		if (this.loaded === this.toLoad) {
 			this.emit("ready", this.items);
