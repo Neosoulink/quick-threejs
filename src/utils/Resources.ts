@@ -41,9 +41,10 @@ export default class Resources extends EventEmitter {
 	}
 
 	setSources(sources: SourceType[]) {
+		if (this.toLoad > this.loaded) this.loaded = this.toLoad;
+
 		this.toLoad = (this.sources = sources ?? []).length;
 
-		if (this.toLoad > this.loaded) this.loaded = this.toLoad;
 		return (this.toLoad = this.sources.length);
 	}
 
