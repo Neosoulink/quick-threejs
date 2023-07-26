@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import EventEmitter from "events";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 // CLASSES
 import ThreeApp from "..";
@@ -21,6 +22,7 @@ export default class Resources extends EventEmitter {
 	toLoad = 0;
 	loaded = 0;
 	loaders: {
+		dracoLoader?: DRACOLoader;
 		gltfLoader?: GLTFLoader;
 		textureLoader?: THREE.TextureLoader;
 		cubeTextureLoader?: THREE.CubeTextureLoader;
@@ -72,6 +74,15 @@ export default class Resources extends EventEmitter {
 		);
 	}
 
+	setDracoLoader(dracoDecoderPath: string, linkWithGltfLoader = true) {
+		this.loaders.dracoLoader = new DRACOLoader(this.loadingManager);
+		this.loaders.dracoLoader.setDecoderPath(dracoDecoderPath);
+
+		if (linkWithGltfLoader && this.loaders.gltfLoader) {
+			this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+		}
+	}
+
 	startLoading() {
 		this.emit("start");
 
@@ -101,7 +112,7 @@ export default class Resources extends EventEmitter {
 		this.loaded++;
 
 		if (this.loaded === this.toLoad) {
-			this.emit("ready", true);
+			this.emit("ready", this.items);
 		}
 	}
 }
