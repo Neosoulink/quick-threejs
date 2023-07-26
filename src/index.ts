@@ -9,8 +9,6 @@ import Resources, { SourceType } from "./utils/Resoureces";
 import Debug from "./utils/Debug";
 
 export interface InitThreeProps {
-	enableControls?: boolean;
-	enableCameraHelper?: boolean;
 	enableDebug?: boolean;
 	axesSizes?: number;
 	gridSizes?: number;
