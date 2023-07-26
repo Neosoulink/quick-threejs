@@ -8,10 +8,6 @@ import Renderer from "./Renderer";
 import Resources, { SourceType } from "./utils/Resoureces";
 import Debug from "./utils/Debug";
 
-let instance: ThreeApp;
-let tickEvent: () => unknown | undefined;
-let resizeEvent: () => unknown | undefined;
-
 export interface InitThreeProps {
 	enableControls?: boolean;
 	enableCameraHelper?: boolean;
@@ -26,15 +22,13 @@ export interface InitThreeProps {
 }
 
 export default class ThreeApp {
-	private viewPortSizes: SceneSizesType = {
-		width: window.innerWidth,
-		height: window.innerHeight,
-	};
-	sceneSizes!: SceneSizesType;
+	static instance?: ThreeApp;
+	static tickEvent?: () => unknown;
+	static resizeEvent?: () => unknown;
 	scene!: THREE.Scene;
 	canvas?: HTMLCanvasElement;
-	_camera!: Camera;
-	rendererInstance!: Renderer;
+	camera!: Camera;
+	renderer!: Renderer;
 	sizes!: Sizes;
 	time!: Time;
 	resources!: Resources;
@@ -42,45 +36,27 @@ export default class ThreeApp {
 	updateCallbacks: { [key: string]: () => unknown } = {};
 
 	constructor(props?: InitThreeProps, appDom = "canvas#app") {
-		if (instance) {
-			return instance;
+		if (ThreeApp.instance) {
+			return ThreeApp.instance;
 		}
-
-		instance = this;
-
-		const DOM_APP = document.querySelector<HTMLCanvasElement>(appDom)!;
-		const SCENE_SIZES = props?.sceneSizes ?? this.viewPortSizes;
-		const SIZES_INSTANCE = new Sizes({
-			height: SCENE_SIZES.height,
-			width: SCENE_SIZES.width,
-			listenResize: props?.autoSceneResize,
-		});
-		const timeInstance = new Time();
+		ThreeApp.instance = this;
 
 		// SETUP
-		this.debug = new Debug(props?.enableDebug);
 		this.scene = new THREE.Scene();
-		this.sizes = SIZES_INSTANCE;
-		this.time = timeInstance;
-		this.sceneSizes = {
-			height: SIZES_INSTANCE.height,
-			width: SIZES_INSTANCE.width,
-		};
-		this.canvas = DOM_APP;
-		this._camera = new Camera({
-			enableControls: !!props?.enableControls,
+		this.sizes = new Sizes({
+			height: props?.sceneSizes?.height,
+			width: props?.sceneSizes?.width,
+			listenResize: props?.autoSceneResize,
+		});
+		this.time = new Time();
+		this.canvas = document.querySelector<HTMLCanvasElement>(appDom)!;
+		this.camera = new Camera({
 			defaultCamera: props?.camera || "Perspective",
 			miniCamera: !!props?.withMiniCamera,
 		});
-		this.rendererInstance = new Renderer({
-			enableMiniRender: !!props?.withMiniCamera,
-		});
 		this.resources = new Resources(props?.sources);
-
-		if (props?.enableCameraHelper && this.camera) {
-			const CAMERA_HELPER = new THREE.CameraHelper(this.camera);
-			this.scene.add(CAMERA_HELPER);
-		}
+		this.debug = new Debug(props?.enableDebug);
+		this.renderer = new Renderer();
 
 		if (typeof props?.axesSizes === "number") {
 			const AXES_HELPER = new THREE.AxesHelper(props?.axesSizes);
@@ -95,28 +71,21 @@ export default class ThreeApp {
 			this.scene.add(GRID_HELPER);
 		}
 
-		tickEvent = () => {
-			this.update();
-		};
-		resizeEvent = () => {
-			this.resize();
-		};
-
-		this.time.on("tick", tickEvent);
-		this.sizes.on("resize", resizeEvent);
+		this.time.on("tick", (ThreeApp.tickEvent = () => this.update()));
+		this.sizes.on("resize", (ThreeApp.tickEvent = () => this.resize()));
 	}
 
 	resize() {
-		this._camera.resize();
-
-		this.rendererInstance.resize();
+		this.camera.resize();
+		this.renderer.resize();
 	}
 
 	update() {
-		this._camera.update();
-		this.rendererInstance.update();
+		this.debug?.stats?.begin();
 
-		if (this.debug?.stats) this.debug.stats.begin();
+		this.camera.update();
+		this.debug?.update();
+		this.renderer.update();
 
 		const UPDATE_CALLBACKS_KEYS = Object.keys(this.updateCallbacks);
 		if (UPDATE_CALLBACKS_KEYS?.length) {
@@ -127,24 +96,20 @@ export default class ThreeApp {
 			});
 		}
 
-		if (this.debug?.stats) this.debug.stats.end();
+		this.debug?.stats?.end();
 	}
 
 	destroy() {
-		if (tickEvent) this.time.off("tick", tickEvent);
-		if (resizeEvent) this.sizes.off("resize", resizeEvent);
+		if (ThreeApp.tickEvent) this.time.off("tick", ThreeApp.tickEvent);
+		if (ThreeApp.resizeEvent) this.sizes.off("resize", ThreeApp.resizeEvent);
 
-		// Traverse the whole scene
 		this.scene.traverse((child) => {
-			// Test if it's a mesh
 			if (child instanceof THREE.Mesh) {
 				child.geometry.dispose();
 
-				// Loop through the material properties
 				for (const key in child.material) {
 					const value = child.material[key];
 
-					// Test if there is a dispose function
 					if (value && typeof value.dispose === "function") {
 						value.dispose();
 					}
@@ -152,22 +117,13 @@ export default class ThreeApp {
 			}
 		});
 
-		this._camera.controls?.dispose();
-		this._camera.miniCameraControls?.dispose();
-		this.renderer.dispose();
+		this.renderer.instance.dispose();
+		this.debug?.destroy();
 
-		if (this.debug?.active) this.debug.ui?.destroy();
+		delete ThreeApp.instance;
 	}
 
 	setUpdateCallback(key: string, callback: () => unknown) {
 		this.updateCallbacks[key] = callback;
-	}
-
-	get camera() {
-		return this._camera.instance;
-	}
-
-	get renderer() {
-		return this.rendererInstance.instance;
 	}
 }

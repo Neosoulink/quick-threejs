@@ -41,9 +41,9 @@ export class Experience {
 		this.gui?.add({ fn: () => this.construct() }, "fn").name("Enable");
 		this.gui?.close();
 
-		if (this.app._camera.controls) {
-			this.app._camera.controls.enabled = false;
-			this.app._camera.controls.autoRotate = true;
+		if (this.app.debug?.cameraControls) {
+			this.app.debug.cameraControls.enabled = false;
+			this.app.debug.cameraControls.autoRotate = true;
 		}
 
 		if (props?.onConstruct) this.onConstruct = props?.onConstruct;
@@ -110,7 +110,7 @@ export class Experience {
 					this.app.camera.fov = 35;
 					this.app.camera.far = 35;
 				}
-				this.app.camera.updateProjectionMatrix();
+				this.app.camera.instance?.updateProjectionMatrix();
 			}
 
 			// LIGHTS
@@ -130,11 +130,6 @@ export class Experience {
 			this.mainGroup.add(AMBIENT_LIGHT, DIRECTIONAL_LIGHT, TORUS_KNOT);
 			this.app.scene.add(this.mainGroup);
 
-			// CAMERA
-			if (this.app.camera) {
-				this.app.camera.position.z = 20;
-			}
-
 			// ANIMATIONS
 			this.app.setUpdateCallback("root", () => {
 				TORUS_KNOT.rotation.x += 0.01;
@@ -153,25 +148,25 @@ export class Experience {
 				.onChange((value: string) => {
 					switch (value) {
 						case "Perspective":
-							this.app._camera.setPerspectiveCamera();
+							this.app.camera.setPerspectiveCamera();
 
 							break;
 						case "Orthographic":
-							this.app._camera.setOrthographicCamera();
+							this.app.camera.setOrthographicCamera();
 							break;
 						default:
-							this.app._camera.clearCamera();
+							this.app.camera.clearCamera();
 							break;
 					}
-					if (this.app.camera) {
-						this.app.camera.far = 35;
+					if (this.app.camera.instance) {
+						this.app.camera.instance.far = 35;
 					}
 					if (this.app.camera instanceof THREE.PerspectiveCamera) {
 						this.app.camera.fov = 35;
 					}
-					if (this.app._camera.controls) {
-						this.app._camera.controls.enabled = false;
-						this.app._camera.controls.autoRotate = true;
+					if (this.app.debug?.cameraControls) {
+						this.app.debug.cameraControls.enabled = false;
+						this.app.debug.cameraControls.autoRotate = true;
 					}
 				})
 				.name("Camera type");

@@ -10,11 +10,8 @@ export default class Renderer {
 	private app = new ThreeApp();
 	instance: THREE.WebGLRenderer;
 	enabled = true;
-	enableMiniRender: boolean = false;
 
-	constructor(props?: RendererProps) {
-		this.enableMiniRender = !!props?.enableMiniRender;
-
+	constructor() {
 		this.instance = new THREE.WebGLRenderer({
 			canvas: this.app.canvas,
 			antialias: true,
@@ -37,16 +34,16 @@ export default class Renderer {
 	}
 
 	update() {
-		if (this.enabled && this.app.camera instanceof THREE.Camera) {
+		if (this.enabled && this.app.camera.instance instanceof THREE.Camera) {
 			this.instance.setViewport(
 				0,
 				0,
 				this.app.sizes.width,
 				this.app.sizes.height
 			);
-			this.instance.render(this.app.scene, this.app.camera);
+			this.instance.render(this.app.scene, this.app.camera.instance);
 
-			if (this.enableMiniRender && this.app._camera.miniCamera) {
+			if (this.app.debug?.active && this.app.camera.miniCamera) {
 				this.instance.setScissorTest(true);
 				this.instance.setViewport(
 					this.app.sizes.width - this.app.sizes.width / 3,
@@ -60,7 +57,7 @@ export default class Renderer {
 					this.app.sizes.width / 3,
 					this.app.sizes.height / 3
 				);
-				this.instance.render(this.app.scene, this.app._camera.miniCamera);
+				this.instance.render(this.app.scene, this.app.camera.miniCamera);
 				this.instance.setScissorTest(false);
 			}
 		}
