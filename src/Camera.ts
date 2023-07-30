@@ -12,6 +12,7 @@ export default class Camera {
 	private app = new ThreeApp({});
 	instance?: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 	miniCamera?: THREE.PerspectiveCamera;
+	updateProjectionMatrix = true;
 
 	constructor(props: CameraProps) {
 		switch (props.defaultCamera) {
@@ -87,7 +88,12 @@ export default class Camera {
 		}
 	}
 
-	update() {}
+	update() {
+		if (this.updateProjectionMatrix) {
+			this.instance?.updateProjectionMatrix();
+			this.miniCamera?.updateProjectionMatrix();
+		}
+	}
 
 	clearCamera() {
 		if (this.instance instanceof THREE.Camera) {

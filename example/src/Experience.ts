@@ -104,11 +104,10 @@ export class Experience {
 
 			// APP
 			if (this.app.camera) {
-				if (this.app.camera instanceof THREE.PerspectiveCamera) {
-					this.app.camera.fov = 35;
-					this.app.camera.far = 35;
+				if (this.app.camera.instance instanceof THREE.PerspectiveCamera) {
+					this.app.camera.instance.fov = 35;
+					this.app.camera.instance.far = 35;
 				}
-				this.app.camera.instance?.updateProjectionMatrix();
 			}
 
 			// LIGHTS
