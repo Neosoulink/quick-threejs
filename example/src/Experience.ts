@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import GUI from "lil-gui/dist/lil-gui.esm.js";
 
-import QuickThreejs from "../../lib";
+import QuickThreejs from "quick-threejs";
 
 export interface ExperienceProps {
 	/**
