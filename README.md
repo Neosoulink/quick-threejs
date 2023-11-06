@@ -3,7 +3,7 @@
 Quick-threeJS is a small open-source library.
 As its name says, the lib will quickly set up a 3D scene with as little configuration as possible.
 
-## Quick start
+## 🚀 Quick start
 
 Simply import `quick-threejs` and instantiate it as follows:
 
@@ -39,7 +39,7 @@ I have to apologize for not documenting this library well.
 
 At the current time, this library is mainly for personal use.
 
-If find this library interesting or useful, please raise an [issue](https://github.com/Neosoulink/quick-threejs/issues).
+If find this library interesting or useful and need to improve the library, please raise an [issue](https://github.com/Neosoulink/quick-threejs/issues).
 I'll be glad to have your feedback ❤.
 
 ## License
