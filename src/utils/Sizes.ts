@@ -6,14 +6,14 @@ export interface SceneSizesType {
 }
 
 export interface SizesProps {
-	height?: number;
-	width?: number;
+	height?: SceneSizesType["height"];
+	width?: SceneSizesType["width"];
 	listenResize?: boolean;
 }
 
 export default class Sizes extends EventEmitter {
-	width: number = window.innerWidth;
-	height: number = window.innerHeight;
+	width: SceneSizesType["width"] = window.innerWidth;
+	height: SceneSizesType["height"] = window.innerHeight;
 	aspect: number;
 	pixelRatio = Math.min(window.devicePixelRatio, 2);
 	listenResize: boolean;
