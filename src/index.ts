@@ -108,6 +108,10 @@ export default class QuickThreejs {
 	debug?: Debug;
 	updateCallbacks: { [key: string]: () => unknown } = {};
 
+	/**
+	 * @param props {@link InitThreeProps}
+	 * @param appDom The app Dom element reference
+	 */
 	constructor(props?: InitThreeProps, appDom = "canvas#app") {
 		if (QuickThreejs.instance) {
 			return QuickThreejs.instance;
