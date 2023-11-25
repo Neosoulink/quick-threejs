@@ -16,23 +16,20 @@ export default class Debug {
 	cameraHelper?: THREE.CameraHelper;
 
 	constructor(active?: boolean) {
-		if (active) {
-			this.active = active;
-			this.ui = new GUI();
-			this.stats = new Stats();
-			this.stats.showPanel(0);
-			this.setCameraOrbitControl();
-			this.setMiniCameraOrbitControls();
-			this.setCameraHelper();
+		if (!active) return;
 
-			if (window) {
-				window.document.body.appendChild(this.stats.dom);
+		this.active = active;
+		this.ui = new GUI();
+		this.stats = new Stats();
+		this.stats.showPanel(0);
+		this.setCameraOrbitControl();
+		this.setMiniCameraOrbitControls();
+		this.setCameraHelper();
 
-				if (window.innerWidth <= 450) {
-					this.ui.close();
-				}
-			}
-		}
+		if (!window) return;
+
+		window.document.body.appendChild(this.stats.dom);
+		if (window.innerWidth <= 450) this.ui.close();
 	}
 
 	setCameraOrbitControl() {
