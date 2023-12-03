@@ -37,12 +37,12 @@
 		"events": "^3.3.0",
 		"np": "^9.0.0",
 		"stats.js": "^0.17.0",
-		"three": "^0.153.0"
+		"three": "^0.159.0"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.3",
 		"@types/stats.js": "^0.17.0",
-		"@types/three": "^0.153.0",
+		"@types/three": "^0.159.0",
 		"@typescript-eslint/eslint-plugin": "^6.1.0",
 		"@typescript-eslint/parser": "^6.1.0",
 		"eslint": "^8.45.0",
