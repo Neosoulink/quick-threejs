@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import GUI from "lil-gui";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import QuickThreejs from "quick-threejs";
 
