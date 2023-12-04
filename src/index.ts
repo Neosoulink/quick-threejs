@@ -1,11 +1,11 @@
 import * as THREE from "three";
 
 // UTILS
-import Sizes, { SceneSizesType } from "./utils/Sizes";
+import Sizes, { type SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
-import Camera, { CameraProps } from "./Camera";
+import Camera, { type CameraProps } from "./Camera";
 import Renderer from "./Renderer";
-import Resources, { SourceType } from "./utils/Resources";
+import Resources, { type SourceType } from "./utils/Resources";
 import Debug from "./utils/Debug";
 
 /**
@@ -162,8 +162,6 @@ export default class QuickThreejs {
 		this.debug?.stats?.begin();
 		this.camera.update();
 		this.debug?.update();
-		this.renderer.beforeRenderUpdate();
-		this.renderer.update();
 
 		const UPDATE_CALLBACKS_KEYS = Object.keys(this.updateCallbacks);
 		if (UPDATE_CALLBACKS_KEYS?.length) {
@@ -174,7 +172,9 @@ export default class QuickThreejs {
 			});
 		}
 
-		this.renderer.afterRenderUpdate();
+		this.renderer.beforeRenderUpdate && this.renderer.beforeRenderUpdate();
+		this.renderer.update();
+		this.renderer.afterRenderUpdate && this.renderer.afterRenderUpdate();
 		this.debug?.stats?.end();
 	}
 

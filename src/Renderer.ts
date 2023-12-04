@@ -13,8 +13,8 @@ export default class Renderer {
 	public instance: THREE.WebGLRenderer;
 	public enabled = true;
 
-	public beforeRenderUpdate: () => unknown = () => {};
-	public afterRenderUpdate: () => unknown = () => {};
+	public beforeRenderUpdate?: () => unknown = () => {};
+	public afterRenderUpdate?: () => unknown = () => {};
 
 	constructor() {
 		this.instance = new THREE.WebGLRenderer({
