@@ -17,7 +17,6 @@ export default class Renderer {
 			antialias: true,
 			alpha: true,
 		});
-		this.instance.useLegacyLights = true;
 		this.instance.outputColorSpace = THREE.SRGBColorSpace;
 		this.instance.toneMapping = THREE.CineonToneMapping;
 		this.instance.toneMappingExposure = 1.75;
