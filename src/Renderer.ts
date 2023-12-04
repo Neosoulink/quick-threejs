@@ -1,19 +1,24 @@
 import * as THREE from "three";
 
-// CLASSES
+// APP
 import ThreeApp from ".";
 
 export interface RendererProps {
 	enableMiniRender?: boolean;
 }
+
 export default class Renderer {
-	private app = new ThreeApp();
-	instance: THREE.WebGLRenderer;
-	enabled = true;
+	protected _app = new ThreeApp();
+
+	public instance: THREE.WebGLRenderer;
+	public enabled = true;
+
+	public beforeRenderUpdate: () => unknown = () => {};
+	public afterRenderUpdate: () => unknown = () => {};
 
 	constructor() {
 		this.instance = new THREE.WebGLRenderer({
-			canvas: this.app.canvas,
+			canvas: this._app.canvas,
 			antialias: true,
 			alpha: true,
 		});
@@ -23,42 +28,43 @@ export default class Renderer {
 		this.instance.shadowMap.enabled = true;
 		this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.instance.setClearColor("#211d20");
-		this.instance.setSize(this.app.sizes.width, this.app.sizes.height);
-		this.instance.setPixelRatio(this.app.sizes.pixelRatio);
+		this.instance.setSize(this._app.sizes.width, this._app.sizes.height);
+		this.instance.setPixelRatio(this._app.sizes.pixelRatio);
 	}
 
 	resize() {
-		this.instance.setSize(this.app.sizes.width, this.app.sizes.height);
-		this.instance.setPixelRatio(this.app.sizes.pixelRatio);
+		this.instance.setSize(this._app.sizes.width, this._app.sizes.height);
+		this.instance.setPixelRatio(this._app.sizes.pixelRatio);
 	}
 
 	update() {
-		if (this.enabled && this.app.camera.instance instanceof THREE.Camera) {
-			this.instance.setViewport(
-				0,
-				0,
-				this.app.sizes.width,
-				this.app.sizes.height
-			);
-			this.instance.render(this.app.scene, this.app.camera.instance);
+		if (!(this.enabled && this._app.camera.instance instanceof THREE.Camera))
+			return;
 
-			if (this.app.debug?.active && this.app.camera.miniCamera) {
-				this.instance.setScissorTest(true);
-				this.instance.setViewport(
-					this.app.sizes.width - this.app.sizes.width / 3,
-					this.app.sizes.height - this.app.sizes.height / 3,
-					this.app.sizes.width / 3,
-					this.app.sizes.height / 3
-				);
-				this.instance.setScissor(
-					this.app.sizes.width - this.app.sizes.width / 3,
-					this.app.sizes.height - this.app.sizes.height / 3,
-					this.app.sizes.width / 3,
-					this.app.sizes.height / 3
-				);
-				this.instance.render(this.app.scene, this.app.camera.miniCamera);
-				this.instance.setScissorTest(false);
-			}
+		this.instance.setViewport(
+			0,
+			0,
+			this._app.sizes.width,
+			this._app.sizes.height
+		);
+		this.instance.render(this._app.scene, this._app.camera.instance);
+
+		if (this._app.debug?.active && this._app.camera.miniCamera) {
+			this.instance.setScissorTest(true);
+			this.instance.setViewport(
+				this._app.sizes.width - this._app.sizes.width / 3,
+				this._app.sizes.height - this._app.sizes.height / 3,
+				this._app.sizes.width / 3,
+				this._app.sizes.height / 3
+			);
+			this.instance.setScissor(
+				this._app.sizes.width - this._app.sizes.width / 3,
+				this._app.sizes.height - this._app.sizes.height / 3,
+				this._app.sizes.width / 3,
+				this._app.sizes.height / 3
+			);
+			this.instance.render(this._app.scene, this._app.camera.miniCamera);
+			this.instance.setScissorTest(false);
 		}
 	}
 }

@@ -98,15 +98,16 @@ export default class QuickThreejs {
 	static instance?: QuickThreejs;
 	static tickEvent?: () => unknown;
 	static resizeEvent?: () => unknown;
-	scene!: THREE.Scene;
-	canvas?: HTMLCanvasElement;
-	camera!: Camera;
-	renderer!: Renderer;
-	sizes!: Sizes;
-	time!: Time;
-	resources!: Resources;
-	debug?: Debug;
-	updateCallbacks: { [key: string]: () => unknown } = {};
+
+	public scene!: THREE.Scene;
+	public canvas?: HTMLCanvasElement;
+	public camera!: Camera;
+	public renderer!: Renderer;
+	public sizes!: Sizes;
+	public time!: Time;
+	public resources!: Resources;
+	public debug?: Debug;
+	public updateCallbacks: { [key: string]: () => unknown } = {};
 
 	/**
 	 * @param props {@link InitThreeProps}
@@ -159,9 +160,9 @@ export default class QuickThreejs {
 
 	update() {
 		this.debug?.stats?.begin();
-
 		this.camera.update();
 		this.debug?.update();
+		this.renderer.beforeRenderUpdate();
 		this.renderer.update();
 
 		const UPDATE_CALLBACKS_KEYS = Object.keys(this.updateCallbacks);
@@ -173,6 +174,7 @@ export default class QuickThreejs {
 			});
 		}
 
+		this.renderer.afterRenderUpdate();
 		this.debug?.stats?.end();
 	}
 
