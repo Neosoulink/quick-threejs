@@ -7,11 +7,15 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import ThreeApp from "..";
 
 // LOCAL TYPES
-export type LoadedItemType = GLTF | THREE.Texture | THREE.CubeTexture;
+export type LoadedItemType =
+	| GLTF
+	| THREE.Texture
+	| THREE.CubeTexture
+	| HTMLVideoElement;
 
 export interface SourceType {
 	name: string;
-	type: "cubeTexture" | "texture" | "gltfModel";
+	type: "cubeTexture" | "texture" | "gltfModel" | "video";
 	path: string | string[];
 }
 
@@ -28,6 +32,29 @@ export default class Resources extends EventEmitter {
 		cubeTextureLoader?: THREE.CubeTextureLoader;
 	} = {};
 	loadingManager = new THREE.LoadingManager();
+
+	private _videoLoader = {
+		load: (url: string, callback: (element: HTMLVideoElement) => unknown) => {
+			try {
+				const urlInstance = new URL(url);
+				const element = document.createElement("video");
+
+				element.muted = true;
+				element.loop = true;
+				element.controls = true;
+				element.playsInline = true;
+				element.autoplay = true;
+				element.src = urlInstance.href;
+				element.play();
+				element.oncanplaythrough = () => {
+					element.play();
+					callback(element);
+				};
+			} catch (_) {
+				return;
+			}
+		},
+	};
 
 	constructor(sources?: SourceType[]) {
 		super();
@@ -58,7 +85,7 @@ export default class Resources extends EventEmitter {
 
 	removeSource(sourceName: string) {
 		this.toLoad = (this.sources = this.sources.filter(
-			(source) => source.name === sourceName
+			(source) => source.name === sourceName,
 		)).length;
 
 		if (this.loaded > this.toLoad) this.loaded = this.toLoad - 1;
@@ -70,7 +97,7 @@ export default class Resources extends EventEmitter {
 		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
 		this.loaders.textureLoader = new THREE.TextureLoader(this.loadingManager);
 		this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader(
-			this.loadingManager
+			this.loadingManager,
 		);
 	}
 
@@ -101,6 +128,11 @@ export default class Resources extends EventEmitter {
 				if (source.type === "cubeTexture" && typeof source.path === "object") {
 					this.loaders.cubeTextureLoader?.load(source.path, (file) => {
 						this.sourceLoaded(source, file);
+					});
+				}
+				if (source.type === "video" && typeof source.path === "string") {
+					this._videoLoader.load(source.path, (element) => {
+						this.sourceLoaded(source, element);
 					});
 				}
 			}
