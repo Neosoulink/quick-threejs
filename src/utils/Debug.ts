@@ -43,7 +43,7 @@ export default class Debug {
 		if (this.app.camera.instance instanceof THREE.Camera) {
 			this.cameraControls = new OrbitControls(
 				this.app.camera.instance,
-				this.app.canvas
+				this.app.canvas,
 			);
 
 			this.cameraControls.enableDamping = true;
@@ -61,7 +61,7 @@ export default class Debug {
 		if (this.app.camera.miniCamera) {
 			this.miniCameraControls = new OrbitControls(
 				this.app.camera.miniCamera,
-				this.app.canvas
+				this.app.canvas,
 			);
 			this.miniCameraControls.enableDamping = true;
 		}

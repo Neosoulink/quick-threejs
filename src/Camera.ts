@@ -36,7 +36,7 @@ export default class Camera {
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
-			100
+			100,
 		);
 		this.instance.position.z = 8;
 
@@ -54,7 +54,7 @@ export default class Camera {
 			this.app.sizes.frustrum / 2,
 			-this.app.sizes.frustrum / 2,
 			-50,
-			50
+			50,
 		);
 
 		this.app.debug?.setCameraOrbitControl();
@@ -69,7 +69,7 @@ export default class Camera {
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
-			500
+			500,
 		);
 		this.miniCamera.position.z = 8;
 
