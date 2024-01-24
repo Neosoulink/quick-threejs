@@ -47,10 +47,12 @@ export default class Resources extends EventEmitter {
 			element.src = url;
 			element.autoplay = true;
 
-			element.oncanplaythrough = () => {
+			const oncanplaythrough = () => {
 				element.play();
 				callback(new THREE.VideoTexture(element));
+				element.removeEventListener("canplaythrough", oncanplaythrough);
 			};
+			element.addEventListener("canplaythrough", oncanplaythrough);
 		},
 	};
 
