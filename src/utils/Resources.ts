@@ -96,7 +96,7 @@ export default class Resources extends EventEmitter {
 		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
 		this.loaders.textureLoader = new THREE.TextureLoader(this.loadingManager);
 		this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader(
-			this.loadingManager
+			this.loadingManager,
 		);
 	}
 
@@ -116,22 +116,22 @@ export default class Resources extends EventEmitter {
 			if (!this.items[source.name]) {
 				if (source.type === "gltfModel" && typeof source.path === "string") {
 					this.loaders.gltfLoader?.load(source.path, (file) =>
-						this.sourceLoaded(source, file)
+						this.sourceLoaded(source, file),
 					);
 				}
 				if (source.type === "texture" && typeof source.path === "string") {
 					this.loaders.textureLoader?.load(source.path, (file) =>
-						this.sourceLoaded(source, file)
+						this.sourceLoaded(source, file),
 					);
 				}
 				if (source.type === "cubeTexture" && typeof source.path === "object") {
 					this.loaders.cubeTextureLoader?.load(source.path, (file) =>
-						this.sourceLoaded(source, file)
+						this.sourceLoaded(source, file),
 					);
 				}
 				if (source.type === "video" && typeof source.path === "string") {
 					this._videoLoader.load(source.path, (element) =>
-						this.sourceLoaded(source, element)
+						this.sourceLoaded(source, element),
 					);
 				}
 			}
