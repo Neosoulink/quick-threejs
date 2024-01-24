@@ -5,7 +5,7 @@ import Sizes, { type SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
 import Camera, { type CameraProps } from "./Camera";
 import Renderer from "./Renderer";
-import Resources, { type SourceType } from "./utils/Resources";
+import Resources, { type Source } from "./utils/Resources";
 import Debug from "./utils/Debug";
 
 /**
@@ -86,12 +86,12 @@ export interface InitThreeProps {
 	/**
 	 * A list of resources to load.
 	 *
-	 * @see {@link SourceType}
+	 * @see {@link Source}
 	 * @see {@link Resources}
 	 *
 	 * @defaultValue `undefined`
 	 */
-	sources?: SourceType[];
+	sources?: Source[];
 }
 
 export default class QuickThreejs {
@@ -144,7 +144,7 @@ export default class QuickThreejs {
 		if (typeof props?.gridSizes === "number") {
 			const GRID_HELPER = new THREE.GridHelper(
 				props?.gridSizes,
-				props?.gridSizes,
+				props?.gridSizes
 			);
 			this.scene.add(GRID_HELPER);
 		}
