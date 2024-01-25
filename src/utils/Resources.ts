@@ -49,7 +49,12 @@ export default class Resources extends EventEmitter {
 
 			const oncanplaythrough = () => {
 				element.play();
-				callback(new THREE.VideoTexture(element));
+				const texture = new THREE.VideoTexture(element);
+				texture.dispose = () => {
+					element.remove();
+					texture.dispose();
+				};
+				callback(texture);
 				element.removeEventListener("canplaythrough", oncanplaythrough);
 			};
 			element.addEventListener("canplaythrough", oncanplaythrough);
