@@ -33,7 +33,7 @@
 	},
 	"dependencies": {
 		"events": "^3.3.0",
-		"three": "^0.159.0",
+		"three": "^0.161.0",
 		"stats.js": "^0.17.0",
 		"lil-gui": "^0.19.1"
 	},
@@ -41,7 +41,7 @@
 		"@babel/preset-env": "^7.22.4",
 		"@types/jest": "^29.5.3",
 		"@types/stats.js": "^0.17.0",
-		"@types/three": "^0.159.0",
+		"@types/three": "^0.161.0",
 		"@typescript-eslint/eslint-plugin": "^6.1.0",
 		"@typescript-eslint/parser": "^6.1.0",
 		"babel-jest": "^29.5.0",
