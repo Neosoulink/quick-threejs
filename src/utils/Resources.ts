@@ -40,7 +40,8 @@ export default class Resources extends EventEmitter {
 
 	private _videoLoader = {
 		load: (url: string, callback: (texture: THREE.VideoTexture) => unknown) => {
-			const element = document.createElement("video");
+			let element: HTMLVideoElement | undefined =
+				document.createElement("video");
 			element.muted = true;
 			element.loop = true;
 			element.controls = false;
@@ -49,14 +50,20 @@ export default class Resources extends EventEmitter {
 			element.autoplay = true;
 
 			const oncanplaythrough = () => {
+				if (!element) return;
+
 				element.play();
 				const texture = new THREE.VideoTexture(element);
+				const textureDispose = texture.dispose.bind(texture);
 				texture.dispose = () => {
-					element.remove();
-					texture.dispose();
+					texture.userData.element = undefined;
+					element?.remove();
+					element = undefined;
+					textureDispose();
 				};
 				callback(texture);
 				texture.userData.element = element;
+
 				element.removeEventListener("canplaythrough", oncanplaythrough);
 			};
 			element.addEventListener("canplaythrough", oncanplaythrough);
