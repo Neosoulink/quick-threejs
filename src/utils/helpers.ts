@@ -1,8 +1,8 @@
-import { Material } from "three";
+import { Material, Texture } from "three";
 
 export function disposeMaterial(material: Material) {
-	// @ts-ignore
-	if (material.map) material.map.dispose();
+	const mat = material as Material & { map?: Texture };
+	if (mat.map) mat.map.dispose();
 
 	material.dispose();
 }
