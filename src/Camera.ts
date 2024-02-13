@@ -18,7 +18,7 @@ export default class Camera extends EventEmitter {
 
 	constructor(
 		defaultCamera?: "perspective" | "orthographic",
-		miniCamera?: boolean
+		miniCamera?: boolean,
 	) {
 		super();
 
@@ -35,7 +35,7 @@ export default class Camera extends EventEmitter {
 				75,
 				this.app.sizes.width / this.app.sizes.height,
 				0.1,
-				100
+				100,
 			);
 
 			this.instance.position.z = 8;
@@ -49,7 +49,7 @@ export default class Camera extends EventEmitter {
 				this.app.sizes.frustrum / 2,
 				-this.app.sizes.frustrum / 2,
 				-50,
-				50
+				50,
 			);
 		}
 
@@ -65,7 +65,7 @@ export default class Camera extends EventEmitter {
 			75,
 			this.app.sizes.width / this.app.sizes.height,
 			0.1,
-			500
+			500,
 		);
 		this.miniCamera.position.z = 8;
 

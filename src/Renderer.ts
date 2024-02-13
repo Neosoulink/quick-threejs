@@ -49,7 +49,7 @@ export default class Renderer extends EventEmitter {
 			0,
 			0,
 			this._app.sizes.width,
-			this._app.sizes.height
+			this._app.sizes.height,
 		);
 		this.instance.render(this._app.scene, this._app.camera.instance);
 
@@ -59,13 +59,13 @@ export default class Renderer extends EventEmitter {
 				this._app.sizes.width - this._app.sizes.width / 3,
 				this._app.sizes.height - this._app.sizes.height / 3,
 				this._app.sizes.width / 3,
-				this._app.sizes.height / 3
+				this._app.sizes.height / 3,
 			);
 			this.instance.setScissor(
 				this._app.sizes.width - this._app.sizes.width / 3,
 				this._app.sizes.height - this._app.sizes.height / 3,
 				this._app.sizes.width / 3,
-				this._app.sizes.height / 3
+				this._app.sizes.height / 3,
 			);
 			this.instance.render(this._app.scene, this._app.camera.miniCamera);
 			this.instance.setScissorTest(false);

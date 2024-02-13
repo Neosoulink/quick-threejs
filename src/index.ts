@@ -146,7 +146,7 @@ export default class QuickThreejs extends EventEmitter {
 		if (typeof props?.gridSizes === "number") {
 			const GRID_HELPER = new THREE.GridHelper(
 				props?.gridSizes,
-				props?.gridSizes
+				props?.gridSizes,
 			);
 			this.scene.add(GRID_HELPER);
 		}
