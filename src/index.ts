@@ -1,12 +1,16 @@
 import * as THREE from "three";
+import EventEmitter from "events";
 
-// UTILS
+import Camera from "./Camera";
+import Renderer from "./Renderer";
+
 import Sizes, { type SceneSizesType } from "./utils/Sizes";
 import Time from "./utils/Time";
-import Camera, { type CameraProps } from "./Camera";
-import Renderer from "./Renderer";
 import Resources, { type Source } from "./utils/Resources";
 import Debug from "./utils/Debug";
+import { disposeMaterial } from "./utils/helpers";
+
+import { events } from "./static";
 
 /**
  * Initialization properties for ThreeJS
@@ -70,7 +74,7 @@ export interface InitThreeProps {
 	 *
 	 * @defaultValue `undefined`
 	 */
-	camera?: CameraProps["defaultCamera"];
+	camera?: ConstructorParameters<typeof Camera>[0];
 	/**
 	 * Display a mini perfective camera at the top right corner of the screen.
 	 *
@@ -94,29 +98,28 @@ export interface InitThreeProps {
 	sources?: Source[];
 }
 
-export default class QuickThreejs {
+export default class QuickThreejs extends EventEmitter {
 	static instance?: QuickThreejs;
 	static tickEvent?: () => unknown;
 	static resizeEvent?: () => unknown;
 
 	public scene!: THREE.Scene;
-	public canvas?: HTMLCanvasElement;
 	public camera!: Camera;
 	public renderer!: Renderer;
 	public sizes!: Sizes;
 	public time!: Time;
 	public resources!: Resources;
 	public debug?: Debug;
-	public updateCallbacks: { [key: string]: () => unknown } = {};
+	public canvas?: HTMLCanvasElement;
 
 	/**
 	 * @param props {@link InitThreeProps}
 	 * @param appDom The app Dom element reference
 	 */
 	constructor(props?: InitThreeProps, appDom = "canvas#app") {
-		if (QuickThreejs.instance) {
-			return QuickThreejs.instance;
-		}
+		super();
+		if (QuickThreejs.instance) return QuickThreejs.instance;
+
 		QuickThreejs.instance = this;
 
 		// SETUP
@@ -127,11 +130,10 @@ export default class QuickThreejs {
 			listenResize: props?.autoSceneResize,
 		});
 		this.time = new Time();
-		this.canvas = document.querySelector<HTMLCanvasElement>(appDom)!;
-		this.camera = new Camera({
-			defaultCamera: props?.camera || "Perspective",
-			miniCamera: !!props?.withMiniCamera,
-		});
+		this.canvas =
+			document.querySelector<HTMLCanvasElement>(appDom) ??
+			document.createElement("canvas");
+		this.camera = new Camera(props?.camera, !!props?.withMiniCamera);
 		this.resources = new Resources(props?.sources);
 		this.debug = new Debug(props?.enableDebug);
 		this.renderer = new Renderer();
@@ -144,13 +146,17 @@ export default class QuickThreejs {
 		if (typeof props?.gridSizes === "number") {
 			const GRID_HELPER = new THREE.GridHelper(
 				props?.gridSizes,
-				props?.gridSizes,
+				props?.gridSizes
 			);
 			this.scene.add(GRID_HELPER);
 		}
 
-		this.time.on("tick", (QuickThreejs.tickEvent = () => this.update()));
-		this.sizes.on("resize", (QuickThreejs.tickEvent = () => this.resize()));
+		QuickThreejs.tickEvent = () => this.update();
+		QuickThreejs.resizeEvent = () => this.resize();
+
+		this.time.on(events.TICKED, QuickThreejs.tickEvent);
+		this.sizes.on(events.RESIZED, QuickThreejs.resizeEvent);
+		this.emit(events.CONSTRUCTED);
 	}
 
 	resize() {
@@ -160,50 +166,43 @@ export default class QuickThreejs {
 
 	update() {
 		this.debug?.stats?.begin();
+
+		this.emit(events.BEFORE_UPDATE);
 		this.camera.update();
 		this.debug?.update();
 
-		const UPDATE_CALLBACKS_KEYS = Object.keys(this.updateCallbacks);
-		if (UPDATE_CALLBACKS_KEYS?.length) {
-			UPDATE_CALLBACKS_KEYS.map((callbackKey) => {
-				if (typeof this.updateCallbacks[callbackKey] === "function") {
-					this.updateCallbacks[callbackKey]();
-				}
-			});
-		}
-
-		this.renderer.beforeRenderUpdate && this.renderer.beforeRenderUpdate();
+		this.emit(events.PRE_UPDATED);
 		this.renderer.update();
-		this.renderer.afterRenderUpdate && this.renderer.afterRenderUpdate();
+		this.emit(events.UPDATED);
+
 		this.debug?.stats?.end();
 	}
 
-	destroy() {
-		if (QuickThreejs.tickEvent) this.time.off("tick", QuickThreejs.tickEvent);
-		if (QuickThreejs.resizeEvent)
-			this.sizes.off("resize", QuickThreejs.resizeEvent);
+	destruct() {
+		this.time.destruct();
+		this.sizes.destruct();
+		this.camera.destruct();
+		this.renderer.destruct();
+		this.debug?.destruct();
+		this.resources.destruct();
+		this.scene.traverse((object) => {
+			if (object instanceof THREE.Mesh) {
+				object.geometry.dispose();
 
-		this.scene.traverse((child) => {
-			if (child instanceof THREE.Mesh) {
-				child.geometry.dispose();
-
-				for (const key in child.material) {
-					const value = child.material[key];
-
-					if (value && typeof value.dispose === "function") {
-						value.dispose();
+				if (Array.isArray(object.material)) {
+					for (let index = 0; index < object.material.length; index++) {
+						const material = object.material[index];
+						disposeMaterial(material);
 					}
+				} else {
+					disposeMaterial(object.material);
 				}
-			}
+			} else if (object instanceof THREE.Light) object.dispose();
 		});
+		this.scene.userData = {};
 
-		this.renderer.instance.dispose();
-		this.debug?.destroy();
-
-		delete QuickThreejs.instance;
-	}
-
-	setUpdateCallback(key: string, callback: () => unknown) {
-		this.updateCallbacks[key] = callback;
+		QuickThreejs.instance = undefined;
+		this.emit(events.DESTRUCTED);
+		this.removeAllListeners();
 	}
 }

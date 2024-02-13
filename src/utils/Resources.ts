@@ -6,10 +6,11 @@ import {
 } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
-// CLASSES
 import ThreeApp from "..";
 
-// LOCAL TYPES
+import { events } from "../static";
+import { disposeMaterial } from "./helpers";
+
 export type LoadedItem =
 	| GLTF
 	| THREE.Texture
@@ -79,11 +80,12 @@ export default class Resources extends EventEmitter {
 			this.setSources(sources);
 		}
 		this.setLoaders();
+		this.emit(events.CONSTRUCTED);
 	}
 
-	setSources(sources: Source[]) {
+	setSources(sources: Source[] = []) {
 		this.sources = sources;
-		this.toLoad = (this.sources ?? []).length;
+		this.toLoad = this.sources.length;
 		this.loaded = 0;
 
 		return this.toLoad;
@@ -112,7 +114,7 @@ export default class Resources extends EventEmitter {
 		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
 		this.loaders.textureLoader = new THREE.TextureLoader(this.loadingManager);
 		this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader(
-			this.loadingManager,
+			this.loadingManager
 		);
 		this.loaders.audioLoader = new THREE.AudioLoader(this.loadingManager);
 	}
@@ -127,28 +129,28 @@ export default class Resources extends EventEmitter {
 	}
 
 	startLoading() {
-		this.emit("start", this.sources[0], this.loaded, this.toLoad);
+		this.emit(events.STARTED, this.sources[0], this.loaded, this.toLoad);
 
 		for (const source of this.sources) {
 			if (!this.items[source.name]) {
 				if (source.type === "gltfModel" && typeof source.path === "string") {
-					this.loaders.gltfLoader?.load(source.path, (texture) =>
-						this.sourceLoaded(source, texture),
+					this.loaders.gltfLoader?.load(source.path, (model) =>
+						this.sourceLoaded(source, model)
 					);
 				}
 				if (source.type === "texture" && typeof source.path === "string") {
 					this.loaders.textureLoader?.load(source.path, (texture) =>
-						this.sourceLoaded(source, texture),
+						this.sourceLoaded(source, texture)
 					);
 				}
 				if (source.type === "cubeTexture" && typeof source.path === "object") {
 					this.loaders.cubeTextureLoader?.load(source.path, (texture) =>
-						this.sourceLoaded(source, texture),
+						this.sourceLoaded(source, texture)
 					);
 				}
 				if (source.type === "video" && typeof source.path === "string") {
 					this._videoLoader.load(source.path, (texture) =>
-						this.sourceLoaded(source, texture),
+						this.sourceLoaded(source, texture)
 					);
 				}
 				if (source.type === "audio" && typeof source.path === "string") {
@@ -163,10 +165,44 @@ export default class Resources extends EventEmitter {
 	sourceLoaded(source: Source, file: LoadedItem) {
 		this.items[source.name] = file;
 		this.loaded++;
-		this.emit("progress", this.loaded, this.toLoad, source, file);
+		this.emit(events.PROGRESSED, this.loaded, this.toLoad, source, file);
 
 		if (this.loaded === this.toLoad) {
-			this.emit("load", source.path, this.loaded, this.toLoad);
+			this.emit(events.LOADED, source.path, this.loaded, this.toLoad);
 		}
+	}
+
+	destruct() {
+		const keys = Object.keys(this.items);
+
+		for (let i = 0; i < keys.length; i++) {
+			const item = this.items[keys[i]];
+			if (item instanceof THREE.Texture) item.dispose();
+
+			if ((item as GLTF | undefined)?.scene?.traverse) {
+				(item as GLTF).scene.traverse((child) => {
+					if (child instanceof THREE.Mesh) {
+						child.geometry.dispose();
+
+						if (Array.isArray(child.material)) {
+							child.material.forEach((material) => {
+								disposeMaterial(material);
+							});
+						} else {
+							disposeMaterial(child.material);
+						}
+					}
+				});
+			}
+		}
+
+		this.loaders.dracoLoader?.dispose();
+		this.loadingManager.removeHandler(/onStart|onError|onProgress|onLoad/);
+		this.setSources();
+		this.loaders = {};
+		this.items = {};
+
+		this.emit(events.DESTRUCTED);
+		this.removeAllListeners();
 	}
 }

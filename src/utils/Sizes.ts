@@ -1,5 +1,7 @@
 import EventEmitter from "events";
 
+import { events } from "../static";
+
 export interface SceneSizesType {
 	height: number;
 	width: number;
@@ -18,6 +20,15 @@ export default class Sizes extends EventEmitter {
 	pixelRatio = Math.min(window.devicePixelRatio, 2);
 	listenResize: boolean;
 	frustrum = 5;
+	private _onResize = () => {
+		if (!this.listenResize) return;
+
+		this.height = window.innerHeight;
+		this.width = window.innerWidth;
+		this.pixelRatio = this.pixelRatio = Math.min(window.devicePixelRatio, 2);
+
+		this.emit(events.RESIZED, { width: this.width, height: this.height });
+	};
 
 	constructor({ height, width, listenResize = true }: SizesProps) {
 		super();
@@ -28,17 +39,12 @@ export default class Sizes extends EventEmitter {
 		this.aspect = this.width / this.height;
 		this.listenResize = !!listenResize;
 
-		if (this.listenResize) {
-			window.addEventListener("resize", () => {
-				this.height = window.innerHeight;
-				this.width = window.innerWidth;
-				this.pixelRatio = this.pixelRatio = Math.min(
-					window.devicePixelRatio,
-					2,
-				);
+		window.addEventListener("resize", this._onResize);
+		this.emit(events.CONSTRUCTED);
+	}
 
-				this.emit("resize", { width: this.width, height: this.height });
-			});
-		}
+	destruct() {
+		this._onResize && window.removeEventListener("resize", this._onResize);
+		this.removeAllListeners();
 	}
 }

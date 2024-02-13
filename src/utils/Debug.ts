@@ -3,13 +3,12 @@ import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Stats from "stats.js";
 
-// CLASSES
 import ThreeApp from "..";
 
 export default class Debug {
 	app = new ThreeApp();
 	active = false;
-	ui?: GUI;
+	gui?: GUI;
 	stats?: Stats;
 	cameraControls?: OrbitControls;
 	miniCameraControls?: OrbitControls;
@@ -19,7 +18,7 @@ export default class Debug {
 		if (!active) return;
 
 		this.active = active;
-		this.ui = new GUI();
+		this.gui = new GUI();
 		this.stats = new Stats();
 		this.stats.showPanel(0);
 		this.setCameraOrbitControl();
@@ -29,7 +28,7 @@ export default class Debug {
 		if (!window) return;
 
 		window.document.body.appendChild(this.stats.dom);
-		if (window.innerWidth <= 450) this.ui.close();
+		if (this.app.sizes.width <= 450) this.gui.close();
 	}
 
 	setCameraOrbitControl() {
@@ -43,7 +42,7 @@ export default class Debug {
 		if (this.app.camera.instance instanceof THREE.Camera) {
 			this.cameraControls = new OrbitControls(
 				this.app.camera.instance,
-				this.app.canvas,
+				this.app.canvas
 			);
 
 			this.cameraControls.enableDamping = true;
@@ -61,7 +60,7 @@ export default class Debug {
 		if (this.app.camera.miniCamera) {
 			this.miniCameraControls = new OrbitControls(
 				this.app.camera.miniCamera,
-				this.app.canvas,
+				this.app.canvas
 			);
 			this.miniCameraControls.enableDamping = true;
 		}
@@ -88,10 +87,11 @@ export default class Debug {
 		}
 	}
 
-	destroy() {
-		this.ui?.destroy();
-		this.ui = undefined;
+	destruct() {
+		this.gui?.destroy();
+		this.gui = undefined;
 
+		this.stats?.dom.remove();
 		this.stats = undefined;
 
 		if (this.cameraHelper) {
