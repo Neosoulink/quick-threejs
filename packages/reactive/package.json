@@ -1,5 +1,5 @@
 {
-	"name": "@quick-threejs/core",
+	"name": "@quick-threejs/reactive",
 	"version": "0.1.33",
 	"description": "Quick start your threejs app ⚡️",
 	"repository": {
