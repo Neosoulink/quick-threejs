@@ -1,7 +1,5 @@
-"use strict";
-
 /** @type {import("prettier").Config} */
-module.exports = {
+export default {
 	singleQuote: false,
 	tabWidth: 2,
 	useTabs: true,

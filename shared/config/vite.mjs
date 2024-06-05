@@ -1,26 +1,24 @@
-'use strict';
+import { defineConfig } from "vite";
+import pkg from "./package.json" assert { type: "json" };
 
-const { defineConfig } = require('vite');
-const { version } = require('./package.json');
-
-module.exports = defineConfig(
+export default defineConfig(
 	/** @type {import('vite').UserConfig} */
 	{
 		define: {
-			__APP_VERSION__: JSON.stringify(version)
+			__APP_VERSION__: JSON.stringify(pkg.version)
 		},
 		resolve: {
 			alias: {
-				'@': './src'
+				"@": "./src"
 			}
 		},
 		plugins: [
 			(() => {
 				return {
-					name: 'custom-html-plugin',
+					name: "custom-html-plugin",
 					configureServer: (server) => {
 						server.middlewares.use((req, res, next) => {
-							if (req.url === '/')
+							if (req.url === "/")
 								res.end(`
 							<!DOCTYPE html>
 							<html lang="en">

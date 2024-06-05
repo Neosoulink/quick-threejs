@@ -5,5 +5,14 @@
 		"project": "./tsconfig.json",
 		"ecmaVersion": "latest",
 		"sourceType": "module"
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.js?(x)", "*.ts?(x)"],
+			"env": {
+				"browser": true,
+				"es2021": true
+			}
+		}
+	]
 }

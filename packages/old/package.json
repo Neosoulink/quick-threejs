@@ -11,6 +11,10 @@
 		"js",
 		"ts"
 	],
+	"type": "module",
+	"files": [
+		"dist/**/*"
+	],
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"author": "Neosoulink",
@@ -51,9 +55,6 @@
 		"ts-node": "^10.9.1",
 		"typescript-ioc": "^3.2.2"
 	},
-	"files": [
-		"dist/**/*"
-	],
 	"engines": {
 		"node": ">=17.0.0"
 	}

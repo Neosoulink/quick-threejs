@@ -1,11 +1,9 @@
-"use strict";
-
-const { resolve } = require("node:path");
+import { resolve } from "node:path";
 
 const project = resolve(process.cwd(), "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
-module.exports = {
+export default {
 	extends: [
 		"eslint:recommended",
 		"prettier",

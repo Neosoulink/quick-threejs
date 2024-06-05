@@ -1,7 +1,6 @@
 // This configuration only applies to the package manager root.
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-	extends: ["@quick-threejs/config/eslint.js"],
+{
+	extends: ["@quick-threejs/config/eslint.mjs"],
 	root: true,
 	parserOptions: {
 		project: true
