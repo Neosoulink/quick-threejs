@@ -15,7 +15,7 @@
 		"vite": "^4.3.9"
 	},
 	"dependencies": {
-		"@quick-threejs/old": "workspace:*",
+		"@quick-threejs/legacy": "workspace:*",
 		"three": "^0.165.0"
 	}
 }
