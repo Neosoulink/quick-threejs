@@ -1,68 +1,23 @@
 {
 	"name": "quick-threejs",
-	"version": "0.1.33",
-	"description": "Quick threejs helper",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Neosoulink/quick-threejs.git"
-	},
-	"keywords": [
-		"threejs",
-		"js",
-		"ts"
-	],
-	"main": "./lib/index.js",
-	"types": "./lib/index.d.ts",
-	"author": "Neosoulink",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/Neosoulink/quick-threejs/issues"
-	},
-	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
+	"version": "0.2.0",
+	"description": "Quick start your threejs app ⚡️",
+	"private": true,
 	"scripts": {
-		"dev": "vite --host",
-		"test": "jest",
-		"build": "tsc",
-		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint --ext .ts,.js ./src",
-		"prepare": "npm run build",
-		"prepublishOnly": "npm test && npm run lint",
-		"preversion": "npm run lint",
-		"version": "npm run format && git add -A src",
-		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np"
-	},
-	"dependencies": {
-		"threads": "^1.7.0",
-		"three": "^0.165.0"
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"test": "turbo test",
+		"test:e2e": "turbo test:e2e",
+		"lint": "turbo lint",
+		"format": "prettier --write \"**/*.{js,ts,tsx,json,md}\""
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.22.4",
-		"@types/events": "^3.0.3",
-		"@types/jest": "^29.5.3",
-		"@types/stats.js": "^0.17.0",
-		"@types/three": "^0.165.0",
-		"@typescript-eslint/eslint-plugin": "^7.0.2",
-		"@typescript-eslint/parser": "^7.0.1",
-		"babel-jest": "^29.5.0",
-		"eslint": "^8.45.0",
-		"events": "^3.3.0",
-		"jest": "^29.5.0",
-		"lil-gui": "^0.19.1",
-		"path": "^0.12.7",
-		"prettier": "^3.1.0",
-		"rxjs": "^7.8.1",
-		"stats.js": "^0.17.0",
-		"ts-jest": "^29.1.0",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.0.4",
-		"typescript-ioc": "^3.2.2",
-		"vite": "^5.2.12"
+		"@quick-threejs/config": "workspace:*",
+		"prettier": "^3.2.5",
+		"turbo": "latest"
 	},
-	"files": [
-		"lib/**/*"
-	],
+	"packageManager": "pnpm@8.15.6",
 	"engines": {
-		"node": ">=17.0.0"
+		"node": ">=18"
 	}
 }

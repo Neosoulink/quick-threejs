@@ -1,0 +1,15 @@
+{
+	"extends": "@quick-threejs/config/typescript.json",
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+
+		"outDir": "./lib",
+
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"exclude": ["node_modules", "lib", "**/__tests__/*"],
+	"include": ["src"]
+}

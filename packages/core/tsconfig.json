@@ -1,0 +1,14 @@
+{
+	"extends": "@quick-threejs/config/typescript.json",
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+
+		"outDir": "./dist",
+
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["src"]
+}

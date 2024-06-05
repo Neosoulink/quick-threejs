@@ -1,0 +1,11 @@
+# Testing
+coverage
+
+# Build Outputs
+.next/
+out/
+build
+dist
+dist-ssr
+lib
+*.d.ts

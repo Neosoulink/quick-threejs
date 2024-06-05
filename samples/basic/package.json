@@ -1,0 +1,21 @@
+{
+	"name": "basic-sample",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --host",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@quick-threejs/config": "workspace:*",
+		"@types/three": "^0.165.0",
+		"typescript": "^5.0.2",
+		"vite": "^4.3.9"
+	},
+	"dependencies": {
+		"@quick-threejs/old": "workspace:*",
+		"three": "^0.165.0"
+	}
+}

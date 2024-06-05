@@ -1,34 +1,3 @@
 {
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"target": "ESNext",
-		"module": "ESNext",
-		"useDefineForClassFields": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-
-		"moduleResolution": "Node",
-		"noImplicitReturns": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"declaration": true,
-		"outDir": "./lib",
-
-		/* Linting */
-		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-		"resolveJsonModule": true,
-		"paths": {
-			"@/*": ["./src/*"],
-		}
-	},
-	"ts-node": {
-		"esm": true,
-		"experimentalSpecifierResolution": "node"
-	},
-	"exclude": ["node_modules", "lib", "example", "**/__tests__/*"],
-	"include": ["src"]
+	"extends": "@quick-threejs/config/typescript.json"
 }

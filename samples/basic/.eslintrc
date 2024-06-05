@@ -1,0 +1,8 @@
+{
+	"extends": ["@quick-threejs/config/eslint.js"],
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	}
+}

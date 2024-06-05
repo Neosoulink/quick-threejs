@@ -1,0 +1,61 @@
+{
+	"name": "@quick-threejs/core",
+	"version": "0.1.33",
+	"description": "Quick start your threejs app ⚡️",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Neosoulink/quick-threejs.git"
+	},
+	"keywords": [
+		"threejs",
+		"js",
+		"ts"
+	],
+	"main": "./dist/main.js",
+	"types": "./dist/main.d.ts",
+	"author": "Neosoulink",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Neosoulink/quick-threejs/issues"
+	},
+	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
+	"scripts": {
+		"dev": "vite --host",
+		"test": "jest",
+		"build": "tsc",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"lint": "eslint --ext .ts,.js ./src",
+		"prepare": "npm run build",
+		"prepublishOnly": "npm test && npm run lint",
+		"preversion": "npm run lint",
+		"version": "npm run format && git add -A src",
+		"postversion": "git push && git push --tags",
+		"release": "npm run prepare && np"
+	},
+	"dependencies": {
+		"threads": "^1.7.0",
+		"three": "^0.165.0"
+	},
+	"devDependencies": {
+		"@quick-threejs/config": "workspace:*",
+		"@types/events": "^3.0.3",
+		"@types/jest": "^29.5.3",
+		"@types/stats.js": "^0.17.0",
+		"@types/three": "^0.165.0",
+		"babel-jest": "^29.5.0",
+		"events": "^3.3.0",
+		"jest": "^29.5.0",
+		"lil-gui": "^0.19.1",
+		"rxjs": "^7.8.1",
+		"stats.js": "^0.17.0",
+		"ts-jest": "^29.1.0",
+		"ts-node": "^10.9.1",
+		"typescript-ioc": "^3.2.2"
+	},
+	"files": [
+		"dist/**/*"
+	],
+	"engines": {
+		"node": ">=17.0.0"
+	}
+}
