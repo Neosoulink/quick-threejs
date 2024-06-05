@@ -4,12 +4,11 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 
-		"outDir": "./lib",
+		"outDir": "./dist",
 
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
-	"exclude": ["node_modules", "lib", "**/__tests__/*"],
 	"include": ["src"]
 }
