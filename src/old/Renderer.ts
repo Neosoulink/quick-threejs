@@ -1,14 +1,14 @@
 import * as THREE from "three";
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 
-import ThreeApp from ".";
+import { QuickThreejs } from ".";
 
 export interface RendererProps {
 	enableMiniRender?: boolean;
 }
 
 export default class Renderer extends EventEmitter {
-	protected _app = new ThreeApp();
+	protected _app = new QuickThreejs();
 
 	public instance: THREE.WebGLRenderer;
 	public enabled = true;

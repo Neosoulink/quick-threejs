@@ -19,5 +19,12 @@
 		"eqeqeq": "error",
 		"@typescript-eslint/no-this-alias": "off"
 	},
-	"ignorePatterns": ["node_modules", "**/__tests__/*", "*.config.js", "lib"]
+	"ignorePatterns": [
+		"node_modules",
+		"**/__tests__/*",
+		"*.config.js",
+		"vite.config.ts",
+		"*.d.ts",
+		"lib"
+	]
 }

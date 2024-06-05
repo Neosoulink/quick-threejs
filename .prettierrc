@@ -1,1 +1,6 @@
-{ "tabWidth": 2, "useTabs": true, "bracketSpacing": true }
+{
+	"tabWidth": 2,
+	"useTabs": true,
+	"bracketSpacing": true,
+	"trailingComma": "none"
+}

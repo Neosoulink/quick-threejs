@@ -20,6 +20,7 @@
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"scripts": {
+		"dev": "vite --host",
 		"test": "jest",
 		"build": "tsc",
 		"format": "prettier --write \"src/**/*.ts\"",
@@ -32,13 +33,12 @@
 		"release": "npm run prepare && np"
 	},
 	"dependencies": {
-		"events": "^3.3.0",
-		"three": "^0.165.0",
-		"stats.js": "^0.17.0",
-		"lil-gui": "^0.19.1"
+		"threads": "^1.7.0",
+		"three": "^0.165.0"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.22.4",
+		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.3",
 		"@types/stats.js": "^0.17.0",
 		"@types/three": "^0.165.0",
@@ -46,11 +46,18 @@
 		"@typescript-eslint/parser": "^7.0.1",
 		"babel-jest": "^29.5.0",
 		"eslint": "^8.45.0",
+		"events": "^3.3.0",
 		"jest": "^29.5.0",
+		"lil-gui": "^0.19.1",
+		"path": "^0.12.7",
 		"prettier": "^3.1.0",
+		"rxjs": "^7.8.1",
+		"stats.js": "^0.17.0",
 		"ts-jest": "^29.1.0",
 		"ts-node": "^10.9.1",
-		"typescript": "^5.0.4"
+		"typescript": "^5.0.4",
+		"typescript-ioc": "^3.2.2",
+		"vite": "^5.2.12"
 	},
 	"files": [
 		"lib/**/*"

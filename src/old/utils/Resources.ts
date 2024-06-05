@@ -1,12 +1,12 @@
 import * as THREE from "three";
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 import {
 	type GLTF,
 	GLTFLoader,
 } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
-import ThreeApp from "..";
+import { QuickThreejs } from "..";
 
 import { events } from "../static";
 import { disposeMaterial } from "./helpers";
@@ -25,7 +25,7 @@ export interface Source {
 }
 
 export default class Resources extends EventEmitter {
-	app: ThreeApp;
+	app: QuickThreejs;
 	sources: Source[] = [];
 	items: { [name: Source["name"]]: LoadedItem } = {};
 	toLoad = 0;
@@ -74,7 +74,7 @@ export default class Resources extends EventEmitter {
 	constructor(sources?: Source[]) {
 		super();
 
-		this.app = new ThreeApp();
+		this.app = new QuickThreejs();
 
 		if (sources) {
 			this.setSources(sources);

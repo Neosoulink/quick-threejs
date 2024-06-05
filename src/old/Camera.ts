@@ -3,14 +3,14 @@ import {
 	PerspectiveCamera,
 	Camera as ThreeCamera,
 } from "three";
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 
-import ThreeApp from ".";
+import { QuickThreejs } from ".";
 
 import { events } from "./static";
 
 export default class Camera extends EventEmitter {
-	private app = new ThreeApp();
+	private app = new QuickThreejs();
 
 	public instance?: PerspectiveCamera | OrthographicCamera;
 	public miniCamera?: PerspectiveCamera;
