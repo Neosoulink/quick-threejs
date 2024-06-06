@@ -1,12 +1,8 @@
-"use strict";
+const { defineConfig } = require("vite");
+const { resolve } = require("path");
+const vite = require("@quick-threejs/config/eslint");
 
-import { defineConfig } from "vite";
-import { resolve } from "path";
-import { vite } from "@quick-threejs/config";
-
-import pkg from "./package.json" assert { type: "json" };
-
-export default defineConfig({
+module.exports = defineConfig({
 	...vite,
 	build: {
 		lib: {
@@ -45,7 +41,6 @@ export default defineConfig({
 						<head>
 							<meta charset="UTF-8">
 							<meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<title>${pkg.name}</title>
 						</head>
 						<body>
 							<script type="module" src="/src/main/main.ts"></script>

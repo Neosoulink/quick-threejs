@@ -1,5 +1,5 @@
 /** @type {import("prettier").Config} */
-export default {
+module.exports = {
 	singleQuote: false,
 	tabWidth: 2,
 	useTabs: true,

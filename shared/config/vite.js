@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import pkg from "./package.json" assert { type: "json" };
+const { defineConfig } = require("vite");
+const pkg = require("./package.json");
 
-export default defineConfig(
+module.exports = defineConfig(
 	/** @type {import('vite').UserConfig} */
 	{
 		define: {
