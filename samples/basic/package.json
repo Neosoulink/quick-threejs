@@ -9,11 +9,11 @@
 		"sample:preview": "vite preview"
 	},
 	"dependencies": {
-		"@quick-threejs/legacy": "*",
+		"@quick-threejs/legacy": "workspace:*",
 		"three": "^0.165.0"
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "*",
+		"@quick-threejs/config": "workspace:*",
 		"@types/three": "^0.165.0"
 	}
 }

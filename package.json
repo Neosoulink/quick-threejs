@@ -12,7 +12,7 @@
 		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\""
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "*",
+		"@quick-threejs/config": "workspace:*",
 		"prettier": "^3.2.5",
 		"turbo": "latest"
 	},

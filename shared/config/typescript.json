@@ -9,12 +9,14 @@
 
 		"moduleResolution": "Node",
 		"noImplicitReturns": true,
+		"noImplicitAny": false,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"declaration": true,
 
 		"strict": true,
+		"alwaysStrict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,

@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       '@quick-threejs/config':
-        specifier: '*'
+        specifier: workspace:*
         version: link:shared/config
       prettier:
         specifier: ^3.2.5
@@ -80,7 +80,7 @@ importers:
         version: 0.165.0
     devDependencies:
       '@quick-threejs/config':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../shared/config
       '@types/events':
         specifier: ^3.0.3
@@ -109,6 +109,9 @@ importers:
       lil-gui:
         specifier: ^0.19.1
         version: 0.19.2
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -121,21 +124,24 @@ importers:
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.14.2)(typescript@5.3.3)
-      typescript-ioc:
-        specifier: ^3.2.2
-        version: 3.2.2
+      tsyringe:
+        specifier: ^4.8.0
+        version: 4.8.0
+      vite:
+        specifier: ^5.2.12
+        version: 5.2.12(@types/node@20.14.2)
 
   samples/basic:
     dependencies:
       '@quick-threejs/legacy':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../packages/legacy
       three:
         specifier: ^0.165.0
         version: 0.165.0
     devDependencies:
       '@quick-threejs/config':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../shared/config
       '@types/three':
         specifier: ^0.165.0
@@ -175,19 +181,19 @@ importers:
         version: 5.3.3
       vite:
         specifier: ^5.2.12
-        version: 5.2.12
+        version: 5.2.12(@types/node@20.14.2)
 
   shared/utils:
     devDependencies:
       '@quick-threejs/config':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../config
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
         specifier: ^5.2.12
-        version: 5.2.12
+        version: 5.2.12(@types/node@20.14.2)
 
 packages:
 
@@ -3788,7 +3794,7 @@ packages:
       debug: 4.3.4
       enhanced-resolve: 5.15.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.0(@typescript-eslint/parser@6.17.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@6.17.0)(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-import: 2.29.0(@typescript-eslint/parser@7.1.0)(eslint@8.57.0)
       fast-glob: 3.3.1
       get-tsconfig: 4.7.2
@@ -3801,7 +3807,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-module-utils@2.8.0(@typescript-eslint/parser@6.17.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
+  /eslint-module-utils@2.8.0(@typescript-eslint/parser@6.17.0)(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
     resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -3825,6 +3831,7 @@ packages:
       '@typescript-eslint/parser': 6.17.0(eslint@8.57.0)(typescript@5.3.3)
       debug: 3.2.7
       eslint: 8.57.0
+      eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.17.0)(eslint-plugin-import@2.29.0)(eslint@8.57.0)
     transitivePeerDependencies:
       - supports-color
@@ -5934,6 +5941,10 @@ packages:
     resolution: {integrity: sha512-ZhYeb6nRaXCfhnndflDK8qI6ZQ/YcWZCISRAWICW9XYqMUwjZM9Z0DveWX/ABN01oxSHwVxKQmxeYZSsm0jh5A==}
     dev: true
 
+  /reflect-metadata@0.2.2:
+    resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
+    dev: true
+
   /reflect.getprototypeof@1.0.4:
     resolution: {integrity: sha512-ECkTw8TmJwW60lOTR+ZkODISW6RQ8+2CL3COqtiJKLd6MmB45hN51HprHFziKLGkAuTGQhBb91V8cy+KHlaCjw==}
     engines: {node: '>= 0.4'}
@@ -6582,6 +6593,13 @@ packages:
       typescript: 5.3.3
     dev: true
 
+  /tsyringe@4.8.0:
+    resolution: {integrity: sha512-YB1FG+axdxADa3ncEtRnQCFq/M0lALGLxSZeVNbTU8NqhOVc51nnv2CISTcvc1kyv6EGPtXVr0v6lWeDxiijOA==}
+    engines: {node: '>= 6.0.0'}
+    dependencies:
+      tslib: 1.14.1
+    dev: true
+
   /turbo-darwin-64@2.0.1:
     resolution: {integrity: sha512-GO391pUmI6c6l/EpUIaXNzwbVDWRvYahm5oLB176dAWRYKYO+Osqs/XBdOM0G3l7ZFdR6nUtRJc8qinJp7qDUQ==}
     cpu: [x64]
@@ -6821,7 +6839,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@5.2.12:
+  /vite@5.2.12(@types/node@20.14.2):
     resolution: {integrity: sha512-/gC8GxzxMK5ntBwb48pR32GGhENnjtY30G4A0jemunsBkiEZFw60s8InGpN8gkhHEkjnRK1aSAxeQgwvFhUHAA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -6849,6 +6867,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.14.2
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.18.0

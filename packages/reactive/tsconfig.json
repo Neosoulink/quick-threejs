@@ -5,11 +5,7 @@
 		"emitDecoratorMetadata": true,
 
 		"outDir": "./dist",
-
-		"paths": {
-			"@/*": ["./src/*"]
-		}
+		"preserveConstEnums": true,
 	},
-	"include": ["src"],
-	"exclude": ["vite.config.js"]
+	"include": ["src"]
 }
