@@ -2,7 +2,6 @@
 	"name": "@quick-threejs/utils",
 	"version": "0.0.0",
 	"private": true,
-	"type": "module",
 	"files": [
 		"./dist/**"
 	],
@@ -11,10 +10,11 @@
 	"scripts": {
 		"prepare": "npm run build",
 		"dev": "tsc --watch",
-		"build": "tsc"
+		"build": "tsc",
+		"lint": "eslint --ext .ts,.js ./src"
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "workspace:*",
+		"@quick-threejs/config": "*",
 		"typescript": "^5.3.3",
 		"vite": "^5.2.12"
 	}

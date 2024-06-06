@@ -1,9 +1,0 @@
-{
-	"extends": ["@quick-threejs/config/eslint.mjs"],
-	"root": true,
-	"parserOptions": {
-		"project": "./tsconfig.json",
-		"ecmaVersion": "latest",
-		"sourceType": "module"
-	}
-}

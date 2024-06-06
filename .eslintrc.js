@@ -1,9 +1,10 @@
 // This configuration only applies to the package manager root.
-{
-	extends: ["@quick-threejs/config/eslint.mjs"],
+module.exports = {
+	extends: [require.resolve("@quick-threejs/config/eslint")],
 	root: true,
 	parserOptions: {
-		project: true
+		project: true,
+		tsconfigRootDir: __dirname
 	},
 	ignorePatterns: ["packages/**", "shared/**"]
 };

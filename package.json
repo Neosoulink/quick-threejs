@@ -8,16 +8,15 @@
 		"build": "turbo build",
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
-		"lint": "turbo lint",
+		"lint": "eslint --ext .ts,.js ./ && turbo lint",
 		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\""
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "workspace:*",
+		"@quick-threejs/config": "*",
 		"prettier": "^3.2.5",
 		"turbo": "latest"
 	},
 	"packageManager": "pnpm@8.15.6",
-	"type": "module",
 	"engines": {
 		"node": ">=18"
 	}

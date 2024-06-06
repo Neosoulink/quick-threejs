@@ -4,18 +4,16 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite --host",
-		"build": "tsc && vite build",
-		"preview": "vite preview"
-	},
-	"devDependencies": {
-		"@quick-threejs/config": "workspace:*",
-		"@types/three": "^0.165.0",
-		"typescript": "^5.0.2",
-		"vite": "^4.3.9"
+		"sample:dev": "vite --host",
+		"sample:build": "tsc && vite build",
+		"sample:preview": "vite preview"
 	},
 	"dependencies": {
-		"@quick-threejs/legacy": "workspace:*",
+		"@quick-threejs/legacy": "*",
 		"three": "^0.165.0"
+	},
+	"devDependencies": {
+		"@quick-threejs/config": "*",
+		"@types/three": "^0.165.0"
 	}
 }

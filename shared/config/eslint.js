@@ -1,9 +1,9 @@
-import { resolve } from "node:path";
+const { resolve } = require("node:path");
 
 const project = resolve(process.cwd(), "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
-export default {
+module.exports = {
 	extends: [
 		"eslint:recommended",
 		"prettier",
@@ -35,7 +35,8 @@ export default {
 		quotes: ["error", "double"],
 		semi: ["error", "always"],
 		eqeqeq: "error",
-		"@typescript-eslint/no-this-alias": "off"
+		"@typescript-eslint/no-this-alias": "off",
+		"@typescript-eslint/no-explicit-any": "off"
 	},
 	ignorePatterns: [
 		"**/__tests__/*",
