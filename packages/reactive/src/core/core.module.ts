@@ -2,17 +2,18 @@ import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
 import { expose } from "threads/worker";
-
-import { CoreThreadController } from "./core-thread.controller";
-import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
 import { WorkerModule } from "threads/dist/types/worker";
 
-export type ExposedCoreThread = WorkerModule<
-	Exclude<keyof CoreThread, number | symbol>
+import { CoreThreadController } from "./core.controller";
+import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
+import { Module } from "../common/interfaces/module.interface";
+
+export type ExposedCoreModule = WorkerModule<
+	Exclude<keyof CoreModule, number | symbol>
 >;
 
 @singleton()
-export class CoreThread {
+export class CoreModule implements Module {
 	constructor(
 		@inject(CoreThreadController)
 		private readonly controller: CoreThreadController
@@ -27,10 +28,8 @@ export class CoreThread {
 		};
 	}
 
-	private init(canvas: HTMLCanvasElement): void {
+	public init(canvas: HTMLCanvasElement): void {
 		this.setSize(canvas.width, canvas.height);
-
-		console.log("Core thread OK", canvas);
 	}
 
 	public setSize(width: number, height: number): void {
@@ -50,11 +49,12 @@ export class CoreThread {
 	}
 }
 
-const coreThread = container.resolve(CoreThread);
+const coreThread = container.resolve(CoreModule);
 
 expose({
 	setSize: coreThread.setSize.bind(coreThread),
 	setPointerLock: coreThread.setPointerLock.bind(coreThread),
 	mouseMove: coreThread.mouseMove.bind(coreThread),
-	keyEvent: coreThread.keyEvent.bind(coreThread)
-} satisfies ExposedCoreThread);
+	keyEvent: coreThread.keyEvent.bind(coreThread),
+	init: () => {}
+} satisfies ExposedCoreModule);

@@ -7,25 +7,37 @@ import { WorkerModule } from "threads/dist/types/worker";
 
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
-import type { ExposedCoreThread } from "../core/core-thread";
+import type { ExposedCoreModule } from "../core/core.module";
+import { Module } from "../common/interfaces/module.interface";
+import { GuiModule } from "./gui/gui.module";
 
 @singleton()
-class Main {
+class MainModule implements Module {
 	private canvas!: HTMLCanvasElement;
-	private coreThread?: ExposedCoreThread;
+	private core?: ExposedCoreModule;
 	private coreWorker?: WorkerImplementation;
 
 	constructor(
 		@inject(MainController) private readonly controller: MainController,
-		@inject(MainDto.name) private readonly props: MainDto
+		@inject(MainDto.name) private readonly props: MainDto,
+		@inject(GuiModule) private readonly guiModule: GuiModule
 	) {
-		this.initCanvas();
+		this.init(document.createElement("canvas"));
+	}
+
+	public init(canvas: HTMLCanvasElement): void {
+		this.initCanvas(canvas);
+		this.initGui();
 		this.initCoreThread();
 	}
 
-	private initCanvas() {
+	private initGui() {
+		this.guiModule.init(this.canvas);
+	}
+
+	private initCanvas(canvas: HTMLCanvasElement) {
 		try {
-			this.canvas = document.createElement("canvas");
+			this.canvas = canvas;
 
 			if (this.props.canvas instanceof HTMLCanvasElement)
 				this.canvas = this.props.canvas;
@@ -57,15 +69,15 @@ class Main {
 		offscreenCanvas.width = this.canvas.clientWidth;
 		offscreenCanvas.height = this.canvas.clientHeight;
 
-		this.initThread<ExposedCoreThread>(
+		this.initThread<ExposedCoreModule>(
 			new Worker(
-				new URL("../core/core-thread.ts", import.meta.url) as unknown as string,
+				new URL("../core/core.module.ts", import.meta.url) as unknown as string,
 				{
 					type: "module"
 				}
 			)
-		).then(([coreThread, coreWorker]) => {
-			this.coreThread = coreThread;
+		).then(([core, coreWorker]) => {
+			this.core = core;
 			this.coreWorker = coreWorker;
 
 			this.coreWorker.postMessage({ canvas: offscreenCanvas }, [
@@ -82,20 +94,18 @@ class Main {
 		this.controller.init(this.canvas);
 
 		this.controller.mouseMove$.subscribe((event) =>
-			this.coreThread?.mouseMove(event.x, event.y)
+			this.core?.mouseMove(event.x, event.y)
 		);
 
 		this.controller.resize$.subscribe(() =>
-			this.coreThread?.setSize(window.innerWidth, window.innerHeight)
+			this.core?.setSize(window.innerWidth, window.innerHeight)
 		);
 
 		this.controller.pointerLock$.subscribe((status) =>
-			this.coreThread?.setPointerLock(status)
+			this.core?.setPointerLock(status)
 		);
 
-		this.controller.key$.subscribe((keyEvent) =>
-			this.coreThread?.keyEvent(keyEvent)
-		);
+		this.controller.key$.subscribe((keyEvent) => this.core?.keyEvent(keyEvent));
 	}
 }
 
@@ -104,7 +114,7 @@ export const QuickThree = (props?: MainDto) => {
 	mainProps.canvas = props?.canvas;
 
 	container.register(MainDto.name, { useValue: mainProps });
-	container.resolve(Main);
+	container.resolve(MainModule);
 };
 
 if (process.env.NODE_ENV !== "production") QuickThree();
