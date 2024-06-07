@@ -59,7 +59,6 @@ class MainModule implements Module {
 	private async initThread<T extends object>(worker: WorkerImplementation) {
 		const thread =
 			await spawn<WorkerModule<Exclude<keyof T, number | symbol>>>(worker);
-		console.log(thread);
 
 		return [thread, worker] as const;
 	}

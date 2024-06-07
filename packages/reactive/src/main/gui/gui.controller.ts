@@ -14,10 +14,10 @@ export class GuiController {
 
 	constructor(
 		@inject(MainController)
-		private readonly coreThreadController: MainController,
+		private readonly mainController: MainController,
 		@inject(GuiComponent) private readonly component: GuiComponent
 	) {
-		this.pointerLock$ = this.coreThreadController.pointerLock$;
+		this.pointerLock$ = this.mainController.pointerLock$;
 	}
 
 	public init() {

@@ -6,7 +6,7 @@ import { Vector2 } from "three";
 import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
 
 @singleton()
-export class CoreThreadController {
+export class CoreController {
 	private readonly resizeObject = new Vector2();
 	private readonly mouseMoveObject = new Vector2();
 	private readonly resizeSubject = new Subject<Vector2>();
@@ -36,7 +36,6 @@ export class CoreThreadController {
 	}
 
 	keyEvent(keyEvent: KeyEvent): void {
-		console.log(keyEvent.key);
 		this.keySubject.next(keyEvent);
 	}
 }

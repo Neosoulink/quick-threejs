@@ -4,9 +4,10 @@ import { container, inject, singleton } from "tsyringe";
 import { expose } from "threads/worker";
 import { WorkerModule } from "threads/dist/types/worker";
 
-import { CoreThreadController } from "./core.controller";
+import { CoreController } from "./core.controller";
 import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
 import { Module } from "../common/interfaces/module.interface";
+import { TimerModule } from "./timer/timer.module";
 
 export type ExposedCoreModule = WorkerModule<
 	Exclude<keyof CoreModule, number | symbol>
@@ -15,8 +16,8 @@ export type ExposedCoreModule = WorkerModule<
 @singleton()
 export class CoreModule implements Module {
 	constructor(
-		@inject(CoreThreadController)
-		private readonly controller: CoreThreadController
+		@inject(CoreController) private readonly controller: CoreController,
+		@inject(TimerModule) private readonly timerModule: TimerModule
 	) {
 		this.initCanvas();
 	}
@@ -30,6 +31,7 @@ export class CoreModule implements Module {
 
 	public init(canvas: HTMLCanvasElement): void {
 		this.setSize(canvas.width, canvas.height);
+		this.timerModule.init();
 	}
 
 	public setSize(width: number, height: number): void {
