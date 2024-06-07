@@ -20,7 +20,6 @@ export class TimerModule implements Module {
 
 	public init(): void {
 		this.controller.pointerLock$.subscribe((status) => {
-			console.log(status)
 			this._pointerLocked = !!status;
 			this.checkStart();
 		});

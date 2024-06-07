@@ -8,6 +8,8 @@ import { CoreController } from "./core.controller";
 import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
 import { Module } from "../common/interfaces/module.interface";
 import { TimerModule } from "./timer/timer.module";
+import { CameraModule } from "./camera/camera.module";
+import { RendererModule } from "./renderer/renderer.module";
 
 export type ExposedCoreModule = WorkerModule<
 	Exclude<keyof CoreModule, number | symbol>
@@ -17,7 +19,9 @@ export type ExposedCoreModule = WorkerModule<
 export class CoreModule implements Module {
 	constructor(
 		@inject(CoreController) private readonly controller: CoreController,
-		@inject(TimerModule) private readonly timerModule: TimerModule
+		@inject(TimerModule) private readonly timerModule: TimerModule,
+		@inject(CameraModule) private readonly cameraModule: CameraModule,
+		@inject(RendererModule) private readonly rendererModule: RendererModule
 	) {
 		this.initCanvas();
 	}
@@ -32,6 +36,8 @@ export class CoreModule implements Module {
 	public init(canvas: HTMLCanvasElement): void {
 		this.setSize(canvas.width, canvas.height);
 		this.timerModule.init();
+		this.cameraModule.init();
+		this.rendererModule.init(canvas);
 	}
 
 	public setSize(width: number, height: number): void {
