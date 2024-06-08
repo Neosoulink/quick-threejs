@@ -23,11 +23,7 @@ export class CoreModule implements Module {
 		@inject(CameraModule) private readonly cameraModule: CameraModule,
 		@inject(RendererModule) private readonly rendererModule: RendererModule
 	) {
-		this.initCanvas();
-	}
-
-	private initCanvas(): void {
-		onmessage = (event) => {
+		self.onmessage = (event: MessageEvent) => {
 			const canvas: HTMLCanvasElement | undefined = event?.data?.canvas;
 			if (canvas) this.init(canvas);
 		};

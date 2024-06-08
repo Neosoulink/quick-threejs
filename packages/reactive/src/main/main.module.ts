@@ -14,7 +14,7 @@ import { GuiModule } from "./gui/gui.module";
 @singleton()
 class MainModule implements Module {
 	private canvas!: HTMLCanvasElement;
-	private core?: ExposedCoreModule;
+	private coreModule?: ExposedCoreModule;
 	private coreWorker?: WorkerImplementation;
 
 	constructor(
@@ -75,8 +75,8 @@ class MainModule implements Module {
 					type: "module"
 				}
 			)
-		).then(([core, coreWorker]) => {
-			this.core = core;
+		).then(([coreModule, coreWorker]) => {
+			this.coreModule = coreModule;
 			this.coreWorker = coreWorker;
 
 			this.coreWorker.postMessage({ canvas: offscreenCanvas }, [
@@ -93,18 +93,20 @@ class MainModule implements Module {
 		this.controller.init(this.canvas);
 
 		this.controller.mouseMove$.subscribe((event) =>
-			this.core?.mouseMove(event.x, event.y)
+			this.coreModule?.mouseMove(event.x, event.y)
 		);
 
 		this.controller.resize$.subscribe(() =>
-			this.core?.setSize(window.innerWidth, window.innerHeight)
+			this.coreModule?.setSize(window.innerWidth, window.innerHeight)
 		);
 
 		this.controller.pointerLock$.subscribe((status) =>
-			this.core?.setPointerLock(status)
+			this.coreModule?.setPointerLock(status)
 		);
 
-		this.controller.key$.subscribe((keyEvent) => this.core?.keyEvent(keyEvent));
+		this.controller.key$.subscribe((keyEvent) =>
+			this.coreModule?.keyEvent(keyEvent)
+		);
 	}
 }
 

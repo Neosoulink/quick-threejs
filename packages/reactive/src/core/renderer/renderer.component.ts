@@ -1,18 +1,10 @@
-import {
-	Matrix4,
-	PerspectiveCamera,
-	Scene,
-	SRGBColorSpace,
-	WebGLRenderer
-} from "three";
+import { PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer } from "three";
 import { singleton } from "tsyringe";
 
 @singleton()
 export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 
-	private originalCameraMatrixWorld = new Matrix4();
-	private originalCameraProjectionMatrix = new Matrix4();
 	private renderer?: WebGLRenderer;
 	private tmpScene = new Scene();
 
@@ -42,17 +34,7 @@ export class RendererComponent {
 	}
 
 	public render(camera: PerspectiveCamera) {
-		this.originalCameraMatrixWorld.copy(camera.matrixWorld);
-		this.originalCameraProjectionMatrix.copy(camera.projectionMatrix);
-
-		camera.matrixAutoUpdate = false;
-		camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
-
+		this.renderer?.clear();
 		this.renderer?.render(this.tmpScene, camera);
-
-		camera.matrixAutoUpdate = true;
-		camera.matrixWorld.copy(this.originalCameraMatrixWorld);
-		camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
-		camera.projectionMatrix.copy(this.originalCameraProjectionMatrix);
 	}
 }

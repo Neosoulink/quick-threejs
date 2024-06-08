@@ -9,7 +9,8 @@ export class CameraComponent {
 
 	constructor() {
 		this._camera = new PerspectiveCamera(70, 1, 0.0001, 1000);
-		this._rotation.rotation.order = "YXZ";
+		this._camera.position.copy(new Vector3(0, 2, -5));
+		this._camera.lookAt(new Vector3());
 	}
 
 	public get camera() {

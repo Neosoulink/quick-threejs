@@ -65,7 +65,7 @@ export class MainController {
 		);
 	}
 
-	init(canvas: HTMLElement): void {
+	init(canvas: HTMLCanvasElement): void {
 		fromEvent<MouseEvent>(canvas, "mousemove")
 			.pipe(
 				tap((event) => {
