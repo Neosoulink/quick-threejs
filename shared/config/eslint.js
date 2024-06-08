@@ -36,7 +36,8 @@ module.exports = {
 		semi: ["error", "always"],
 		eqeqeq: "error",
 		"@typescript-eslint/no-this-alias": "off",
-		"@typescript-eslint/no-explicit-any": "off"
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/ban-ts-comment": "off"
 	},
 	ignorePatterns: [
 		"**/__tests__/*",

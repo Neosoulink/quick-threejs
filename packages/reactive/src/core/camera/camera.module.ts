@@ -12,11 +12,16 @@ export class CameraModule implements Module {
 	) {}
 
 	init() {
-		this.controller.resize$.subscribe((size) =>
-			this.component.setAspectRatio(size.x / size.y)
+		this.controller.resize$.subscribe(
+			(size) => (this.component.aspectRatio = size.x / size.y)
 		);
-		this.controller.quaternion$.subscribe((quaternion) =>
-			this.component.setQuaternion(quaternion)
+
+		this.controller.quaternion$.subscribe(
+			(quaternion) => (this.component.quaternion = quaternion)
+		);
+
+		this.controller.step$.subscribe(() =>
+			this.component.camera.updateMatrixWorld(true)
 		);
 	}
 }

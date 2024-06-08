@@ -16,7 +16,7 @@ export class RendererModule implements Module {
 
 	public init(canvas: HTMLCanvasElement): void {
 		this.controller.step$.subscribe(() => {
-			this.component.render(this.cameraComponent.getCamera());
+			this.component.render(this.cameraComponent.camera);
 		});
 
 		this.controller.resize$.subscribe((size) =>

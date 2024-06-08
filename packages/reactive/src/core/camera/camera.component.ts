@@ -1,28 +1,49 @@
 import { singleton } from "tsyringe";
-import { PerspectiveCamera, Quaternion, Vector3 } from "three";
+import { Euler, Object3D, PerspectiveCamera, Quaternion, Vector3 } from "three";
 
 @singleton()
 export class CameraComponent {
-	private readonly camera: PerspectiveCamera;
+	private readonly _camera: PerspectiveCamera;
+	private readonly _rotation = new Object3D();
+	private readonly _direction = new Vector3();
 
 	constructor() {
-		this.camera = new PerspectiveCamera(70, 1, 0.0001, 1000);
+		this._camera = new PerspectiveCamera(70, 1, 0.0001, 1000);
+		this._rotation.rotation.order = "YXZ";
 	}
 
-	public getCamera(): PerspectiveCamera {
-		return this.camera;
+	public get camera() {
+		return this._camera;
 	}
 
-	public setAspectRatio(ratio: number): void {
-		this.camera.aspect = ratio;
-		this.camera.updateProjectionMatrix();
+	public get objectRotation() {
+		return this._rotation;
 	}
 
-	public setQuaternion(quaternion: Quaternion): void {
-		this.camera.quaternion.copy(quaternion);
+	public get direction(): Vector3 {
+		return this._direction
+			.set(0, 0, 1)
+			.applyQuaternion(this._rotation.quaternion);
 	}
 
-	public setPosition(position: Vector3): void {
-		this.camera.position.copy(position);
+	public get rotation() {
+		return this._rotation.rotation;
+	}
+
+	public set aspectRatio(ratio: number) {
+		this._camera.aspect = ratio;
+		this._camera.updateProjectionMatrix();
+	}
+
+	public set quaternion(quaternion: Quaternion) {
+		this._camera.quaternion.copy(quaternion);
+	}
+
+	public set position(position: Vector3) {
+		this._camera.position.copy(position);
+	}
+
+	public set rotation(rotation: Euler) {
+		this._rotation.setRotationFromEuler(rotation);
 	}
 }

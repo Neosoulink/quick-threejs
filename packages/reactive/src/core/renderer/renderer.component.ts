@@ -1,5 +1,4 @@
 import {
-	Color,
 	Matrix4,
 	PerspectiveCamera,
 	Scene,
