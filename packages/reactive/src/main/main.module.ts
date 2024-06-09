@@ -2,14 +2,14 @@ import "reflect-metadata";
 
 import { WorkerImplementation } from "threads/dist/types/master";
 import { spawn, Worker } from "threads";
-import { container, inject, singleton } from "tsyringe";
 import { WorkerModule } from "threads/dist/types/worker";
+import { container, inject, singleton } from "tsyringe";
 
+import { Module } from "../common/interfaces/module.interface";
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
-import type { ExposedCoreModule } from "../core/core.module";
-import { Module } from "../common/interfaces/module.interface";
 import { GuiModule } from "./gui/gui.module";
+import type { ExposedCoreModule } from "../core/core.module";
 
 @singleton()
 class MainModule implements Module {

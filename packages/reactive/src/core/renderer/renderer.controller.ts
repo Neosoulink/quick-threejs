@@ -3,7 +3,7 @@ import { Observable, Subject } from "rxjs";
 import { Vector2 } from "three";
 
 import { TimerController } from "../timer/timer.controller";
-import { CoreController } from "../core.controller";
+import { SizesController } from "../sizes/sizes.controller";
 
 @singleton()
 export class RendererController {
@@ -14,11 +14,11 @@ export class RendererController {
 	public readonly init$ = this.initSubject.pipe();
 
 	constructor(
-		@inject(CoreController) private readonly coreController: CoreController,
+		@inject(SizesController) private readonly sizesController: SizesController,
 		@inject(TimerController) private readonly timerController: TimerController
 	) {
 		this.step$ = this.timerController.step$;
-		this.resize$ = this.coreController.resize$;
+		this.resize$ = this.sizesController.resize$;
 	}
 
 	public init() {

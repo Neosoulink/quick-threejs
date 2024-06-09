@@ -1,6 +1,8 @@
 import { PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer } from "three";
 import { singleton } from "tsyringe";
 
+import { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
+
 @singleton()
 export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
@@ -8,10 +10,7 @@ export class RendererComponent {
 	private renderer?: WebGLRenderer;
 	private tmpScene = new Scene();
 
-	public init(canvas: HTMLCanvasElement) {
-		// @ts-ignore
-		canvas["style"] = { width: canvas.width + "", height: canvas.height + "" };
-
+	public init(canvas: OffscreenCanvasWithStyle) {
 		this.renderer = new WebGLRenderer({
 			canvas,
 			context: canvas.getContext("webgl2", {
