@@ -4,11 +4,7 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 
-		"outDir": "./dist",
-
-		"paths": {
-			"@/*": ["./src/*"]
-		}
+		"outDir": "./dist"
 	},
 	"include": ["src"]
 }

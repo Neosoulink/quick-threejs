@@ -72,6 +72,9 @@ importers:
 
   packages/reactive:
     dependencies:
+      '@quick-threejs/utils':
+        specifier: workspace:*
+        version: link:../../shared/utils
       threads:
         specifier: ^1.7.0
         version: 1.7.0
@@ -185,6 +188,9 @@ importers:
 
   shared/utils:
     dependencies:
+      threads:
+        specifier: ^1.7.0
+        version: 1.7.0
       three:
         specifier: ^0.165.0
         version: 0.165.0
@@ -192,9 +198,15 @@ importers:
       '@quick-threejs/config':
         specifier: workspace:*
         version: link:../config
+      '@types/node':
+        specifier: ^20.14.2
+        version: 20.14.2
       '@types/three':
         specifier: ^0.165.0
         version: 0.165.0
+      tsyringe:
+        specifier: ^4.8.0
+        version: 4.8.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3

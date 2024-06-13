@@ -10,45 +10,65 @@ import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
 import { GuiModule } from "./gui/gui.module";
 import type { ExposedCoreModule } from "../core/core.module";
+import { WorkerPool } from "@quick-threejs/utils";
 
 @singleton()
 class MainModule implements Module {
-	private canvas!: HTMLCanvasElement;
-	private coreModule?: ExposedCoreModule;
-	private coreWorker?: WorkerImplementation;
+	private _canvas!: HTMLCanvasElement;
+	private _coreModule?: ExposedCoreModule;
+	private _coreWorker?: WorkerImplementation;
 
 	constructor(
 		@inject(MainController) private readonly controller: MainController,
 		@inject(MainDto.name) private readonly props: MainDto,
 		@inject(GuiModule) private readonly guiModule: GuiModule
 	) {
-		this.init(document.createElement("canvas"));
+		// this.init();
+		const pool = WorkerPool();
+		pool.runTask(
+			new URL(
+				"../differed/differed.module.ts",
+				import.meta.url
+			) as unknown as string,
+			{ subject: "some string here" }
+		);
+		pool.runTask(
+			new URL(
+				"../differed/differed.module.ts",
+				import.meta.url
+			) as unknown as string,
+			{ subject: "some string here" }
+		);
+		pool.runTask(
+			new URL(
+				"../differed/differed.module.ts",
+				import.meta.url
+			) as unknown as string,
+			{ subject: "some string here" }
+		);
+		pool.runTask(
+			new URL(
+				"../differed/differed.module.ts",
+				import.meta.url
+			) as unknown as string,
+			{ subject: "some string here" }
+		);
 	}
 
-	public init(canvas: HTMLCanvasElement): void {
-		this.initCanvas(canvas);
-		this.initGui();
-		this.initCoreThread();
-	}
-
-	private initGui() {
-		this.guiModule.init(this.canvas);
-	}
-
-	private initCanvas(canvas: HTMLCanvasElement) {
+	private _initCanvas() {
 		try {
-			this.canvas = canvas;
+			this._canvas = document.createElement("canvas");
 
 			if (this.props.canvas instanceof HTMLCanvasElement)
-				this.canvas = this.props.canvas;
+				this._canvas = this.props.canvas;
 
 			if (typeof this.props.canvas === "string") {
 				const canvas_ = document.querySelector(this.props.canvas as string);
 
-				if (canvas_ instanceof HTMLCanvasElement) this.canvas = canvas_;
+				if (canvas_ instanceof HTMLCanvasElement) this._canvas = canvas_;
 			}
 
-			if (!this.canvas.parentElement) document.body.appendChild(this.canvas);
+			if (!this._canvas.parentElement) document.body.appendChild(this._canvas);
 		} catch (err: any) {
 			console.error(
 				`🛑 Unable to initialize the canvas:\n${err?.message ?? "Something went wrong"}`
@@ -56,19 +76,25 @@ class MainModule implements Module {
 		}
 	}
 
-	private async initThread<T extends object>(worker: WorkerImplementation) {
+	private _initGui() {
+		this.guiModule.init(this._canvas);
+	}
+
+	private async _initCoreThread<T extends object>(
+		worker: WorkerImplementation
+	) {
 		const thread =
 			await spawn<WorkerModule<Exclude<keyof T, number | symbol>>>(worker);
 
 		return [thread, worker] as const;
 	}
 
-	private initCoreThread() {
-		const offscreenCanvas = this.canvas.transferControlToOffscreen();
-		offscreenCanvas.width = this.canvas.clientWidth;
-		offscreenCanvas.height = this.canvas.clientHeight;
+	private _initCore() {
+		const offscreenCanvas = this._canvas.transferControlToOffscreen();
+		offscreenCanvas.width = this._canvas.clientWidth;
+		offscreenCanvas.height = this._canvas.clientHeight;
 
-		this.initThread<ExposedCoreModule>(
+		this._initCoreThread<ExposedCoreModule>(
 			new Worker(
 				new URL("../core/core.module.ts", import.meta.url) as unknown as string,
 				{
@@ -76,37 +102,43 @@ class MainModule implements Module {
 				}
 			)
 		).then(([coreModule, coreWorker]) => {
-			this.coreModule = coreModule;
-			this.coreWorker = coreWorker;
+			this._coreModule = coreModule;
+			this._coreWorker = coreWorker;
 
-			this.coreWorker.postMessage({ canvas: offscreenCanvas }, [
+			this._coreWorker.postMessage({ canvas: offscreenCanvas }, [
 				offscreenCanvas
 			]);
 
-			this.initController();
+			this._initController();
 
 			console.log("Core thread created");
 		});
 	}
 
-	private initController(): void {
-		this.controller.init(this.canvas);
+	private _initController(): void {
+		this.controller.init(this._canvas);
 
 		this.controller.mouseMove$.subscribe((event) =>
-			this.coreModule?.mouseMove(event.x, event.y)
+			this._coreModule?.mouseMove(event.x, event.y)
 		);
 
 		this.controller.resize$.subscribe(() =>
-			this.coreModule?.setSize(window.innerWidth, window.innerHeight)
+			this._coreModule?.setSize(window.innerWidth, window.innerHeight)
 		);
 
 		this.controller.pointerLock$.subscribe((status) =>
-			this.coreModule?.setPointerLock(status)
+			this._coreModule?.setPointerLock(status)
 		);
 
 		this.controller.key$.subscribe((keyEvent) =>
-			this.coreModule?.keyEvent(keyEvent)
+			this._coreModule?.keyEvent(keyEvent)
 		);
+	}
+
+	public init(): void {
+		this._initCanvas();
+		this._initGui();
+		this._initCore();
 	}
 }
 
@@ -115,7 +147,7 @@ export const QuickThree = (props?: MainDto) => {
 	mainProps.canvas = props?.canvas;
 
 	container.register(MainDto.name, { useValue: mainProps });
-	container.resolve(MainModule);
+	return container.resolve(MainModule);
 };
 
 if (process.env.NODE_ENV !== "production") QuickThree();

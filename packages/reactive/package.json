@@ -36,6 +36,7 @@
 		"lint": "eslint --ext .ts,.js ./src"
 	},
 	"dependencies": {
+		"@quick-threejs/utils": "workspace:*",
 		"threads": "^1.7.0",
 		"three": "^0.165.0"
 	},
