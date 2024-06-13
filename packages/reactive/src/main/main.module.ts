@@ -1,58 +1,32 @@
 import "reflect-metadata";
 
 import { WorkerImplementation } from "threads/dist/types/master";
-import { spawn, Worker } from "threads";
-import { WorkerModule } from "threads/dist/types/worker";
 import { container, inject, singleton } from "tsyringe";
+import { Observable } from "threads/observable";
 
+import { WorkerPool } from "@quick-threejs/utils";
 import { Module } from "../common/interfaces/module.interface";
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
 import { GuiModule } from "./gui/gui.module";
 import type { ExposedCoreModule } from "../core/core.module";
-import { WorkerPool } from "@quick-threejs/utils";
+import { ExposedLoaderModule, Source } from "../loader/loader.module";
 
 @singleton()
 class MainModule implements Module {
+	private _workerPool = WorkerPool();
 	private _canvas!: HTMLCanvasElement;
-	private _coreModule?: ExposedCoreModule;
-	private _coreWorker?: WorkerImplementation;
+	private _core!: {
+		thread: ExposedCoreModule;
+		worker: WorkerImplementation;
+	};
 
 	constructor(
 		@inject(MainController) private readonly controller: MainController,
 		@inject(MainDto.name) private readonly props: MainDto,
 		@inject(GuiModule) private readonly guiModule: GuiModule
 	) {
-		// this.init();
-		const pool = WorkerPool();
-		pool.runTask(
-			new URL(
-				"../differed/differed.module.ts",
-				import.meta.url
-			) as unknown as string,
-			{ subject: "some string here" }
-		);
-		pool.runTask(
-			new URL(
-				"../differed/differed.module.ts",
-				import.meta.url
-			) as unknown as string,
-			{ subject: "some string here" }
-		);
-		pool.runTask(
-			new URL(
-				"../differed/differed.module.ts",
-				import.meta.url
-			) as unknown as string,
-			{ subject: "some string here" }
-		);
-		pool.runTask(
-			new URL(
-				"../differed/differed.module.ts",
-				import.meta.url
-			) as unknown as string,
-			{ subject: "some string here" }
-		);
+		this.init();
 	}
 
 	private _initCanvas() {
@@ -80,63 +54,74 @@ class MainModule implements Module {
 		this.guiModule.init(this._canvas);
 	}
 
-	private async _initCoreThread<T extends object>(
-		worker: WorkerImplementation
-	) {
-		const thread =
-			await spawn<WorkerModule<Exclude<keyof T, number | symbol>>>(worker);
-
-		return [thread, worker] as const;
-	}
-
-	private _initCore() {
+	private async _initCore() {
 		const offscreenCanvas = this._canvas.transferControlToOffscreen();
 		offscreenCanvas.width = this._canvas.clientWidth;
 		offscreenCanvas.height = this._canvas.clientHeight;
 
-		this._initCoreThread<ExposedCoreModule>(
-			new Worker(
-				new URL("../core/core.module.ts", import.meta.url) as unknown as string,
-				{
-					type: "module"
-				}
-			)
-		).then(([coreModule, coreWorker]) => {
-			this._coreModule = coreModule;
-			this._coreWorker = coreWorker;
+		const core = await this._workerPool.runTask(
+			new URL("../core/core.module.ts", import.meta.url) as unknown as string,
+			{ canvas: offscreenCanvas },
+			[offscreenCanvas]
+		);
 
-			this._coreWorker.postMessage({ canvas: offscreenCanvas }, [
-				offscreenCanvas
-			]);
+		if (core.thread && core.worker) {
+			this._core = core as unknown as typeof this._core;
 
 			this._initController();
+		}
+	}
 
-			console.log("Core thread created");
+	private async _initLoader() {
+		const loaderWorker = await this._workerPool.runTask(
+			new URL(
+				"../loader/loader.module.ts",
+				import.meta.url
+			) as unknown as string,
+			{
+				sources: [
+					{
+						type: "texture",
+						path: "https://avatars.githubusercontent.com/u/44310540?v=4",
+						name: "image"
+					}
+				]
+			} satisfies {
+				sources: Source[];
+			}
+		);
+
+		const loader = loaderWorker.thread as unknown as ExposedLoaderModule;
+		(loader.progress() as Observable<any>).subscribe((data) => {
+			console.log(data);
 		});
+
+		loader.startLoading();
 	}
 
 	private _initController(): void {
 		this.controller.init(this._canvas);
 
 		this.controller.mouseMove$.subscribe((event) =>
-			this._coreModule?.mouseMove(event.x, event.y)
+			this._core.thread?.mouseMove(event.x, event.y)
 		);
 
 		this.controller.resize$.subscribe(() =>
-			this._coreModule?.setSize(window.innerWidth, window.innerHeight)
+			this._core.thread?.setSize(window.innerWidth, window.innerHeight)
 		);
 
 		this.controller.pointerLock$.subscribe((status) =>
-			this._coreModule?.setPointerLock(status)
+			this._core.thread?.setPointerLock(status)
 		);
 
 		this.controller.key$.subscribe((keyEvent) =>
-			this._coreModule?.keyEvent(keyEvent)
+			this._core.thread?.keyEvent(keyEvent)
 		);
 	}
 
-	public init(): void {
+	public async init() {
 		this._initCanvas();
+		this._initLoader();
 		this._initGui();
 		this._initCore();
 	}

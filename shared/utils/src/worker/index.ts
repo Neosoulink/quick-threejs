@@ -1,16 +1,17 @@
 import { container, inject, singleton } from "tsyringe";
 
-import { WorkerThread, WorkerThreadModule } from "./worker-thread";
+import { WorkerThread } from "./worker-thread";
 import { getSafeAvailableCoresNumber } from "../hardware";
+import { ThreadsWorkerOptions } from "threads/dist/types/master";
 
 @singleton()
-class _WorkerPool<T extends WorkerThreadModule = WorkerThreadModule> {
-	private _workers: WorkerThread<T>[] = [];
+class _WorkerPool {
+	private _workers: WorkerThread[] = [];
 	private _taskQueue: { path: string; task: Transferable }[] = [];
 
 	constructor(@inject(_WorkerPool.name) private readonly _maxWorkers) {
 		for (let i = 0; i < this._maxWorkers; i++) {
-			const worker = new WorkerThread<T>({
+			const worker = new WorkerThread({
 				complete: () => this._handleWorkerMessage(worker),
 				error: (err) => this._handleWorkerError(err, worker)
 			});
@@ -52,7 +53,12 @@ class _WorkerPool<T extends WorkerThreadModule = WorkerThreadModule> {
 		return this._taskQueue;
 	}
 
-	public runTask(path: string, task: any, transfer?: Transferable[]) {
+	public async runTask(
+		path: string,
+		task: any,
+		transfer?: Transferable[],
+		workerOptions: ThreadsWorkerOptions = { type: "module" }
+	) {
 		const availableWorker = this._workers.find((w) => w.idle);
 		const _task = { path, task };
 
@@ -66,7 +72,7 @@ class _WorkerPool<T extends WorkerThreadModule = WorkerThreadModule> {
 		console.log(`Running on worker #${availableWorker?.id}. task:`, _task);
 
 		availableWorker.idle = false;
-		return availableWorker.exec(path, task, { type: "module" }, transfer);
+		return await availableWorker.exec(path, task, workerOptions, transfer);
 	}
 
 	public terminateAll() {

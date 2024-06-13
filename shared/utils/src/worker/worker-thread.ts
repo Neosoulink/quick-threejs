@@ -46,7 +46,7 @@ export class WorkerThread<T extends WorkerThreadModule = WorkerThreadModule> {
 
 			this.worker.postMessage(task, transfer);
 
-			this.thread?.lifecycle().subscribe({
+			this.thread.lifecycle().subscribe({
 				complete: this.complete,
 				error: this.error
 			});
