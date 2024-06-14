@@ -1,54 +1,63 @@
 import { spawn, Thread, Worker } from "threads";
 import { Observable } from "threads/observable";
-import { ThreadsWorkerOptions } from "threads/dist/types/master";
-import { WorkerModule } from "threads/dist/types/worker";
+
+import {
+	AwaitedSpawnedThread,
+	ExposedWorkerThreadModule,
+	WorkerThreadProps,
+	WorkerThreadTask
+} from "../types/worker";
 
 let auto_increment_unique_id = -1;
 
-export interface WorkerThreadModule {
-	lifecycle: () => Observable<unknown>;
-}
+/**
+ *
+ */
+export class WorkerThread<
+	T extends ExposedWorkerThreadModule = ExposedWorkerThreadModule
+> {
+	private _handleComplete: WorkerThreadProps["complete"];
+	private _handleError: WorkerThreadProps["error"];
 
-export class WorkerThread<T extends WorkerThreadModule = WorkerThreadModule> {
 	public id = (auto_increment_unique_id += 1);
 	public idle = true;
 	public worker?: Worker;
-	public thread?: Thread & T;
-	public complete?: () => void;
-	public error?: (error: Error) => void;
+	public thread?: AwaitedSpawnedThread<T>;
 
-	constructor(handlers?: {
-		complete?: WorkerThread["complete"];
-		error?: WorkerThread["error"];
-	}) {
-		this.complete = handlers?.complete;
-		this.error = handlers?.error;
+	constructor(handlers?: WorkerThreadProps) {
+		this._handleComplete = handlers?.complete;
+		this._handleError = handlers?.error;
 	}
 
-	public async exec(
-		path: string,
-		task?: any,
-		options?: ThreadsWorkerOptions,
-		transfer?: Transferable[]
-	) {
+	public async run<U extends T = T>({
+		payload,
+		options
+	}: WorkerThreadTask): Promise<{
+		worker?: Worker;
+		thread?: AwaitedSpawnedThread<U>;
+	}> {
 		try {
-			this.worker = new Worker(path, options);
-			this.thread = (await spawn<
-				WorkerModule<Exclude<keyof T, number | symbol>>
-			>(this.worker, {
-				timeout: 5000
-			})) as unknown as typeof this.thread;
+			this.idle = false;
+			this.worker = new Worker(payload.path as string, {
+				type: "module",
+				...options?.worker
+			});
+			this.thread = await spawn<T>(this.worker, {
+				timeout: 5000,
+				...options?.spawn
+			});
+			const threadLifecycle = this.thread?.lifecycle?.();
 
-			if (typeof this.thread?.lifecycle !== "function")
+			if (!(threadLifecycle instanceof Observable))
 				throw new Error(
-					"Worker Module Incompatible. Missing lifecycle observable."
+					"Worker Module Incompatible. Missing #lifecycle observable."
 				);
 
-			this.worker.postMessage(task, transfer);
+			this.worker.postMessage(payload.subject, payload.transferSubject);
 
-			this.thread.lifecycle().subscribe({
-				complete: this.complete,
-				error: this.error
+			threadLifecycle.subscribe({
+				complete: this._handleComplete,
+				error: this._handleError
 			});
 
 			return {
@@ -56,7 +65,7 @@ export class WorkerThread<T extends WorkerThreadModule = WorkerThreadModule> {
 				thread: this.thread
 			};
 		} catch (err: any) {
-			this.error?.(err);
+			this._handleError?.(err);
 			return {};
 		}
 	}
@@ -64,5 +73,8 @@ export class WorkerThread<T extends WorkerThreadModule = WorkerThreadModule> {
 	terminate() {
 		this.worker?.terminate();
 		this.thread && Thread.terminate(this.thread);
+		this.worker = undefined;
+		this.thread = undefined;
+		this.idle = true;
 	}
 }
