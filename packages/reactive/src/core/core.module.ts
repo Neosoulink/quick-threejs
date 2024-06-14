@@ -1,8 +1,11 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import { expose } from "threads/worker";
-import { WorkerModule } from "threads/dist/types/worker";
+import { Observable, Subject } from "threads/observable";
+import {
+	ExposedWorkerThreadModule,
+	WorkerThreadModule
+} from "@quick-threejs/utils/dist/types/worker";
 
 import { CoreController } from "./core.controller";
 import { TimerModule } from "./timer/timer.module";
@@ -12,12 +15,8 @@ import { EventStatus, KeyEvent } from "../common/interfaces/event.interface";
 import { Module } from "../common/interfaces/module.interface";
 import { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 import { SizesModule } from "./sizes/sizes.module";
-import { WorkerThreadModule } from "@quick-threejs/utils";
-import { Observable, Subject } from "threads/observable";
 
-export type ExposedCoreModule = WorkerModule<
-	Exclude<keyof CoreModule, number | symbol>
->;
+export type ExposedCoreModule = ExposedWorkerThreadModule<CoreModule>;
 
 @singleton()
 export class CoreModule implements Module, WorkerThreadModule {
@@ -70,13 +69,4 @@ export class CoreModule implements Module, WorkerThreadModule {
 	}
 }
 
-const coreModule = container.resolve(CoreModule);
-
-expose({
-	setSize: coreModule.setSize.bind(coreModule),
-	setPointerLock: coreModule.setPointerLock.bind(coreModule),
-	mouseMove: coreModule.mouseMove.bind(coreModule),
-	keyEvent: coreModule.keyEvent.bind(coreModule),
-	lifecycle: coreModule.lifecycle.bind(coreModule),
-	init: () => {}
-} satisfies ExposedCoreModule);
+export const coreModule = container.resolve(CoreModule);

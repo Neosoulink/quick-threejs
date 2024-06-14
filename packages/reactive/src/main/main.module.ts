@@ -1,24 +1,25 @@
 import "reflect-metadata";
 
-import { WorkerImplementation } from "threads/dist/types/master";
 import { container, inject, singleton } from "tsyringe";
-import { Observable } from "threads/observable";
-
+import { registerSerializer, Worker } from "threads";
 import { WorkerPool } from "@quick-threejs/utils";
+
 import { Module } from "../common/interfaces/module.interface";
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
 import { GuiModule } from "./gui/gui.module";
-import type { ExposedCoreModule } from "../core/core.module";
 import { ExposedLoaderModule, Source } from "../loader/loader.module";
+import { ExposedCoreModule } from "../core/core.module";
+import { coreModuleSerializer } from "../core/core.module-serializer";
+import { AwaitedSpawnedThread } from "@quick-threejs/utils/dist/types/worker";
 
 @singleton()
 class MainModule implements Module {
 	private _workerPool = WorkerPool();
 	private _canvas!: HTMLCanvasElement;
 	private _core!: {
-		thread: ExposedCoreModule;
-		worker: WorkerImplementation;
+		thread: AwaitedSpawnedThread<ExposedCoreModule>;
+		worker: Worker;
 	};
 
 	constructor(
@@ -59,43 +60,45 @@ class MainModule implements Module {
 		offscreenCanvas.width = this._canvas.clientWidth;
 		offscreenCanvas.height = this._canvas.clientHeight;
 
-		const core = await this._workerPool.runTask(
-			new URL("../core/core.module.ts", import.meta.url) as unknown as string,
-			{ canvas: offscreenCanvas },
-			[offscreenCanvas]
-		);
+		const core = await this._workerPool.run<ExposedCoreModule>({
+			payload: {
+				path: new URL("../core/core.module-worker.ts", import.meta.url),
+				subject: { canvas: offscreenCanvas },
+				transferSubject: [offscreenCanvas]
+			}
+		});
+		const worker = core.worker;
+		const thread = core.thread;
 
-		if (core.thread && core.worker) {
-			this._core = core as unknown as typeof this._core;
+		if (thread && worker) {
+			this._core = {
+				worker,
+				thread
+			};
 
 			this._initController();
 		}
 	}
 
 	private async _initLoader() {
-		const loaderWorker = await this._workerPool.runTask(
-			new URL(
-				"../loader/loader.module.ts",
-				import.meta.url
-			) as unknown as string,
-			{
-				sources: [
-					{
-						type: "texture",
-						path: "https://avatars.githubusercontent.com/u/44310540?v=4",
-						name: "image"
-					}
-				]
-			} satisfies {
-				sources: Source[];
+		const loaderWorker = await this._workerPool.run({
+			payload: {
+				path: new URL("../loader/loader.module.ts", import.meta.url),
+				subject: {
+					sources: [
+						{
+							type: "texture",
+							path: "https://avatars.githubusercontent.com/u/44310540?v=4",
+							name: "image"
+						}
+					]
+				} satisfies {
+					sources: Source[];
+				}
 			}
-		);
-
-		const loader = loaderWorker.thread as unknown as ExposedLoaderModule;
-		(loader.progress() as Observable<any>).subscribe((data) => {
-			console.log(data);
 		});
 
+		const loader = loaderWorker.thread as unknown as ExposedLoaderModule;
 		loader.startLoading();
 	}
 
@@ -120,6 +123,8 @@ class MainModule implements Module {
 	}
 
 	public async init() {
+		registerSerializer(coreModuleSerializer);
+
 		this._initCanvas();
 		this._initLoader();
 		this._initGui();

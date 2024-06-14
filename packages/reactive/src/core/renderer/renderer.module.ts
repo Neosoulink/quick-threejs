@@ -15,10 +15,15 @@ export class RendererModule implements Module {
 		@inject(RendererController) private readonly controller: RendererController
 	) {}
 
+	public get scene() {
+		return this.component.tmpScene;
+	}
+
 	public init(canvas: OffscreenCanvasWithStyle): void {
-		this.controller.step$.subscribe(() =>
-			this.component.render(this.cameraComponent.camera)
-		);
+		this.controller.step$.subscribe(() => {
+			this.component.render(this.cameraComponent.camera);
+			console.log(this.scene.children.length);
+		});
 
 		this.controller.resize$.subscribe((size) =>
 			this.component.setSize(size.x, size.y)

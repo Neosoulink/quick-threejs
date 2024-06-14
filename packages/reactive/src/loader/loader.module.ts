@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { container, Lifecycle, scoped } from "tsyringe";
 import { expose } from "threads/worker";
 import { Observable, Subject } from "threads/observable";
-import { WorkerModule } from "threads/dist/types/worker";
 import {
 	AudioLoader,
 	CanvasTexture,
@@ -20,12 +19,13 @@ import {
 } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
-import { WorkerThreadModule } from "@quick-threejs/utils";
+import {
+	ExposedWorkerThreadModule,
+	WorkerThreadModule
+} from "@quick-threejs/utils/dist/types/worker";
 import { Module } from "../common/interfaces/module.interface";
 
-export type ExposedLoaderModule = WorkerModule<
-	Exclude<keyof LoaderModule, number | symbol>
->;
+export type ExposedLoaderModule = ExposedWorkerThreadModule<LoaderModule>;
 
 export type LoadedItem =
 	| GLTF

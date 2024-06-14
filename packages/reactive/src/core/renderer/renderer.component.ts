@@ -8,7 +8,7 @@ export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 
 	private renderer?: WebGLRenderer;
-	private tmpScene = new Scene();
+	public tmpScene = new Scene();
 
 	public init(canvas: OffscreenCanvasWithStyle) {
 		this.renderer = new WebGLRenderer({
