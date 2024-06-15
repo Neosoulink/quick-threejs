@@ -1,22 +1,24 @@
-import { PerspectiveCamera, Scene, SRGBColorSpace, WebGLRenderer } from "three";
-import { singleton } from "tsyringe";
+import { PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from "three";
+import { inject, singleton } from "tsyringe";
 
 import { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
+import { WorldModule } from "../world/world.module";
 
 @singleton()
 export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 
 	private renderer?: WebGLRenderer;
-	public tmpScene = new Scene();
+
+	constructor(@inject(WorldModule) private readonly worldModule: WorldModule) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
 		this.renderer = new WebGLRenderer({
 			canvas,
 			context: canvas.getContext("webgl2", {
 				stencil: true,
-				powerPreference: "high-performance" as WebGLPowerPreference
-			} as WebGLContextAttributes) as WebGL2RenderingContext,
+				powerPreference: "high-performance"
+			}) as WebGL2RenderingContext,
 			powerPreference: "high-performance",
 			depth: true,
 			antialias: true
@@ -34,6 +36,6 @@ export class RendererComponent {
 
 	public render(camera: PerspectiveCamera) {
 		this.renderer?.clear();
-		this.renderer?.render(this.tmpScene, camera);
+		this.renderer?.render(this.worldModule.scene, camera);
 	}
 }

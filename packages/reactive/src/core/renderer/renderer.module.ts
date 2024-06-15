@@ -10,19 +10,13 @@ import { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interfa
 export class RendererModule implements Module {
 	constructor(
 		@inject(RendererComponent) private readonly component: RendererComponent,
-		@inject(CameraComponent)
-		private readonly cameraComponent: CameraComponent,
+		@inject(CameraComponent) private readonly cameraComponent: CameraComponent,
 		@inject(RendererController) private readonly controller: RendererController
 	) {}
-
-	public get scene() {
-		return this.component.tmpScene;
-	}
 
 	public init(canvas: OffscreenCanvasWithStyle): void {
 		this.controller.step$.subscribe(() => {
 			this.component.render(this.cameraComponent.camera);
-			console.log(this.scene.children.length);
 		});
 
 		this.controller.resize$.subscribe((size) =>
