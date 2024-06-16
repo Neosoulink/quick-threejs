@@ -1,26 +1,26 @@
 import { inject, singleton } from "tsyringe";
 import { filter, Observable, Subject } from "rxjs";
-import { Vector2 } from "three";
+import { Vector2Like } from "three";
 
 import { CoreController } from "../core.controller";
 import { SizesComponent } from "./sizes.component";
 
 @singleton()
 export class SizesController {
-	private readonly widthSubject = new Subject<number>();
-	private readonly heightSubject = new Subject<number>();
-	private readonly aspectSubject = new Subject<number>();
-	private readonly pixelRatioSubject = new Subject<number>();
-	private readonly watchResizesSubject = new Subject<boolean>();
-	private readonly frustrumSubject = new Subject<number>();
+	private readonly width$$ = new Subject<number>();
+	private readonly height$$ = new Subject<number>();
+	private readonly aspect$$ = new Subject<number>();
+	private readonly pixelRatio$$ = new Subject<number>();
+	private readonly watchResizes$$ = new Subject<boolean>();
+	private readonly frustrum$$ = new Subject<number>();
 
-	public readonly resize$: Observable<Vector2>;
-	public readonly width$ = this.widthSubject.pipe();
-	public readonly height$ = this.heightSubject.pipe();
-	public readonly aspect$ = this.aspectSubject.pipe();
-	public readonly pixelRatio$ = this.pixelRatioSubject.pipe();
-	public readonly watchResizes$ = this.watchResizesSubject.pipe();
-	public readonly frustrum$ = this.frustrumSubject.pipe();
+	public readonly resize$: Observable<Vector2Like>;
+	public readonly width$ = this.width$$.pipe();
+	public readonly height$ = this.height$$.pipe();
+	public readonly aspect$ = this.aspect$$.pipe();
+	public readonly pixelRatio$ = this.pixelRatio$$.pipe();
+	public readonly watchResizes$ = this.watchResizes$$.pipe();
+	public readonly frustrum$ = this.frustrum$$.pipe();
 
 	constructor(
 		@inject(CoreController) private readonly coreController: CoreController,
@@ -33,31 +33,31 @@ export class SizesController {
 
 	public setWidth(value = 0) {
 		this.component.width = Number(value);
-		this.widthSubject.next(this.component.width);
+		this.width$$.next(this.component.width);
 	}
 
 	public setHeight(value = 0) {
 		this.component.height = Number(value);
-		this.heightSubject.next(this.component.height);
+		this.height$$.next(this.component.height);
 	}
 
 	public setAspect(value = 0) {
 		this.component.aspect = Number(value);
-		this.aspectSubject.next(this.component.aspect);
+		this.aspect$$.next(this.component.aspect);
 	}
 
 	public setPixelRatio(value = 0) {
 		this.component.pixelRatio = Number(value);
-		this.pixelRatioSubject.next(this.component.pixelRatio);
+		this.pixelRatio$$.next(this.component.pixelRatio);
 	}
 
 	public setWatchResizes(value = true) {
 		this.component.watchResizes = !!value;
-		this.watchResizesSubject.next(this.component.watchResizes);
+		this.watchResizes$$.next(this.component.watchResizes);
 	}
 
 	public setFrustrum(value = 5) {
 		this.component.frustrum = Number(value);
-		this.frustrumSubject.next(this.component.frustrum);
+		this.frustrum$$.next(this.component.frustrum);
 	}
 }

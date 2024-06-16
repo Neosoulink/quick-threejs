@@ -10,10 +10,9 @@ registerSerializer(coreModuleSerializer);
 
 expose({
 	lifecycle$: coreModule.lifecycle$.bind(coreModule),
+	step$: coreModule.step$.bind(coreModule),
 	setSize: coreModule.setSize.bind(coreModule),
-	setPointerLock: coreModule.setPointerLock.bind(coreModule),
-	mouseMove: coreModule.mouseMove.bind(coreModule),
-	keyEvent: coreModule.keyEvent.bind(coreModule),
+	setTimerStatus: coreModule.setTimerStatus.bind(coreModule),
 	dispose: coreModule.dispose.bind(coreModule),
 	init: () => {}
 } satisfies ExposedCoreModule);

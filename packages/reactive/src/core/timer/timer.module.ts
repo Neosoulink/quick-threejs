@@ -3,25 +3,31 @@ import { inject, singleton } from "tsyringe";
 import { TimerComponent } from "./timer.component";
 import { TimerController } from "./timer.controller";
 import { Module } from "../../common/interfaces/module.interface";
+import { EventStatus } from "../../common/enums/event.enum";
 
 @singleton()
 export class TimerModule implements Module {
-	private _pointerLocked = false;
-
 	constructor(
 		@inject(TimerComponent) private readonly component: TimerComponent,
 		@inject(TimerController) private readonly controller: TimerController
 	) {}
 
-	private checkStart(): void {
-		if (this._pointerLocked) this.component.enable();
-		else this.component.disable();
+	public init(): void {
+		this.controller.enable$.subscribe((status) => {
+			this.component.enabled = status;
+			if (status === EventStatus.ON) this.controller.animate();
+		});
 	}
 
-	public init(): void {
-		this.controller.pointerLock$.subscribe((status) => {
-			this._pointerLocked = !!status;
-			this.checkStart();
-		});
+	public enable() {
+		this.controller.enable$$.next(EventStatus.ON);
+	}
+
+	public disable() {
+		this.controller.enable$$.next(EventStatus.OFF);
+	}
+
+	public dispose(): void {
+		throw new Error("Method not implemented.");
 	}
 }

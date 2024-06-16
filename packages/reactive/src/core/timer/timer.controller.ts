@@ -1,38 +1,46 @@
 import { inject, singleton } from "tsyringe";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
-import { CoreController } from "../core.controller";
-import { EventStatus } from "../../common/interfaces/event.interface";
 import { TimerComponent } from "./timer.component";
+import { EventStatus } from "../../common/enums/event.enum";
+import { StepPayload } from "../../common/interfaces/event.interface";
 
 @singleton()
 export class TimerController {
-	private readonly _stepSubject = new Subject<number>();
-	private readonly _bindStep: FrameRequestCallback;
+	private readonly _step$$ = new Subject<StepPayload>();
+	private readonly _enable$$ = new Subject<EventStatus>();
+	private readonly _animationCallback: FrameRequestCallback;
 
-	public readonly pointerLock$: Observable<EventStatus>;
-	public readonly step$ = this._stepSubject.pipe();
+	public readonly step$ = this._step$$.pipe();
+	public readonly enable$ = this._enable$$.pipe();
 
 	constructor(
-		@inject(CoreController) private readonly coreController: CoreController,
-		@inject(TimerComponent) private readonly timerComponent: TimerComponent
+		@inject(TimerComponent) private readonly component: TimerComponent
 	) {
-		this.pointerLock$ = this.coreController.pointerLock$;
-		this._bindStep = this.step.bind(this);
-
-		this.step();
+		this._animationCallback = this.animate.bind(this);
 	}
 
-	private step(): void {
-		this.timerComponent.delta =
-			this.timerComponent.clock.getDelta() ?? this.timerComponent.frame;
+	public get enable$$() {
+		return this._enable$$;
+	}
 
-		if (this.timerComponent.enabled) {
-			this.timerComponent.deltaRatio =
-				(this.timerComponent.delta * 1000) / this.timerComponent.frame;
-			this._stepSubject.next(this.timerComponent.deltaRatio);
+	public animate() {
+		if (this.component.enabled) {
+			this.component.delta =
+				this.component.clock.getDelta() ?? this.component.frame;
+			console.log(this.component.clock.getDelta());
+
+			this.component.deltaRatio =
+				(this.component.delta * 1000) / this.component.frame;
+
+			this._step$$.next({
+				delta: this.component.delta,
+				deltaRatio: this.component.deltaRatio
+			});
 		}
 
-		requestAnimationFrame(this._bindStep);
+		const animationFrameId = requestAnimationFrame(this._animationCallback);
+		if (this.component.enabled === EventStatus.OFF)
+			cancelAnimationFrame(animationFrameId);
 	}
 }

@@ -66,6 +66,8 @@ class MainModule implements Module {
 
 		if (core.thread && core.worker) {
 			this._core = core;
+			core.thread.lifecycle$().subscribe(() => console.log("ticked"));
+			core.thread.step$().subscribe((val) => console.log("stepped", val));
 
 			this._initController();
 		}
@@ -127,22 +129,8 @@ class MainModule implements Module {
 	}
 
 	private _initController(): void {
-		this.controller.init(this._canvas);
-
-		this.controller.mouseMove$.subscribe((event) =>
-			this._core.thread?.mouseMove(event.x, event.y)
-		);
-
-		this.controller.resize$.subscribe(() =>
-			this._core.thread?.setSize(window.innerWidth, window.innerHeight)
-		);
-
-		this.controller.pointerLock$.subscribe((status) =>
-			this._core.thread?.setPointerLock(status)
-		);
-
-		this.controller.key$.subscribe((keyEvent) =>
-			this._core.thread?.keyEvent(keyEvent)
+		this.controller.resize$.subscribe((sizes) =>
+			this._core.thread?.setSize(sizes)
 		);
 	}
 

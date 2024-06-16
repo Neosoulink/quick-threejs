@@ -21,4 +21,8 @@ export class SizesModule implements Module {
 
 		this.component.init(canvas);
 	}
+
+	dispose(): void {
+		throw new Error("Method not implemented.");
+	}
 }

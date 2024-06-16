@@ -13,7 +13,7 @@ export class CameraModule implements Module {
 		@inject(SizesController) private readonly sizeController: SizesController
 	) {}
 
-	init() {
+	public init() {
 		this.sizeController.aspect$.subscribe((aspect) => {
 			this.component.aspectRatio = aspect;
 		});
@@ -25,5 +25,9 @@ export class CameraModule implements Module {
 		this.controller.step$.subscribe(() =>
 			this.component.camera.updateMatrixWorld(true)
 		);
+	}
+
+	public dispose() {
+		throw new Error("Method not implemented.");
 	}
 }

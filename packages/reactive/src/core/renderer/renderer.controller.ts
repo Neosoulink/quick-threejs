@@ -1,6 +1,6 @@
 import { inject, singleton } from "tsyringe";
 import { Observable, Subject } from "rxjs";
-import { Vector2 } from "three";
+import { Vector2Like } from "three";
 
 import { TimerController } from "../timer/timer.controller";
 import { SizesController } from "../sizes/sizes.controller";
@@ -10,7 +10,7 @@ export class RendererController {
 	private readonly initSubject = new Subject<void>();
 
 	public readonly step$: Observable<number>;
-	public readonly resize$: Observable<Vector2>;
+	public readonly resize$: Observable<Vector2Like>;
 	public readonly init$ = this.initSubject.pipe();
 
 	constructor(

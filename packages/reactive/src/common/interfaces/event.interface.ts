@@ -1,9 +1,4 @@
-export enum EventStatus {
-	OFF,
-	ON
-}
-
-export interface KeyEvent {
-	status: EventStatus;
-	key: string;
+export interface StepPayload {
+	delta: number;
+	deltaRatio: number;
 }

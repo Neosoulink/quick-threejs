@@ -25,4 +25,8 @@ export class RendererModule implements Module {
 
 		this.component.init(canvas);
 	}
+
+	public dispose() {
+		throw new Error("Method not implemented.");
+	}
 }
