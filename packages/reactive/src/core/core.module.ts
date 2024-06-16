@@ -1,11 +1,7 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import { Observable, Subject } from "threads/observable";
-import {
-	ExposedWorkerThreadModule,
-	WorkerThreadModule
-} from "@quick-threejs/utils/dist/types/worker";
+import { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker";
 
 import { CoreController } from "./core.controller";
 import { TimerModule } from "./timer/timer.module";
@@ -16,12 +12,8 @@ import { Module } from "../common/interfaces/module.interface";
 import { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 import { SizesModule } from "./sizes/sizes.module";
 
-export type ExposedCoreModule = ExposedWorkerThreadModule<CoreModule>;
-
 @singleton()
 export class CoreModule implements Module, WorkerThreadModule {
-	private readonly _lifecycleSubject = new Subject();
-
 	constructor(
 		@inject(CoreController) private readonly controller: CoreController,
 		@inject(TimerModule) private readonly timerModule: TimerModule,
@@ -64,8 +56,12 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.controller.keyEvent(keyEvent);
 	}
 
-	public lifecycle() {
-		return Observable.from(this._lifecycleSubject);
+	public dispose(): void {
+		throw new Error("Method not implemented.");
+	}
+
+	public lifecycle$() {
+		return this.controller.lifecycle$;
 	}
 }
 

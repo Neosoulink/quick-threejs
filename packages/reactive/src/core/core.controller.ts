@@ -8,23 +8,39 @@ import { CoreComponent } from "./core.component";
 
 @singleton()
 export class CoreController {
-	private readonly resizeSubject = new Subject<Vector2>();
+	private readonly lifecycle$$ = new Subject();
+	private readonly resize$$ = new Subject<Vector2>();
 	private readonly mouseMoveSubject = new Subject<Vector2>();
 	private readonly keySubject = new Subject<KeyEvent>();
 	private readonly pointerLockSubject = new Subject<EventStatus>();
-
-	readonly resize$ = this.resizeSubject.pipe();
-	readonly mouseMove$ = this.mouseMoveSubject.pipe();
-	readonly key$ = this.keySubject.pipe();
-	readonly pointerLock$ = this.pointerLockSubject.pipe();
 
 	constructor(
 		@inject(CoreComponent) private readonly coreComponent: CoreComponent
 	) {}
 
+	public get lifecycle$() {
+		return this.lifecycle$$.pipe();
+	}
+
+	public get resize$() {
+		return this.resize$$.pipe();
+	}
+
+	public get mouseMove$() {
+		return this.mouseMoveSubject.pipe();
+	}
+
+	public get key$() {
+		return this.keySubject.pipe();
+	}
+
+	public get pointerLock$() {
+		return this.pointerLockSubject.pipe();
+	}
+
 	public resize(x: number, y: number): void {
 		this.coreComponent.resize(x, y);
-		this.resizeSubject.next(this.coreComponent.resizeObject);
+		this.resize$$.next(this.coreComponent.resizeObject);
 	}
 
 	public setPointerLock(status: EventStatus): void {
