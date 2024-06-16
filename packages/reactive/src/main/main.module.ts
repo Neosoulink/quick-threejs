@@ -1,30 +1,32 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import { registerSerializer, Worker } from "threads";
+import { registerSerializer } from "threads";
 import { WorkerPool } from "@quick-threejs/utils";
+import { WorkerThreadResolution } from "@quick-threejs/utils/dist/types/worker";
 
 import { Module } from "../common/interfaces/module.interface";
+import {
+	ProgressedResource,
+	Resource
+} from "../common/interfaces/resource.interface";
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
 import { GuiModule } from "./gui/gui.module";
-import { ExposedLoaderModule, Source } from "../loader/loader.module";
-import { ExposedCoreModule } from "../core/core.module";
 import { coreModuleSerializer } from "../core/core.module-serializer";
-import { AwaitedSpawnedThread } from "@quick-threejs/utils/dist/types/worker";
+import { ExposedLoaderModule } from "../loader/loader.module-worker";
+import { ExposedCoreModule } from "../core/core.module-worker";
+import { LoaderModule } from "../loader/loader.module";
 
 @singleton()
 class MainModule implements Module {
 	private _workerPool = WorkerPool();
 	private _canvas!: HTMLCanvasElement;
-	private _core!: {
-		thread: AwaitedSpawnedThread<ExposedCoreModule>;
-		worker: Worker;
-	};
+	private _core!: WorkerThreadResolution<ExposedCoreModule>;
 
 	constructor(
-		@inject(MainController) private readonly controller: MainController,
 		@inject(MainDto.name) private readonly props: MainDto,
+		@inject(MainController) private readonly controller: MainController,
 		@inject(GuiModule) private readonly guiModule: GuiModule
 	) {
 		this.init();
@@ -67,39 +69,67 @@ class MainModule implements Module {
 				transferSubject: [offscreenCanvas]
 			}
 		});
-		const worker = core.worker;
-		const thread = core.thread;
 
-		if (thread && worker) {
-			this._core = {
-				worker,
-				thread
-			};
+		if (core.thread && core.worker) {
+			this._core = core;
 
 			this._initController();
 		}
 	}
 
-	private async _initLoader() {
-		const loaderWorker = await this._workerPool.run({
+	public async loadResources(props: {
+		resources: Resource[];
+		disposeOnComplete?: boolean;
+		onMainThread?: boolean;
+		immediateLoad?: boolean;
+		onProgress?: (resource: ProgressedResource) => unknown;
+		onProgressComplete?: (resource: ProgressedResource) => unknown;
+	}) {
+		const loaderWorkerThread = await this._workerPool.run<ExposedLoaderModule>({
 			payload: {
-				path: new URL("../loader/loader.module.ts", import.meta.url),
+				path: new URL("../loader/loader.module-worker.ts", import.meta.url),
 				subject: {
-					sources: [
-						{
-							type: "texture",
-							path: "https://avatars.githubusercontent.com/u/44310540?v=4",
-							name: "image"
-						}
-					]
-				} satisfies {
-					sources: Source[];
+					resources: props.resources
 				}
 			}
 		});
 
-		const loader = loaderWorker.thread as unknown as ExposedLoaderModule;
-		loader.startLoading();
+		loaderWorkerThread.thread
+			?.progress$()
+			.subscribe((resource: ProgressedResource) => {
+				props.onProgress?.(resource);
+			});
+
+		loaderWorkerThread.thread
+			?.progressCompleted$()
+			.subscribe((resource: ProgressedResource) => {
+				props.onProgressComplete?.(resource);
+				if (props.disposeOnComplete || props.disposeOnComplete === undefined)
+					loaderWorkerThread.thread?.dispose();
+			});
+
+		if (props.immediateLoad || props.immediateLoad === undefined)
+			await loaderWorkerThread.thread?.load();
+
+		return {
+			...loaderWorkerThread,
+			load: (await loaderWorkerThread.thread?.load) as LoaderModule["load"],
+			items: (await loaderWorkerThread.thread?.items()) as ReturnType<
+				LoaderModule["items"]
+			>,
+			loaders: (await loaderWorkerThread.thread?.items()) as ReturnType<
+				LoaderModule["loaders"]
+			>,
+			toLoad: (await loaderWorkerThread.thread?.toLoad()) as ReturnType<
+				LoaderModule["toLoad"]
+			>,
+			loaded: (await loaderWorkerThread.thread?.loaded()) as ReturnType<
+				LoaderModule["loaded"]
+			>,
+			resources: (await loaderWorkerThread.thread?.resources()) as ReturnType<
+				LoaderModule["resources"]
+			>
+		};
 	}
 
 	private _initController(): void {
@@ -122,13 +152,16 @@ class MainModule implements Module {
 		);
 	}
 
-	public async init() {
+	public init(): void {
 		registerSerializer(coreModuleSerializer);
 
 		this._initCanvas();
-		this._initLoader();
 		this._initGui();
 		this._initCore();
+	}
+
+	public dispose(): void {
+		this._workerPool.terminateAll();
 	}
 }
 
