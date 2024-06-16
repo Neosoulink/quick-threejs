@@ -1,203 +1,137 @@
 import "reflect-metadata";
 
-import { container, Lifecycle, scoped } from "tsyringe";
-import { expose } from "threads/worker";
-import { Observable, Subject } from "threads/observable";
-import {
-	AudioLoader,
-	CanvasTexture,
-	CubeTexture,
-	CubeTextureLoader,
-	ImageBitmapLoader,
-	LoadingManager,
-	Texture,
-	VideoTexture
-} from "three";
-import {
-	type GLTF,
-	GLTFLoader
-} from "three/examples/jsm/loaders/GLTFLoader.js";
+import { container, inject, Lifecycle, scoped } from "tsyringe";
+import { CanvasTexture } from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+import { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker";
 
-import {
-	ExposedWorkerThreadModule,
-	WorkerThreadModule
-} from "@quick-threejs/utils/dist/types/worker";
+import { LoaderController } from "./loader.controller";
+import { LoaderComponent } from "./loader.component";
 import { Module } from "../common/interfaces/module.interface";
-
-export type ExposedLoaderModule = ExposedWorkerThreadModule<LoaderModule>;
-
-export type LoadedItem =
-	| GLTF
-	| Texture
-	| CubeTexture
-	| VideoTexture
-	| AudioBuffer;
-
-export interface Source {
-	name: string;
-	type: "cubeTexture" | "texture" | "gltfModel" | "video" | "audio";
-	path: string | string[];
-}
+import {
+	LoadedResourceItem,
+	Resource
+} from "../common/interfaces/resource.interface";
 
 @scoped(Lifecycle.ResolutionScoped)
 export class LoaderModule implements Module, WorkerThreadModule {
-	private readonly _lifecycleSubject = new Subject();
-	private readonly _progressSubject = new Subject();
-
-	private sources: Source[] = [];
-	private items: { [name: Source["name"]]: LoadedItem } = {};
-	private toLoad = 0;
-	private loaded = 0;
-	private loaders: {
-		dracoLoader?: DRACOLoader;
-		gltfLoader?: GLTFLoader;
-		textureLoader?: ImageBitmapLoader;
-		cubeTextureLoader?: CubeTextureLoader;
-		audioLoader?: AudioLoader;
-	} = {};
-	private loadingManager = new LoadingManager();
-
-	constructor() {
-		self.onmessage = (event: MessageEvent<{ sources?: Source[] }>) => {
-			const sources = event?.data?.sources;
-			if (sources) this.init(sources);
+	constructor(
+		@inject(LoaderController) private readonly controller: LoaderController,
+		@inject(LoaderComponent) private readonly component: LoaderComponent
+	) {
+		self.onmessage = (event: MessageEvent<{ resources?: Resource[] }>) => {
+			const resources = event?.data?.resources;
+			if (resources) this.init(resources);
 		};
 	}
 
-	private _videoLoader = {
-		load: (url: string, callback: (texture: VideoTexture) => unknown) => {
-			let element: HTMLVideoElement | undefined =
-				document.createElement("video");
-			element.muted = true;
-			element.loop = true;
-			element.controls = false;
-			element.playsInline = true;
-			element.src = url;
-			element.autoplay = true;
-
-			const oncanplaythrough = () => {
-				if (!element) return;
-
-				element.play();
-				const texture = new VideoTexture(element);
-				const textureDispose = texture.dispose.bind(texture);
-				texture.dispose = () => {
-					texture.userData.element = undefined;
-					element?.remove();
-					element = undefined;
-					textureDispose();
-				};
-				callback(texture);
-				texture.userData.element = element;
-
-				element.removeEventListener("canplaythrough", oncanplaythrough);
-			};
-			element.addEventListener("canplaythrough", oncanplaythrough);
-		}
-	};
-
-	private _setLoaders() {
-		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
-		this.loaders.textureLoader = new ImageBitmapLoader(this.loadingManager);
-		this.loaders.cubeTextureLoader = new CubeTextureLoader(this.loadingManager);
-		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
-	}
-
-	private _handleLoadedSource(source: Source, file: LoadedItem) {
-		this.items[source.name] = file;
-		this.loaded++;
-		this._progressSubject.next({
+	private _handleLoadedResource(resource: Resource, file: LoadedResourceItem) {
+		this.component.items[resource.name] = file;
+		this.component.loaded++;
+		this.controller.progress$$.next({
 			file,
-			source,
-			loaded: this.loaded,
-			toLoad: this.toLoad
+			resource,
+			loaded: this.component.loaded,
+			toLoad: this.component.toLoad
 		});
-
-		if (this.loaded === this.toLoad) {
-			this._progressSubject.next({
-				file,
-				source,
-				loaded: this.loaded,
-				toLoad: this.toLoad,
-				completed: true
-			});
-			this._progressSubject.complete();
-			this._lifecycleSubject.complete();
-		}
 	}
 
 	public setDracoLoader(dracoDecoderPath: string, linkWithGltfLoader = true) {
-		this.loaders.dracoLoader = new DRACOLoader(this.loadingManager);
-		this.loaders.dracoLoader.setDecoderPath(dracoDecoderPath);
+		this.component.loaders.dracoLoader = new DRACOLoader(
+			this.component.loadingManager
+		);
+		this.component.loaders.dracoLoader.setDecoderPath(dracoDecoderPath);
 
-		if (linkWithGltfLoader && this.loaders.gltfLoader)
-			this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+		if (linkWithGltfLoader && this.component.loaders.gltfLoader)
+			this.component.loaders.gltfLoader.setDRACOLoader(
+				this.component.loaders.dracoLoader
+			);
 	}
 
-	public startLoading() {
-		this._progressSubject.next({
-			source: this.sources[0],
-			loaded: this.loaded,
-			toLoad: this.toLoad
+	public load() {
+		const firstResource = this.component.resources[0];
+		if (!firstResource) return;
+
+		this.controller.progress$$.next({
+			resource: firstResource,
+			loaded: this.component.loaded,
+			toLoad: this.component.toLoad
 		});
 
-		for (const source of this.sources) {
-			if (!this.items[source.name]) {
+		for (const source of this.component.resources)
+			if (!this.component.items[source.name]) {
 				if (source.type === "gltfModel" && typeof source.path === "string") {
-					this.loaders.gltfLoader?.load(source.path, (model) =>
-						this._handleLoadedSource(source, model)
+					this.component.loaders.gltfLoader?.load(source.path, (model) =>
+						this._handleLoadedResource(source, model)
 					);
 				}
 				if (source.type === "texture" && typeof source.path === "string") {
-					this.loaders.textureLoader?.load(source.path, (texture) => {
-						this._handleLoadedSource(source, new CanvasTexture(texture));
+					this.component.loaders.textureLoader?.load(source.path, (texture) => {
+						this._handleLoadedResource(source, new CanvasTexture(texture));
 					});
 				}
 				if (source.type === "cubeTexture" && typeof source.path === "object") {
-					this.loaders.cubeTextureLoader?.load(source.path, (texture) =>
-						this._handleLoadedSource(source, texture)
+					this.component.loaders.cubeTextureLoader?.load(
+						source.path,
+						(texture) => this._handleLoadedResource(source, texture)
 					);
 				}
 				if (source.type === "video" && typeof source.path === "string") {
-					this._videoLoader.load(source.path, (texture) =>
-						this._handleLoadedSource(source, texture)
+					this.component.loaders.videoLoader?.load(source.path, (texture) =>
+						this._handleLoadedResource(source, texture)
 					);
 				}
 				if (source.type === "audio" && typeof source.path === "string") {
-					this.loaders.audioLoader?.load(source.path, (audioBuffer) => {
-						this._handleLoadedSource(source, audioBuffer);
-					});
+					this.component.loaders.audioLoader?.load(
+						source.path,
+						(audioBuffer) => {
+							this._handleLoadedResource(source, audioBuffer);
+						}
+					);
 				}
 			}
-		}
 	}
 
-	public lifecycle() {
-		return Observable.from(this._lifecycleSubject);
+	public items() {
+		return this.component.items;
 	}
 
-	public progress() {
-		return Observable.from(this._progressSubject);
+	public loaders() {
+		return this.component.loaders;
 	}
 
-	public init(sources: Source[] = []) {
-		this.sources = sources;
-		this.toLoad = this.sources.length;
-		this.loaded = 0;
+	public resources() {
+		return this.component.resources;
+	}
 
-		this._setLoaders();
+	public loaded() {
+		return this.component.loaded;
+	}
 
-		return this.toLoad;
+	public toLoad() {
+		return this.component.toLoad;
+	}
+
+	public init(resources: Resource[] = []) {
+		this.component.init(resources);
+	}
+
+	public dispose() {
+		this.controller.lifecycle$$.complete();
+		this.controller.progress$$.complete();
+	}
+
+	public lifecycle$() {
+		return this.controller.lifecycle$;
+	}
+
+	public progress$() {
+		return this.controller.progress$;
+	}
+
+	public progressCompleted$() {
+		return this.controller.progressCompleted$;
 	}
 }
 
-const loaderModule = container.resolve(LoaderModule);
-
-expose({
-	startLoading: loaderModule.startLoading.bind(loaderModule),
-	setDracoLoader: loaderModule.setDracoLoader.bind(loaderModule),
-	lifecycle: loaderModule.lifecycle.bind(loaderModule),
-	progress: loaderModule.progress.bind(loaderModule),
-	init: () => {}
-} satisfies ExposedLoaderModule);
+export const loaderModule = container.resolve(LoaderModule);
