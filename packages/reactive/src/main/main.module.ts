@@ -12,7 +12,6 @@ import {
 } from "../common/interfaces/resource.interface";
 import { MainDto } from "./dto/main.dto";
 import { MainController } from "./main.controller";
-import { GuiModule } from "./gui/gui.module";
 import { coreModuleSerializer } from "../core/core.module-serializer";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedCoreModule } from "../core/core.module-worker";
@@ -26,8 +25,7 @@ class MainModule implements Module {
 
 	constructor(
 		@inject(MainDto.name) private readonly props: MainDto,
-		@inject(MainController) private readonly controller: MainController,
-		@inject(GuiModule) private readonly guiModule: GuiModule
+		@inject(MainController) private readonly controller: MainController
 	) {
 		this.init();
 	}
@@ -51,10 +49,6 @@ class MainModule implements Module {
 				`🛑 Unable to initialize the canvas:\n${err?.message ?? "Something went wrong"}`
 			);
 		}
-	}
-
-	private _initGui() {
-		this.guiModule.init(this._canvas);
 	}
 
 	private async _initCore() {
@@ -156,7 +150,6 @@ class MainModule implements Module {
 		registerSerializer(coreModuleSerializer);
 
 		this._initCanvas();
-		this._initGui();
 		this._initCore();
 	}
 
