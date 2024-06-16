@@ -4,6 +4,7 @@ import { Observable } from "threads/observable";
 import {
 	AwaitedSpawnedThread,
 	ExposedWorkerThreadModule,
+	WorkerThreadResolution,
 	WorkerThreadProps,
 	WorkerThreadTask
 } from "../types/worker";
@@ -32,10 +33,7 @@ export class WorkerThread<
 	public async run<U extends T = T>({
 		payload,
 		options
-	}: WorkerThreadTask): Promise<{
-		worker?: Worker;
-		thread?: AwaitedSpawnedThread<U>;
-	}> {
+	}: WorkerThreadTask): Promise<WorkerThreadResolution<U>> {
 		try {
 			this.idle = false;
 			this.worker = new Worker(payload.path as string, {
@@ -46,7 +44,7 @@ export class WorkerThread<
 				timeout: 5000,
 				...options?.spawn
 			});
-			const threadLifecycle = this.thread?.lifecycle?.();
+			const threadLifecycle = this.thread?.lifecycle$?.();
 
 			if (!(threadLifecycle instanceof Observable))
 				throw new Error(

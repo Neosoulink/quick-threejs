@@ -1,11 +1,10 @@
 import { container, inject, singleton } from "tsyringe";
-import { Worker } from "threads";
 
 import { WorkerThread } from "./worker-thread";
 import { getSafeAvailableCoresNumber } from "../hardware";
 import {
-	AwaitedSpawnedThread,
 	ExposedWorkerThreadModule,
+	WorkerThreadResolution,
 	WorkerThreadTask
 } from "../types/worker";
 
@@ -65,10 +64,7 @@ class _WorkerPool {
 	>(
 		task: WorkerThreadTask,
 		immediate = false
-	): Promise<{
-		worker?: Worker;
-		thread?: AwaitedSpawnedThread<T>;
-	}> {
+	): Promise<WorkerThreadResolution<T>> {
 		if (immediate) {
 			const workerThread = new WorkerThread({
 				complete: () => this._handleWorkerMessage(workerThread),
