@@ -6,7 +6,7 @@ import {
 	ExposedWorkerThreadModule,
 	WorkerThreadResolution,
 	WorkerThreadTask
-} from "../types/worker";
+} from "../types/worker.type";
 
 @singleton()
 /**

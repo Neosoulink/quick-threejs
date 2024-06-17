@@ -1,8 +1,8 @@
 import { PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from "three";
 import { inject, singleton } from "tsyringe";
 
+import { WorldComponent } from "../world/world.component";
 import { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
-import { WorldModule } from "../world/world.module";
 
 @singleton()
 export class RendererComponent {
@@ -10,7 +10,9 @@ export class RendererComponent {
 
 	private renderer?: WebGLRenderer;
 
-	constructor(@inject(WorldModule) private readonly worldModule: WorldModule) {}
+	constructor(
+		@inject(WorldComponent) private readonly worldComponent: WorldComponent
+	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
 		this.renderer = new WebGLRenderer({
@@ -36,6 +38,6 @@ export class RendererComponent {
 
 	public render(camera: PerspectiveCamera) {
 		this.renderer?.clear();
-		this.renderer?.render(this.worldModule.scene, camera);
+		this.renderer?.render(this.worldComponent.scene, camera);
 	}
 }

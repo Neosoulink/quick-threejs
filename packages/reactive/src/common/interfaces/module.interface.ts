@@ -10,6 +10,7 @@ export interface Module {
 	 * Can be used for direct initialization (when constructing `quick-three`) or manual (later in the code).
 	 */
 	init(...props: any[]): void;
+
 	/**
 	 * @description Module disposal.
 	 *

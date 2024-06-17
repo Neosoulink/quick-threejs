@@ -7,7 +7,7 @@ import {
 	WorkerThreadResolution,
 	WorkerThreadProps,
 	WorkerThreadTask
-} from "../types/worker";
+} from "../types/worker.type";
 
 let auto_increment_unique_id = -1;
 

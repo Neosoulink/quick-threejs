@@ -4,12 +4,13 @@ import { Vector2Like } from "three";
 
 import { TimerController } from "../timer/timer.controller";
 import { SizesController } from "../sizes/sizes.controller";
+import { StepPayload } from "../../common/interfaces/event.interface";
 
 @singleton()
 export class RendererController {
 	private readonly initSubject = new Subject<void>();
 
-	public readonly step$: Observable<number>;
+	public readonly step$: Observable<StepPayload>;
 	public readonly resize$: Observable<Vector2Like>;
 	public readonly init$ = this.initSubject.pipe();
 

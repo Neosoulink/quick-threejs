@@ -28,7 +28,6 @@ export class TimerController {
 		if (this.component.enabled) {
 			this.component.delta =
 				this.component.clock.getDelta() ?? this.component.frame;
-			console.log(this.component.clock.getDelta());
 
 			this.component.deltaRatio =
 				(this.component.delta * 1000) / this.component.frame;

@@ -12,7 +12,7 @@ export class SizesModule implements Module {
 		@inject(SizesController) private readonly controller: SizesController
 	) {}
 
-	init(canvas: OffscreenCanvasWithStyle) {
+	public init(canvas: OffscreenCanvasWithStyle) {
 		this.controller.resize$.subscribe((size) => {
 			this.controller.setWidth(size.x);
 			this.controller.setHeight(size.y);
@@ -22,7 +22,11 @@ export class SizesModule implements Module {
 		this.component.init(canvas);
 	}
 
-	dispose(): void {
+	public publicMembers() {
+		return { ...this.component, init: undefined };
+	}
+
+	dispose() {
 		throw new Error("Method not implemented.");
 	}
 }

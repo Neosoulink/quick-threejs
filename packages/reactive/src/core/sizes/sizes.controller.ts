@@ -11,7 +11,7 @@ export class SizesController {
 	private readonly height$$ = new Subject<number>();
 	private readonly aspect$$ = new Subject<number>();
 	private readonly pixelRatio$$ = new Subject<number>();
-	private readonly watchResizes$$ = new Subject<boolean>();
+	private readonly enabled$$ = new Subject<boolean>();
 	private readonly frustrum$$ = new Subject<number>();
 
 	public readonly resize$: Observable<Vector2Like>;
@@ -19,7 +19,7 @@ export class SizesController {
 	public readonly height$ = this.height$$.pipe();
 	public readonly aspect$ = this.aspect$$.pipe();
 	public readonly pixelRatio$ = this.pixelRatio$$.pipe();
-	public readonly watchResizes$ = this.watchResizes$$.pipe();
+	public readonly enabled$ = this.enabled$$.pipe();
 	public readonly frustrum$ = this.frustrum$$.pipe();
 
 	constructor(
@@ -27,7 +27,7 @@ export class SizesController {
 		@inject(SizesComponent) private readonly component: SizesComponent
 	) {
 		this.resize$ = this.coreController.resize$.pipe(
-			filter(() => this.component.watchResizes)
+			filter(() => this.component.enabled)
 		);
 	}
 
@@ -52,8 +52,8 @@ export class SizesController {
 	}
 
 	public setWatchResizes(value = true) {
-		this.component.watchResizes = !!value;
-		this.watchResizes$$.next(this.component.watchResizes);
+		this.component.enabled = !!value;
+		this.enabled$$.next(this.component.enabled);
 	}
 
 	public setFrustrum(value = 5) {

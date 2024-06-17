@@ -1,20 +1,26 @@
 import { singleton } from "tsyringe";
-import { fromEvent, Observable, map, tap } from "rxjs";
-import { Vector2, Vector2Like } from "three";
+import { fromEvent, Observable, map } from "rxjs";
+import { Vector2Like } from "three";
 
 @singleton()
 export class MainController {
-	private readonly _sizes: Vector2 = new Vector2();
+	public resize$!: Observable<Vector2Like>;
+	public canvasResize$!: Observable<Vector2Like>;
 
-	public readonly resize$: Observable<Vector2Like>;
-
-	constructor() {
+	init(canvas: HTMLCanvasElement) {
 		this.resize$ = fromEvent(window, "resize").pipe(
-			tap(() => {
-				this._sizes.x = window.innerWidth;
-				this._sizes.y = window.innerHeight;
-			}),
-			map(() => this._sizes)
+			map(() => ({
+				x: window.innerWidth,
+				y: window.innerHeight
+			}))
+		);
+
+		this.canvasResize$ = this.resize$.pipe(
+			map((sizes) => ({
+				...sizes,
+				x: canvas.width,
+				y: canvas.height
+			}))
 		);
 	}
 }
