@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import vite from "@quick-threejs/config/vite";
 
-const appEntryPath = resolve(`./src/main/main.module.ts`);
+const appEntryPath = resolve(`./src/main.ts`);
 
 export default defineConfig({
 	...vite,

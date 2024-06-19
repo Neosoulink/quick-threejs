@@ -1,3 +1,5 @@
+import type { CoreModule } from "../../core/core.module";
+
 /**
  * @description Module representation.
  *
@@ -17,4 +19,18 @@ export interface Module {
 	 * Used to terminate the Module execution and free memory.
 	 */
 	dispose(): void;
+}
+
+/** @description Register initialization properties. */
+export class RegisterProps {
+	/** @description App `canvas` element reference. */
+	public canvas?: HTMLCanvasElement | string;
+	/** @description The `launchApp` file location, */
+	public location?: string;
+}
+
+/** @description `launchApp` initialization properties. */
+export interface LaunchAppProps {
+	/** @description event handler triggered when the app is ready. */
+	onReady?: (app: CoreModule) => unknown;
 }

@@ -3,7 +3,7 @@ import { fromEvent, Observable, map } from "rxjs";
 import { Vector2Like } from "three";
 
 @singleton()
-export class MainController {
+export class AppController {
 	public resize$!: Observable<Vector2Like>;
 	public canvasResize$!: Observable<Vector2Like>;
 

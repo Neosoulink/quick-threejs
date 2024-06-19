@@ -33,8 +33,12 @@ export class CoreModule implements Module, WorkerThreadModule {
 		) => {
 			const canvas = event?.data?.canvas;
 
-			if (canvas) this.init(canvas);
+			if (canvas && !this.component.initialized) this.init(canvas);
 		};
+	}
+
+	public get isInitialized() {
+		return this.component.initialized;
 	}
 
 	public init(canvas: OffscreenCanvasWithStyle): void {
@@ -47,6 +51,9 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.rendererModule.init(canvas);
 
 		this.setSize({ x: canvas.width, y: canvas.height });
+
+		this.controller.lifecycle$$.next(EventStatus.ON);
+		this.component.initialized = true;
 	}
 
 	public setSize(sizes: Vector2Like): void {
@@ -56,12 +63,6 @@ export class CoreModule implements Module, WorkerThreadModule {
 	public setTimerStatus(status: EventStatus | boolean) {
 		if (status) this.timerModule.enable();
 		else this.timerModule.disable();
-	}
-
-	public scene(newScene?: typeof this.component.scene) {
-		if (newScene) this.component.scene = newScene;
-
-		return this.component.scene;
 	}
 
 	public dispose(): void {
