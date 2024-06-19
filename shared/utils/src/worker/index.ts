@@ -76,6 +76,7 @@ class _WorkerPool {
 				task
 			);
 
+			// @ts-ignore
 			return await workerThread.run<T>(task);
 		}
 
