@@ -12,7 +12,11 @@ export class WorldModule implements Module {
 		@inject(WorldController) private readonly controller: WorldController
 	) {}
 
-	init() {}
+	public init() {}
 
-	dispose() {}
+	public get scene() {
+		return this.component.scene;
+	}
+
+	public dispose() {}
 }

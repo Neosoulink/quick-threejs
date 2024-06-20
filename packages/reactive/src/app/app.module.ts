@@ -14,6 +14,7 @@ import {
 } from "../common/interfaces/resource.interface";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
 import { RegisterDto } from "../common/dtos/register.dto";
+import { CoreModuleMessageEvent } from "../core/core.interface";
 
 @singleton()
 export class AppModule implements Module {
@@ -51,13 +52,19 @@ export class AppModule implements Module {
 
 	private async _initCore() {
 		const offscreenCanvas = this._canvas.transferControlToOffscreen();
+		offscreenCanvas["style"] = { width: "0", height: "0" };
 		offscreenCanvas.width = this._canvas.clientWidth;
 		offscreenCanvas.height = this._canvas.clientHeight;
 
 		const core = await this._workerPool.run<ExposedCoreModule>({
 			payload: {
 				path: this.props.location,
-				subject: { canvas: offscreenCanvas },
+				subject: {
+					canvas: offscreenCanvas,
+					startTimer: this.props.startTimer,
+					useDefaultCamera: this.props.useDefaultCamera,
+					withMiniCamera: this.props.withMiniCamera
+				} satisfies CoreModuleMessageEvent["data"],
 				transferSubject: [offscreenCanvas]
 			}
 		});

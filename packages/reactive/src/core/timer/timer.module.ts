@@ -12,11 +12,13 @@ export class TimerModule implements Module {
 		@inject(TimerController) private readonly controller: TimerController
 	) {}
 
-	public init(): void {
+	public init(startTimer?: boolean): void {
 		this.controller.enable$.subscribe((status) => {
 			this.component.enabled = status;
 			if (status === EventStatus.ON) this.controller.animate();
 		});
+
+		if (startTimer) this.enable();
 	}
 
 	public enable() {
@@ -27,7 +29,11 @@ export class TimerModule implements Module {
 		this.controller.enable$$.next(EventStatus.OFF);
 	}
 
-	public dispose(): void {
+	public dispose() {
 		throw new Error("Method not implemented.");
+	}
+
+	public step$() {
+		return this.controller.step$;
 	}
 }

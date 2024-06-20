@@ -1,4 +1,4 @@
-import { PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from "three";
+import { Camera, SRGBColorSpace, WebGLRenderer } from "three";
 import { inject, singleton } from "tsyringe";
 
 import { WorldComponent } from "../world/world.component";
@@ -36,7 +36,7 @@ export class RendererComponent {
 		this.renderer?.setSize(width, height);
 	}
 
-	public render(camera: PerspectiveCamera) {
+	public render(camera: Camera) {
 		this.renderer?.clear();
 		this.renderer?.render(this.worldComponent.scene, camera);
 	}

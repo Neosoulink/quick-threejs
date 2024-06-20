@@ -32,32 +32,26 @@ export class SizesController {
 	}
 
 	public setWidth(value = 0) {
-		this.component.width = Number(value);
-		this.width$$.next(this.component.width);
+		this.width$$.next(value);
 	}
 
 	public setHeight(value = 0) {
-		this.component.height = Number(value);
-		this.height$$.next(this.component.height);
+		this.height$$.next(value);
 	}
 
 	public setAspect(value = 0) {
-		this.component.aspect = Number(value);
-		this.aspect$$.next(this.component.aspect);
+		this.aspect$$.next(value);
 	}
 
 	public setPixelRatio(value = 0) {
-		this.component.pixelRatio = Number(value);
-		this.pixelRatio$$.next(this.component.pixelRatio);
+		this.pixelRatio$$.next(value);
 	}
 
-	public setWatchResizes(value = true) {
-		this.component.enabled = !!value;
-		this.enabled$$.next(this.component.enabled);
+	public setEnabled(value = true) {
+		this.enabled$$.next(value);
 	}
 
 	public setFrustrum(value = 5) {
-		this.component.frustrum = Number(value);
-		this.frustrum$$.next(this.component.frustrum);
+		this.frustrum$$.next(value);
 	}
 }

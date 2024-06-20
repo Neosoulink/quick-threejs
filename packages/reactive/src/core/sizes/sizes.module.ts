@@ -20,10 +20,54 @@ export class SizesModule implements Module {
 		});
 
 		this.component.init(canvas);
+
+		this.controller.width$.subscribe((value) => {
+			this.component.width = Number(value);
+		});
+
+		this.controller.height$.subscribe((value) => {
+			this.component.height = Number(value);
+		});
+
+		this.controller.aspect$.subscribe((value) => {
+			this.component.aspect = Number(value);
+		});
+
+		this.controller.pixelRatio$.subscribe((value) => {
+			this.component.pixelRatio = Number(value);
+		});
+
+		this.controller.enabled$.subscribe((value) => {
+			this.component.enabled = !!value;
+		});
+
+		this.controller.frustrum$.subscribe((value) => {
+			this.component.frustrum = Number(value);
+		});
 	}
 
-	public publicMembers() {
-		return { ...this.component, init: undefined };
+	public setWidth(value = 0) {
+		this.controller.setWidth(value);
+	}
+
+	public setHeight(value = 0) {
+		this.controller.setHeight(value);
+	}
+
+	public setAspect(value = 0) {
+		this.controller.setAspect(value);
+	}
+
+	public setPixelRatio(value = 0) {
+		this.controller.setPixelRatio(value);
+	}
+
+	public setWatchResizes(value = true) {
+		this.controller.setEnabled(value);
+	}
+
+	public setFrustrum(value = 5) {
+		this.controller.setFrustrum(value);
 	}
 
 	dispose() {

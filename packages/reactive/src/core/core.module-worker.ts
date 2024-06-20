@@ -5,6 +5,7 @@ import { CoreModule, coreModule } from "./core.module";
 import { EventStatus } from "../common/enums/event.enum";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
 import { LaunchAppProps } from "../common/interfaces/module.interface";
+import { Methods } from "../common/types/object.type";
 
 registerSerializer(object3DSerializer);
 
@@ -18,12 +19,10 @@ export const launchApp = (props?: LaunchAppProps) => {
 
 expose({
 	lifecycle$: coreModule.lifecycle$.bind(coreModule),
-	step$: coreModule.step$.bind(coreModule),
 	setSize: coreModule.setSize.bind(coreModule),
-	setTimerStatus: coreModule.setTimerStatus.bind(coreModule),
 	dispose: coreModule.dispose.bind(coreModule),
-	isInitialized: () => coreModule.isInitialized,
+	isInitialized: coreModule.isInitialized.bind(coreModule),
 	init: () => {}
 } satisfies ExposedCoreModule);
 
-export type ExposedCoreModule = ExposedWorkerThreadModule<CoreModule>;
+export type ExposedCoreModule = ExposedWorkerThreadModule<Methods<CoreModule>>;
