@@ -1,4 +1,4 @@
-export enum CameraType {
+export enum DefaultCameraType {
 	PERSPECTIVE,
 	ORTHOGRAPHIC
 }

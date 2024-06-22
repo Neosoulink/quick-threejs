@@ -76,6 +76,8 @@ class _WorkerPool {
 				task
 			);
 
+			// Unknown error on the NodeJs console.
+			// <Untyped function calls may not accept type arguments.>
 			// @ts-ignore
 			return await workerThread.run<T>(task);
 		}

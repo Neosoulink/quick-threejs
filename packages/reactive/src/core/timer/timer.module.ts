@@ -2,8 +2,7 @@ import { inject, singleton } from "tsyringe";
 
 import { TimerComponent } from "./timer.component";
 import { TimerController } from "./timer.controller";
-import { Module } from "../../common/interfaces/module.interface";
-import { EventStatus } from "../../common/enums/event.enum";
+import type { Module } from "../../common/interfaces/module.interface";
 
 @singleton()
 export class TimerModule implements Module {
@@ -14,26 +13,46 @@ export class TimerModule implements Module {
 
 	public init(startTimer?: boolean): void {
 		this.controller.enable$.subscribe((status) => {
-			this.component.enabled = status;
-			if (status === EventStatus.ON) this.controller.animate();
+			this.component.enabled = !!status;
+			if (status) this.controller.animate();
 		});
 
-		if (startTimer) this.enable();
+		if (startTimer) this.enabled(true);
 	}
 
-	public enable() {
-		this.controller.enable$$.next(EventStatus.ON);
+	public clock() {
+		return this.component.clock;
 	}
 
-	public disable() {
-		this.controller.enable$$.next(EventStatus.OFF);
+	public frame() {
+		return this.component.frame;
+	}
+
+	public delta(value?: number) {
+		if (typeof value === "number") this.component.delta = value;
+		return this.component.delta;
+	}
+
+	public deltaRatio(value?: number) {
+		if (typeof value === "number") this.component.deltaRatio = value;
+		return this.component.deltaRatio;
+	}
+
+	public enabled(value?: boolean) {
+		if (typeof value === "boolean") this.controller.enable$$.next(value);
+		return this.component.enabled;
 	}
 
 	public dispose() {
-		throw new Error("Method not implemented.");
+		this.controller.step$$.complete();
+		this.controller.enable$$.complete();
 	}
 
 	public step$() {
 		return this.controller.step$;
+	}
+
+	public enabled$() {
+		return this.controller.enable$;
 	}
 }

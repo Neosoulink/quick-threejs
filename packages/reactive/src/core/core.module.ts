@@ -11,10 +11,9 @@ import { CameraModule } from "./camera/camera.module";
 import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
-import { Module } from "../common/interfaces/module.interface";
-import { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
-import { CoreModuleMessageEvent } from "./core.interface";
-import { EventStatus } from "../common/enums/event.enum";
+import type { CoreModuleMessageEvent } from "./core.interface";
+import type { Module } from "../common/interfaces/module.interface";
+import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 
 @singleton()
 export class CoreModule implements Module, WorkerThreadModule {
@@ -22,10 +21,10 @@ export class CoreModule implements Module, WorkerThreadModule {
 		@inject(CoreController) private readonly controller: CoreController,
 		@inject(CoreComponent) private readonly component: CoreComponent,
 		@inject(TimerModule) public readonly timer: TimerModule,
-		@inject(CameraModule) public readonly camera: CameraModule,
-		@inject(RendererModule) public readonly renderer: RendererModule,
 		@inject(SizesModule) public readonly sizes: SizesModule,
-		@inject(WorldModule) public readonly world: WorldModule
+		@inject(CameraModule) public readonly camera: CameraModule,
+		@inject(WorldModule) public readonly world: WorldModule,
+		@inject(RendererModule) public readonly renderer: RendererModule
 	) {
 		self.onmessage = (event: CoreModuleMessageEvent) => {
 			const canvas = event?.data?.canvas;
@@ -58,7 +57,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 
 		this.setSize({ x: props.canvas.width, y: props.canvas.height });
 
-		this.controller.lifecycle$$.next(EventStatus.ON);
+		this.controller.lifecycle$$.next(true);
 		this.component.initialized = true;
 	}
 
@@ -67,6 +66,11 @@ export class CoreModule implements Module, WorkerThreadModule {
 	}
 
 	public dispose(): void {
+		this.timer.dispose();
+		this.camera.dispose();
+		this.renderer.dispose();
+		this.sizes.dispose();
+		this.world.dispose();
 		this.controller.lifecycle$$.complete();
 	}
 

@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === "development") {
 	register({
 		canvas,
 		location: new URL(
-			"./main.worker-test.ts",
+			"./main.worker.ts",
 			import.meta.url
 		) as unknown as string
 	});

@@ -1,17 +1,20 @@
-import { Camera, SRGBColorSpace, WebGLRenderer } from "three";
+import { SRGBColorSpace, WebGLRenderer } from "three";
 import { inject, singleton } from "tsyringe";
 
 import { WorldComponent } from "../world/world.component";
-import { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
+import { CameraComponent } from "../camera/camera.component";
+import type { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
 
 @singleton()
 export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 
-	private renderer?: WebGLRenderer;
+	public enabled = true;
+	public renderer?: WebGLRenderer;
 
 	constructor(
-		@inject(WorldComponent) private readonly worldComponent: WorldComponent
+		@inject(WorldComponent) private readonly worldComponent: WorldComponent,
+		@inject(CameraComponent) private readonly cameraComponent: CameraComponent
 	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
@@ -36,8 +39,13 @@ export class RendererComponent {
 		this.renderer?.setSize(width, height);
 	}
 
-	public render(camera: Camera) {
+	public render() {
+		if (!this.cameraComponent.instance) return;
+
 		this.renderer?.clear();
-		this.renderer?.render(this.worldComponent.scene, camera);
+		this.renderer?.render(
+			this.worldComponent.scene,
+			this.cameraComponent.instance
+		);
 	}
 }

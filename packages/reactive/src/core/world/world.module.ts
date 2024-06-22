@@ -4,6 +4,7 @@ import { WorldComponent } from "./world.component";
 import { WorldController } from "./world.controller";
 
 import { Module } from "../../common/interfaces/module.interface";
+import { Scene } from "three";
 
 @singleton()
 export class WorldModule implements Module {
@@ -12,11 +13,12 @@ export class WorldModule implements Module {
 		@inject(WorldController) private readonly controller: WorldController
 	) {}
 
-	public init() {}
-
-	public get scene() {
+	public scene(value?: Scene) {
+		if (value instanceof Scene) this.component.scene = value;
 		return this.component.scene;
 	}
+
+	public init() {}
 
 	public dispose() {}
 }

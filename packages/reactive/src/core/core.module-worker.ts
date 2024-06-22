@@ -2,16 +2,15 @@ import { expose, registerSerializer } from "threads/worker";
 import { ExposedWorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
 
 import { CoreModule, coreModule } from "./core.module";
-import { EventStatus } from "../common/enums/event.enum";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
-import { LaunchAppProps } from "../common/interfaces/module.interface";
-import { Methods } from "../common/types/object.type";
+import type { LaunchAppProps } from "../common/interfaces/module.interface";
+import type { Methods } from "../common/types/object.type";
 
 registerSerializer(object3DSerializer);
 
 export const launchApp = (props?: LaunchAppProps) => {
 	coreModule.lifecycle$().subscribe((state) => {
-		if (state === EventStatus.ON && props?.onReady) props.onReady(coreModule);
+		if (!!state && props?.onReady) props.onReady(coreModule);
 	});
 
 	return coreModule;

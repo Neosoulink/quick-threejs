@@ -16,8 +16,8 @@ import {
 
 @scoped(Lifecycle.ResolutionScoped)
 export class LoaderComponent {
-	private readonly _loadingManager = new LoadingManager();
-	private readonly _loaders: {
+	public readonly loadingManager = new LoadingManager();
+	public readonly loaders: {
 		dracoLoader?: DRACOLoader;
 		gltfLoader?: GLTFLoader;
 		textureLoader?: ImageBitmapLoader;
@@ -26,30 +26,12 @@ export class LoaderComponent {
 		videoLoader?: LoaderComponent["videoLoader"];
 	} = {};
 
-	private _resources: Resource[] = [];
-	private _items: { [name: Resource["name"]]: LoadedResourceItem } = {};
-	private _toLoad = 0;
-	private _loaded = 0;
+	public resources: Resource[] = [];
+	public items: { [name: Resource["name"]]: LoadedResourceItem } = {};
+	public toLoad = 0;
+	public loaded = 0;
 
-	private _setLoaders() {
-		this._loaders.gltfLoader = new GLTFLoader(this.loadingManager);
-		this._loaders.textureLoader = new ImageBitmapLoader(this.loadingManager);
-		this._loaders.cubeTextureLoader = new CubeTextureLoader(
-			this.loadingManager
-		);
-		this._loaders.audioLoader = new AudioLoader(this.loadingManager);
-		this._loaders.videoLoader = this.videoLoader;
-	}
-
-	public get loadingManager() {
-		return this._loadingManager;
-	}
-
-	public get loaders() {
-		return this._loaders;
-	}
-
-	public get videoLoader() {
+	private get videoLoader() {
 		return {
 			load: (url: string, callback: (texture: VideoTexture) => unknown) => {
 				let element: HTMLVideoElement | undefined =
@@ -83,39 +65,22 @@ export class LoaderComponent {
 		};
 	}
 
-	public get resources() {
-		return this._resources;
+	private _setLoaders() {
+		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
+		this.loaders.textureLoader = new ImageBitmapLoader(this.loadingManager);
+		this.loaders.cubeTextureLoader = new CubeTextureLoader(this.loadingManager);
+		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
+		this.loaders.videoLoader = this.videoLoader;
 	}
 
-	public get items() {
-		return this._items;
-	}
-
-	public get toLoad() {
-		return this._toLoad;
-	}
-
-	public get loaded() {
-		return this._loaded;
-	}
-
-	public set resources(resources: Resource[]) {
-		this._resources = resources;
-		this._toLoad = this.resources.length;
-		this._loaded = 0;
-	}
-
-	public set toLoad(val: number) {
-		this._toLoad = isNaN(+val) ? 0 : +val;
-	}
-
-	public set loaded(val: number) {
-		this._loaded = isNaN(+val) ? 0 : +val;
+	public setResources(resources: Resource[]) {
+		this.resources = resources;
+		this.toLoad = this.resources.length;
+		this.loaded = 0;
 	}
 
 	public init(resources: Resource[] = []) {
 		this.resources = resources;
-
 		this._setLoaders();
 	}
 }

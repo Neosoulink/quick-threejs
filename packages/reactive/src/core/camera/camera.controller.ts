@@ -1,25 +1,18 @@
 import { inject, singleton } from "tsyringe";
-import { Subject } from "rxjs";
-import { Euler, Quaternion } from "three";
+import { filter, Observable } from "rxjs";
 
 import { CameraComponent } from "./camera.component";
+import { TimerController } from "../timer/timer.controller";
+import type { StepPayload } from "../../common/interfaces/event.interface";
 @singleton()
 export class CameraController {
-	private readonly quaternion$$ = new Subject<Quaternion>();
-
-	public readonly quaternion$ = this.quaternion$$.pipe();
-
+	public step$: Observable<StepPayload>;
 	constructor(
-		@inject(CameraComponent) private readonly component: CameraComponent
-	) {}
-
-	private updateQuaternion() {
-		if (this.component.instance)
-			this.quaternion$$.next(this.component.instance.quaternion);
-	}
-
-	public setRotation(rotation: Euler) {
-		this.component.rotation = rotation;
-		this.updateQuaternion();
+		@inject(CameraComponent) private readonly component: CameraComponent,
+		@inject(TimerController) private readonly timerController: TimerController
+	) {
+		this.step$ = this.timerController.step$.pipe(
+			filter(() => this.component.enabled)
+		);
 	}
 }
