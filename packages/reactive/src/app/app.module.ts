@@ -158,11 +158,11 @@ export class AppModule implements Module {
 	}
 
 	public resize$() {
-		return this.resize$;
+		return this.controller.resize$;
 	}
 
 	public canvasResize$() {
-		return this.canvasResize$;
+		return this.controller.canvasResize$;
 	}
 
 	public dispose(): void {
