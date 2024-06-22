@@ -11,7 +11,10 @@ import { CameraModule } from "./camera/camera.module";
 import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
-import type { CoreModuleMessageEvent } from "./core.interface";
+import type {
+	CoreModuleMessageEvent,
+	CoreModuleMessageEventData
+} from "./core.interface";
 import type { Module } from "../common/interfaces/module.interface";
 import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 
@@ -29,11 +32,18 @@ export class CoreModule implements Module, WorkerThreadModule {
 		self.onmessage = (event: CoreModuleMessageEvent) => {
 			const canvas = event?.data?.canvas;
 			const startTimer = !!event?.data?.startTimer;
-			const useDefaultCamera = event?.data?.useDefaultCamera;
-			const withMiniCamera = event?.data?.withMiniCamera;
+			const useDefaultCamera = !!event?.data?.useDefaultCamera;
+			const withMiniCamera = !!event?.data?.withMiniCamera;
+			const fullScreen = !!event?.data?.fullScreen;
 
 			if (canvas && !this.component.initialized)
-				this.init({ canvas, startTimer, useDefaultCamera, withMiniCamera });
+				this.init({
+					canvas,
+					startTimer,
+					useDefaultCamera,
+					withMiniCamera,
+					fullScreen
+				});
 		};
 	}
 
@@ -41,7 +51,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 		return this.component.initialized;
 	}
 
-	public init(props: CoreModuleMessageEvent["data"]): void {
+	public init(props: CoreModuleMessageEventData): void {
 		if (!props.canvas) return;
 
 		props.canvas["style"] = {

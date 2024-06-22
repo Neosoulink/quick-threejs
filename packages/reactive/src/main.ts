@@ -35,11 +35,9 @@ export const register = (props: RegisterDto) => {
 
 if (process.env.NODE_ENV === "development") {
 	const canvas = document.createElement("canvas");
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
 
 	register({
 		canvas,
-		location: new URL("./main.worker.ts", import.meta.url) as unknown as string
+		location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
 	});
 }

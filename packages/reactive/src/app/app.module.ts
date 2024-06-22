@@ -7,13 +7,13 @@ import { LoaderModule } from "../loader/loader.module";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedCoreModule } from "../core/core.module-worker";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
+import { RegisterDto } from "../common/dtos/register.dto";
 import type { Module } from "../common/interfaces/module.interface";
 import type {
 	ProgressedResource,
 	Resource
 } from "../common/interfaces/resource.interface";
-import { RegisterDto } from "../common/dtos/register.dto";
-import type { CoreModuleMessageEvent } from "../core/core.interface";
+import type { CoreModuleMessageEventData } from "../core/core.interface";
 
 @singleton()
 export class AppModule implements Module {
@@ -61,8 +61,9 @@ export class AppModule implements Module {
 					canvas: offscreenCanvas,
 					startTimer: this.props.startTimer,
 					useDefaultCamera: this.props.useDefaultCamera,
-					withMiniCamera: this.props.withMiniCamera
-				} satisfies CoreModuleMessageEvent["data"],
+					withMiniCamera: this.props.withMiniCamera,
+					fullScreen: this.props.fullScreen
+				} satisfies CoreModuleMessageEventData,
 				transferSubject: [offscreenCanvas]
 			}
 		});
@@ -77,9 +78,15 @@ export class AppModule implements Module {
 	private _initController(): void {
 		this.controller.init(this.component.canvas);
 
-		this.controller.canvasResize$.subscribe((sizes) =>
-			this.component.core.thread?.setSize(sizes)
-		);
+		this.controller[
+			this.props.fullScreen ? "resize$" : "canvasResize$"
+		].subscribe((sizes) => this.component.core.thread?.setSize(sizes));
+
+		if (this.props.fullScreen)
+			this.component.core.thread?.setSize({
+				x: window.innerWidth,
+				y: window.innerHeight
+			});
 	}
 
 	public init(): void {

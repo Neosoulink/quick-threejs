@@ -1,7 +1,9 @@
+import { RegisterDto } from "../common/dtos/register.dto";
+
+export interface CoreModuleMessageEventData
+	extends Omit<RegisterDto, "canvas" | "location"> {
+	canvas?: OffscreenCanvas;
+}
+
 export interface CoreModuleMessageEvent
-	extends MessageEvent<{
-		canvas?: OffscreenCanvas;
-		startTimer?: boolean;
-		useDefaultCamera?: boolean;
-		withMiniCamera?: boolean;
-	}> {}
+	extends MessageEvent<CoreModuleMessageEventData> {}
