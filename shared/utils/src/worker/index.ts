@@ -12,11 +12,11 @@ import {
 /**
  * @internal
  */
-class _WorkerPool {
+class WorkerPool {
 	private _workerThreads: WorkerThread[] = [];
 	private _taskQueue: WorkerThreadTask[] = [];
 
-	constructor(@inject(_WorkerPool.name) private readonly _maxWorkers: number) {
+	constructor(@inject(WorkerPool.name) private readonly _maxWorkers: number) {
 		for (let i = 0; i < this._maxWorkers; i++) {
 			const workerThread = new WorkerThread({
 				complete: () => this._handleWorkerMessage(workerThread),
@@ -101,11 +101,11 @@ class _WorkerPool {
 	}
 }
 
-export const WorkerPool = (maxWorkers?: number) => {
-	container.register(_WorkerPool.name, {
+export const workerPool = (maxWorkers?: number) => {
+	container.register(WorkerPool.name, {
 		useValue: maxWorkers || getSafeAvailableCoresNumber()
 	});
-	return container.resolve(_WorkerPool);
+	return container.resolve(WorkerPool);
 };
 
 export * from "./worker-thread";

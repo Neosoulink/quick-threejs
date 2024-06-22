@@ -1,29 +1,25 @@
 import { inject, singleton } from "tsyringe";
 import { registerSerializer } from "threads";
-import { WorkerPool } from "@quick-threejs/utils";
-import { WorkerThreadResolution } from "@quick-threejs/utils/dist/types/worker.type";
 
 import { AppController } from "./app.controller";
+import { AppComponent } from "./app.component";
+import { LoaderModule } from "../loader/loader.module";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedCoreModule } from "../core/core.module-worker";
-import { LoaderModule } from "../loader/loader.module";
-import { Module } from "../common/interfaces/module.interface";
-import {
+import { object3DSerializer } from "../common/serializers/object3d.serializer";
+import type { Module } from "../common/interfaces/module.interface";
+import type {
 	ProgressedResource,
 	Resource
 } from "../common/interfaces/resource.interface";
-import { object3DSerializer } from "../common/serializers/object3d.serializer";
 import { RegisterDto } from "../common/dtos/register.dto";
-import { CoreModuleMessageEvent } from "../core/core.interface";
+import type { CoreModuleMessageEvent } from "../core/core.interface";
 
 @singleton()
 export class AppModule implements Module {
-	private _workerPool = WorkerPool();
-	private _canvas!: HTMLCanvasElement;
-	private _core!: WorkerThreadResolution<ExposedCoreModule>;
-
 	constructor(
 		@inject(RegisterDto) private readonly props: RegisterDto,
+		@inject(AppComponent) private readonly component: AppComponent,
 		@inject(AppController) private readonly controller: AppController
 	) {
 		this.init();
@@ -31,18 +27,20 @@ export class AppModule implements Module {
 
 	private _initCanvas() {
 		try {
-			this._canvas = document.createElement("canvas");
+			this.component.canvas = document.createElement("canvas");
 
 			if (this.props.canvas instanceof HTMLCanvasElement)
-				this._canvas = this.props.canvas;
+				this.component.canvas = this.props.canvas;
 
 			if (typeof this.props.canvas === "string") {
 				const canvas_ = document.querySelector(this.props.canvas as string);
 
-				if (canvas_ instanceof HTMLCanvasElement) this._canvas = canvas_;
+				if (canvas_ instanceof HTMLCanvasElement)
+					this.component.canvas = canvas_;
 			}
 
-			if (!this._canvas.parentElement) document.body.appendChild(this._canvas);
+			if (!this.component.canvas.parentElement)
+				document.body.appendChild(this.component.canvas);
 		} catch (err: any) {
 			console.error(
 				`🛑 Unable to initialize the canvas:\n${err?.message ?? "Something went wrong"}`
@@ -51,12 +49,12 @@ export class AppModule implements Module {
 	}
 
 	private async _initCore() {
-		const offscreenCanvas = this._canvas.transferControlToOffscreen();
+		const offscreenCanvas = this.component.canvas.transferControlToOffscreen();
 		offscreenCanvas["style"] = { width: "0", height: "0" };
-		offscreenCanvas.width = this._canvas.clientWidth;
-		offscreenCanvas.height = this._canvas.clientHeight;
+		offscreenCanvas.width = this.component.canvas.clientWidth;
+		offscreenCanvas.height = this.component.canvas.clientHeight;
 
-		const core = await this._workerPool.run<ExposedCoreModule>({
+		const core = await this.component.workerPool.run<ExposedCoreModule>({
 			payload: {
 				path: this.props.location,
 				subject: {
@@ -70,17 +68,17 @@ export class AppModule implements Module {
 		});
 
 		if (core.thread && core.worker) {
-			this._core = core;
+			this.component.core = core;
 
 			this._initController();
 		}
 	}
 
 	private _initController(): void {
-		this.controller.init(this._canvas);
+		this.controller.init(this.component.canvas);
 
 		this.controller.canvasResize$.subscribe((sizes) =>
-			this._core.thread?.setSize(sizes)
+			this.component.core.thread?.setSize(sizes)
 		);
 	}
 
@@ -91,6 +89,10 @@ export class AppModule implements Module {
 		this._initCore();
 	}
 
+	public workerPool() {
+		return this.component.workerPool;
+	}
+
 	public async loadResources(props: {
 		resources: Resource[];
 		disposeOnComplete?: boolean;
@@ -99,14 +101,15 @@ export class AppModule implements Module {
 		onProgress?: (resource: ProgressedResource) => unknown;
 		onProgressComplete?: (resource: ProgressedResource) => unknown;
 	}) {
-		const loaderWorkerThread = await this._workerPool.run<ExposedLoaderModule>({
-			payload: {
-				path: new URL("../loader/loader.module-worker.ts", import.meta.url),
-				subject: {
-					resources: props.resources
+		const loaderWorkerThread =
+			await this.component.workerPool.run<ExposedLoaderModule>({
+				payload: {
+					path: new URL("../loader/loader.module-worker.ts", import.meta.url),
+					subject: {
+						resources: props.resources
+					}
 				}
-			}
-		});
+			});
 
 		loaderWorkerThread.thread
 			?.progress$()
@@ -146,7 +149,23 @@ export class AppModule implements Module {
 		};
 	}
 
+	public core() {
+		return this.component.core;
+	}
+
+	public canvas() {
+		return this.component.canvas;
+	}
+
+	public resize$() {
+		return this.resize$;
+	}
+
+	public canvasResize$() {
+		return this.canvasResize$;
+	}
+
 	public dispose(): void {
-		this._workerPool.terminateAll();
+		this.component.workerPool.terminateAll();
 	}
 }

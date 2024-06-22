@@ -26,4 +26,7 @@ export class RegisterDto {
 
 	/** @description */
 	withMiniCamera?: boolean;
+
+	/** @description */
+	fullScreen?: boolean;
 }

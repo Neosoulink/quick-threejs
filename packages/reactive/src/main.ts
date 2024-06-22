@@ -26,6 +26,8 @@ export const register = (props: RegisterDto) => {
 	registerProps.withMiniCamera = !!props.withMiniCamera;
 	registerProps.startTimer =
 		props.startTimer === undefined ? true : props.startTimer;
+	registerProps.fullScreen =
+		props.fullScreen === undefined ? true : props.fullScreen;
 
 	container.register(RegisterDto, { useValue: registerProps });
 	return container.resolve(AppModule);
@@ -38,9 +40,6 @@ if (process.env.NODE_ENV === "development") {
 
 	register({
 		canvas,
-		location: new URL(
-			"./main.worker.ts",
-			import.meta.url
-		) as unknown as string
+		location: new URL("./main.worker.ts", import.meta.url) as unknown as string
 	});
 }
