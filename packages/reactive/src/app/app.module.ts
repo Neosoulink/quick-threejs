@@ -1,5 +1,6 @@
 import { inject, singleton } from "tsyringe";
 import { registerSerializer } from "threads";
+import { WorkerPool } from "@quick-threejs/utils";
 
 import { AppController } from "./app.controller";
 import { AppComponent } from "./app.component";
@@ -48,9 +49,27 @@ export class AppModule implements Module {
 		}
 	}
 
+	private _initComponent(core: AppComponent["core"]) {
+		this.component.init(core);
+	}
+
+	private _initController(): void {
+		this.controller.init(this.component.canvas);
+
+		if (this.props.fullScreen)
+			this.component.core.thread?.resize?.({
+				type: "resize",
+				x: this.props.fullScreen
+					? window.innerWidth
+					: this.component.canvas.width,
+				y: this.props.fullScreen
+					? window.innerHeight
+					: this.component.canvas.height
+			});
+	}
+
 	private async _initCore() {
 		const offscreenCanvas = this.component.canvas.transferControlToOffscreen();
-		offscreenCanvas["style"] = { width: "0", height: "0" };
 		offscreenCanvas.width = this.component.canvas.clientWidth;
 		offscreenCanvas.height = this.component.canvas.clientHeight;
 
@@ -68,25 +87,10 @@ export class AppModule implements Module {
 			}
 		});
 
-		if (core.thread && core.worker) {
-			this.component.core = core;
+		if (!core.thread || !core.worker) return;
 
-			this._initController();
-		}
-	}
-
-	private _initController(): void {
-		this.controller.init(this.component.canvas);
-
-		this.controller[
-			this.props.fullScreen ? "resize$" : "canvasResize$"
-		].subscribe((sizes) => this.component.core.thread?.setSize(sizes));
-
-		if (this.props.fullScreen)
-			this.component.core.thread?.setSize({
-				x: window.innerWidth,
-				y: window.innerHeight
-			});
+		this._initComponent(core);
+		this._initController();
 	}
 
 	public init(): void {
@@ -97,7 +101,7 @@ export class AppModule implements Module {
 	}
 
 	public workerPool() {
-		return this.component.workerPool;
+		return this.component.workerPool as unknown as WorkerPool;
 	}
 
 	public async loadResources(props: {
@@ -165,11 +169,7 @@ export class AppModule implements Module {
 	}
 
 	public resize$() {
-		return this.controller.resize$;
-	}
-
-	public canvasResize$() {
-		return this.controller.canvasResize$;
+		return this.controller.observablesHandlers.resize$;
 	}
 
 	public dispose(): void {

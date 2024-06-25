@@ -13,7 +13,7 @@ export class SizesController {
 		@inject(CoreController) private readonly coreController: CoreController,
 		@inject(SizesComponent) private readonly component: SizesComponent
 	) {
-		this.resize$ = this.coreController.resize$.pipe(
+		this.resize$ = this.coreController.resize$$.pipe(
 			filter(() => this.component.enabled)
 		);
 	}

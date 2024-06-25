@@ -9,10 +9,7 @@ import {
 } from "../types/worker.type";
 
 @singleton()
-/**
- * @internal
- */
-class WorkerPool {
+export class WorkerPool {
 	private _workerThreads: WorkerThread[] = [];
 	private _taskQueue: WorkerThreadTask[] = [];
 
@@ -101,7 +98,7 @@ class WorkerPool {
 	}
 }
 
-export const workerPool = (maxWorkers?: number) => {
+export const createWorkerPool = (maxWorkers?: number) => {
 	container.register(WorkerPool.name, {
 		useValue: maxWorkers || getSafeAvailableCoresNumber()
 	});

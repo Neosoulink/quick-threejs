@@ -34,10 +34,7 @@ export const register = (props: RegisterDto) => {
 };
 
 if (process.env.NODE_ENV === "development") {
-	const canvas = document.createElement("canvas");
-
 	register({
-		canvas,
-		location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
+		location: new URL("./main.worker.ts", import.meta.url) as unknown as string
 	});
 }

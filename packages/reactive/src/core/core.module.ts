@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
 import { Vector2Like } from "three";
-import { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import type { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
 
 import { CoreController } from "./core.controller";
 import { CoreComponent } from "./core.component";
@@ -11,12 +11,14 @@ import { CameraModule } from "./camera/camera.module";
 import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
+import { DebugModule } from "./debug/debug.module";
 import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
 } from "./core.interface";
 import type { Module } from "../common/interfaces/module.interface";
 import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
+import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
 
 @singleton()
 export class CoreModule implements Module, WorkerThreadModule {
@@ -27,8 +29,11 @@ export class CoreModule implements Module, WorkerThreadModule {
 		@inject(SizesModule) public readonly sizes: SizesModule,
 		@inject(CameraModule) public readonly camera: CameraModule,
 		@inject(WorldModule) public readonly world: WorldModule,
-		@inject(RendererModule) public readonly renderer: RendererModule
+		@inject(RendererModule) public readonly renderer: RendererModule,
+		@inject(DebugModule) public readonly debug: DebugModule
 	) {
+		this._initProxyEvents();
+
 		self.onmessage = (event: CoreModuleMessageEvent) => {
 			const canvas = event?.data?.canvas;
 			const startTimer = !!event?.data?.startTimer;
@@ -51,31 +56,36 @@ export class CoreModule implements Module, WorkerThreadModule {
 		return this.component.initialized;
 	}
 
-	public init(props: CoreModuleMessageEventData): void {
+	public init(props: CoreModuleMessageEventData) {
 		if (!props.canvas) return;
 
 		props.canvas["style"] = {
 			width: props.canvas.width + "",
 			height: props.canvas.height + ""
 		};
+		const canvas = props.canvas as OffscreenCanvasWithStyle;
 
-		this.sizes.init(props.canvas as OffscreenCanvasWithStyle);
+		this.component.canvas = canvas;
+		this.sizes.init(canvas);
 		this.timer.init(props.startTimer);
 		this.camera.init(props.useDefaultCamera, props.withMiniCamera);
 		this.world.init();
-		this.renderer.init(props.canvas as OffscreenCanvasWithStyle);
-
-		this.setSize({ x: props.canvas.width, y: props.canvas.height });
+		this.renderer.init(canvas);
+		this.debug.init();
 
 		this.controller.lifecycle$$.next(true);
 		this.component.initialized = true;
 	}
 
-	public setSize(sizes: Vector2Like): void {
-		this.controller.resize(sizes);
+	private _initProxyEvents() {
+		PROXY_EVENT_LISTENERS.forEach((key) => {
+			this[key] = (sizes: Vector2Like) => {
+				this.controller?.[key]?.(sizes);
+			};
+		});
 	}
 
-	public dispose(): void {
+	public dispose() {
 		this.timer.dispose();
 		this.camera.dispose();
 		this.renderer.dispose();
@@ -85,7 +95,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 	}
 
 	public lifecycle$() {
-		return this.controller.lifecycle$;
+		return this.controller.lifecycle$$.pipe();
 	}
 }
 

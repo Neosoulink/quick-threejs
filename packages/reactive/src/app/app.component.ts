@@ -1,13 +1,17 @@
 import { singleton } from "tsyringe";
-import { workerPool } from "@quick-threejs/utils";
+import { createWorkerPool, WorkerPool } from "@quick-threejs/utils";
 import { WorkerThreadResolution } from "@quick-threejs/utils/dist/types/worker.type";
 
 import { ExposedCoreModule } from "../core/core.module-worker";
 
 @singleton()
 export class AppComponent {
-	public readonly workerPool = workerPool();
+	public readonly workerPool = createWorkerPool() as unknown as WorkerPool;
 
 	public canvas!: HTMLCanvasElement;
 	public core!: WorkerThreadResolution<ExposedCoreModule>;
+
+	init(core: typeof this.core) {
+		this.core = core;
+	}
 }

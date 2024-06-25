@@ -89,3 +89,17 @@ export const recursiveDeserializeJSON = (obj: any) => {
 		}
 	}
 };
+
+export const copyProperties = <T, U>(src: T, properties: (keyof U)[]) => {
+	const dst = {
+		// @ts-ignore
+		type: src?.type
+	} as U & { type?: string };
+
+	for (const name of properties) {
+		const srcVal = src[name as any];
+		if (typeof srcVal !== "undefined") dst[name] = srcVal;
+	}
+
+	return dst;
+};
