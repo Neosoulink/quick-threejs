@@ -38,7 +38,7 @@ export class DebugComponent {
 
 	setCameraOrbitControl() {
 		if (this.cameraControls) {
-			this.cameraControls.dispose();
+			this.cameraControls?.dispose();
 			this.cameraControls = undefined;
 		}
 
@@ -51,7 +51,7 @@ export class DebugComponent {
 				this.coreComponent.proxyReceiver as unknown as HTMLElement
 			);
 
-			this.cameraControls.enableDamping = true;
+			if (this.cameraControls) this.cameraControls.enableDamping = true;
 		}
 	}
 

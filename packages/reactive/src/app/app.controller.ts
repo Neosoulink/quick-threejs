@@ -41,7 +41,7 @@ export class AppController {
 
 			this[`${eventKey}$`] = fromEvent<MouseEvent>(
 				eventKey === "resize" ? window : canvas,
-				eventKey
+				eventKey,
 			)
 				.pipe(
 					// @ts-ignore

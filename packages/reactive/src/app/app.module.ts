@@ -56,16 +56,24 @@ export class AppModule implements Module {
 	private _initController(): void {
 		this.controller.init(this.component.canvas);
 
-		if (this.props.fullScreen)
-			this.component.core.thread?.resize?.({
-				type: "resize",
-				x: this.props.fullScreen
-					? window.innerWidth
-					: this.component.canvas.width,
-				y: this.props.fullScreen
-					? window.innerHeight
-					: this.component.canvas.height
-			});
+		const rect = this.component.canvas.getBoundingClientRect();
+		this.component.core.thread?.resize?.({
+			type: "resize",
+			x: this.props.fullScreen
+				? window.innerWidth
+				: this.component.canvas.width,
+			y: this.props.fullScreen
+				? window.innerHeight
+				: this.component.canvas.height,
+			top: rect.top,
+			left: rect.left,
+			width: this.props.fullScreen
+				? window.innerWidth
+				: this.component.canvas.width,
+			height: this.props.fullScreen
+				? window.innerHeight
+				: this.component.canvas.height
+		});
 	}
 
 	private async _initCore() {

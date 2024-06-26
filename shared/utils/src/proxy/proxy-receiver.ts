@@ -1,7 +1,5 @@
 import { BaseEvent, EventDispatcher } from "three";
 
-const noop = () => {};
-
 export class ProxyReceiver<
 	T extends Record<string, any>
 > extends EventDispatcher<T> {
@@ -18,15 +16,23 @@ export class ProxyReceiver<
 		this.handleEvent = this.handleEvent.bind(this);
 	}
 
-	setPointerCapture() {}
+	public get clientWidth() {
+		return this.width;
+	}
 
-	releasePointerCapture() {}
+	public get clientHeight() {
+		return this.height;
+	}
 
-	getRootNode() {
+	public setPointerCapture() {}
+
+	public releasePointerCapture() {}
+
+	public getRootNode() {
 		return this;
 	}
 
-	getBoundingClientRect() {
+	public getBoundingClientRect() {
 		return {
 			left: this.left,
 			top: this.top,
@@ -37,7 +43,7 @@ export class ProxyReceiver<
 		};
 	}
 
-	handleEvent<TEvent extends Extract<keyof T, string>>(
+	public handleEvent<TEvent extends Extract<keyof T, string>>(
 		event: BaseEvent<TEvent> & T[TEvent]
 	) {
 		if (event.type === "resize") {
@@ -48,8 +54,8 @@ export class ProxyReceiver<
 			return;
 		}
 
-		event.preventDefault = noop;
-		event.stopPropagation = noop;
+		event.preventDefault = () => {};
+		event.stopPropagation = () => {};
 
 		this.dispatchEvent(event);
 	}
