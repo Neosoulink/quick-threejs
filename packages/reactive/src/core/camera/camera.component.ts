@@ -78,7 +78,8 @@ export class CameraComponent {
 			0.1,
 			500
 		);
-		this.miniCamera.position.z = 8;
+		this.miniCamera.position.z = 10;
+		this.miniCamera.position.x = -5;
 	}
 
 	public removeCamera() {

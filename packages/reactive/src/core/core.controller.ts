@@ -1,15 +1,17 @@
 import { inject, singleton } from "tsyringe";
-
 import { Subject } from "rxjs";
 import { Vector2Like } from "three";
+
 import { CoreComponent } from "./core.component";
 import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
+import { LifecycleState } from "../common/enums/lifecycle.enum";
 
 @singleton()
 export class CoreController {
 	[x: string]: any;
 
-	public readonly lifecycle$$ = new Subject<boolean>();
+	public readonly lifecycle$$ = new Subject<LifecycleState>();
+	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(
 		@inject(CoreComponent) private readonly component: CoreComponent

@@ -18,23 +18,22 @@ export const register = (props: RegisterDto) => {
 			"Invalid register props detected. location path is required"
 		);
 
-	const registerProps = new RegisterDto();
-	registerProps.canvas = props.canvas;
-	registerProps.location = props.location;
-	registerProps.useDefaultCamera =
+	props.useDefaultCamera =
 		props.useDefaultCamera === undefined ? true : props.useDefaultCamera;
-	registerProps.withMiniCamera = !!props.withMiniCamera;
-	registerProps.startTimer =
-		props.startTimer === undefined ? true : props.startTimer;
-	registerProps.fullScreen =
-		props.fullScreen === undefined ? true : props.fullScreen;
+	props.withMiniCamera = !!props.withMiniCamera;
+	props.startTimer = props.startTimer === undefined ? true : props.startTimer;
+	props.fullScreen = props.fullScreen === undefined ? true : props.fullScreen;
 
-	container.register(RegisterDto, { useValue: registerProps });
+	container.register(RegisterDto, { useValue: props });
 	return container.resolve(AppModule);
 };
 
 if (process.env.NODE_ENV === "development") {
 	register({
 		location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
+		enableDebug: true,
+		axesSizes: 5,
+		gridSizes: 10,
+		withMiniCamera: true
 	});
 }

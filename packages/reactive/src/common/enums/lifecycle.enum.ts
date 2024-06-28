@@ -1,0 +1,6 @@
+export enum LifecycleState {
+	INITIALIZED,
+	UPDATE_STARTED,
+	UPDATE_ENDED,
+	DISPOSED
+}

@@ -1,24 +1,28 @@
-import { SRGBColorSpace, WebGLRenderer } from "three";
+import { Camera, SRGBColorSpace, WebGLRenderer } from "three";
 import { inject, singleton } from "tsyringe";
 
 import { WorldComponent } from "../world/world.component";
 import { CameraComponent } from "../camera/camera.component";
 import type { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
+import { SizesComponent } from "../sizes/sizes.component";
+import { DebugComponent } from "../debug/debug.component";
 
 @singleton()
 export class RendererComponent {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 
 	public enabled = true;
-	public renderer?: WebGLRenderer;
+	public instance?: WebGLRenderer;
 
 	constructor(
 		@inject(WorldComponent) private readonly worldComponent: WorldComponent,
-		@inject(CameraComponent) private readonly cameraComponent: CameraComponent
+		@inject(CameraComponent) private readonly cameraComponent: CameraComponent,
+		@inject(SizesComponent) private readonly sizesComponent: SizesComponent,
+		@inject(DebugComponent) private readonly debugComponent: DebugComponent
 	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
-		this.renderer = new WebGLRenderer({
+		this.instance = new WebGLRenderer({
 			canvas,
 			context: canvas.getContext("webgl2", {
 				stencil: true,
@@ -28,24 +32,57 @@ export class RendererComponent {
 			depth: true,
 			antialias: true
 		});
-		this.renderer.autoClear = false;
-		this.renderer.setPixelRatio(RendererComponent.RENDERER_PIXEL_RATIO);
-		this.renderer.setClearColor(0x000000, 0);
-		this.renderer.shadowMap.enabled = false;
-		this.renderer.outputColorSpace = SRGBColorSpace;
+		this.instance.autoClear = false;
+		this.instance.setPixelRatio(RendererComponent.RENDERER_PIXEL_RATIO);
+		this.instance.setClearColor(0x000000, 0);
+		this.instance.shadowMap.enabled = false;
+		this.instance.outputColorSpace = SRGBColorSpace;
 	}
 
 	public setSize(width: number, height: number) {
-		this.renderer?.setSize(width, height);
+		this.instance?.setSize(width, height);
 	}
 
 	public render() {
-		if (!this.cameraComponent.instance) return;
+		if (
+			!(
+				this.enabled &&
+				this.cameraComponent.instance instanceof Camera &&
+				this.instance instanceof WebGLRenderer
+			)
+		)
+			return;
 
-		this.renderer?.clear();
-		this.renderer?.render(
+		this.instance.setViewport(
+			0,
+			0,
+			this.sizesComponent.width,
+			this.sizesComponent.height
+		);
+		this.instance.render(
 			this.worldComponent.scene,
 			this.cameraComponent.instance
 		);
+
+		if (this.debugComponent.enabled && this.cameraComponent.miniCamera) {
+			this.instance.setScissorTest(true);
+			this.instance.setViewport(
+				this.sizesComponent.width - this.sizesComponent.width / 3,
+				this.sizesComponent.height - this.sizesComponent.height / 3,
+				this.sizesComponent.width / 3,
+				this.sizesComponent.height / 3
+			);
+			this.instance.setScissor(
+				this.sizesComponent.width - this.sizesComponent.width / 3,
+				this.sizesComponent.height - this.sizesComponent.height / 3,
+				this.sizesComponent.width / 3,
+				this.sizesComponent.height / 3
+			);
+			this.instance.render(
+				this.worldComponent.scene,
+				this.cameraComponent.miniCamera
+			);
+			this.instance.setScissorTest(false);
+		}
 	}
 }

@@ -10,13 +10,17 @@ export class DebugModule implements Module {
 	constructor(
 		@inject(DebugComponent) public readonly component: DebugComponent,
 		@inject(DebugController) public readonly controller: DebugController
-	) {}
-
-	public init() {
-		this.component.setCameraOrbitControl();
+	) {
+		this.controller.step$.subscribe(() => {
+			this.component.update();
+		});
 	}
 
-	dispose() {
-		throw new Error("Method not implemented.");
+	public init(props?: Parameters<DebugComponent["init"]>[0]) {
+		this.component.init(props);
+	}
+
+	public dispose() {
+		this.component.dispose();
 	}
 }

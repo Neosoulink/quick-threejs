@@ -1,6 +1,6 @@
 import { inject, singleton } from "tsyringe";
 import { registerSerializer } from "threads";
-import { WorkerPool } from "@quick-threejs/utils";
+import { excludeProperties, WorkerPool } from "@quick-threejs/utils";
 
 import { AppController } from "./app.controller";
 import { AppComponent } from "./app.component";
@@ -15,6 +15,7 @@ import type {
 	Resource
 } from "../common/interfaces/resource.interface";
 import type { CoreModuleMessageEventData } from "../core/core.interface";
+import { LifecycleState } from "../common/enums/lifecycle.enum";
 
 @singleton()
 export class AppModule implements Module {
@@ -74,6 +75,15 @@ export class AppModule implements Module {
 				? window.innerHeight
 				: this.component.canvas.height
 		});
+
+		this.component.core.thread
+			?.lifecycle$()
+			.subscribe((state: LifecycleState) => {
+				if (state === LifecycleState.UPDATE_STARTED)
+					this.component.stats?.begin();
+
+				if (state === LifecycleState.UPDATE_ENDED) this.component.stats?.end();
+			});
 	}
 
 	private async _initCore() {
@@ -85,11 +95,8 @@ export class AppModule implements Module {
 			payload: {
 				path: this.props.location,
 				subject: {
-					canvas: offscreenCanvas,
-					startTimer: this.props.startTimer,
-					useDefaultCamera: this.props.useDefaultCamera,
-					withMiniCamera: this.props.withMiniCamera,
-					fullScreen: this.props.fullScreen
+					...excludeProperties(this.props, ["canvas", "location"]),
+					canvas: offscreenCanvas
 				} satisfies CoreModuleMessageEventData,
 				transferSubject: [offscreenCanvas]
 			}

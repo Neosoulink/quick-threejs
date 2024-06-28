@@ -12,13 +12,14 @@ import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
+import { LifecycleState } from "../common/enums/lifecycle.enum";
+import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
+import type { Module } from "../common/interfaces/module.interface";
+import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
 } from "./core.interface";
-import type { Module } from "../common/interfaces/module.interface";
-import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
-import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
 
 @singleton()
 export class CoreModule implements Module, WorkerThreadModule {
@@ -35,15 +36,14 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this._initProxyEvents();
 
 		self.onmessage = (event: CoreModuleMessageEvent) => {
-			const canvas = event?.data?.canvas;
-			const startTimer = !!event?.data?.startTimer;
-			const useDefaultCamera = !!event?.data?.useDefaultCamera;
-			const withMiniCamera = !!event?.data?.withMiniCamera;
-			const fullScreen = !!event?.data?.fullScreen;
+			const startTimer = !!event.data?.startTimer;
+			const useDefaultCamera = !!event.data?.useDefaultCamera;
+			const withMiniCamera = !!event.data?.withMiniCamera;
+			const fullScreen = !!event.data?.fullScreen;
 
-			if (canvas && !this.component.initialized)
+			if (event.data?.canvas && !this.component.initialized)
 				this.init({
-					canvas,
+					...event.data,
 					startTimer,
 					useDefaultCamera,
 					withMiniCamera,
@@ -57,7 +57,8 @@ export class CoreModule implements Module, WorkerThreadModule {
 	}
 
 	public init(props: CoreModuleMessageEventData) {
-		if (!props.canvas) return;
+		if (!props.canvas || this.component.initialized) return;
+		this.component.initialized = true;
 
 		props.canvas["style"] = {
 			width: props.canvas.width + "",
@@ -71,10 +72,9 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.camera.init(props.useDefaultCamera, props.withMiniCamera);
 		this.world.init();
 		this.renderer.init(canvas);
-		this.debug.init();
+		this.debug.init(props);
 
-		this.controller.lifecycle$$.next(true);
-		this.component.initialized = true;
+		this.controller.lifecycle$$.next(LifecycleState.INITIALIZED);
 	}
 
 	private _initProxyEvents() {
@@ -91,11 +91,12 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.renderer.dispose();
 		this.sizes.dispose();
 		this.world.dispose();
+		this.controller.lifecycle$$.next(LifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 	}
 
 	public lifecycle$() {
-		return this.controller.lifecycle$$.pipe();
+		return this.controller.lifecycle$;
 	}
 }
 
