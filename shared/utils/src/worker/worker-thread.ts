@@ -41,7 +41,7 @@ export class WorkerThread<
 				...options?.worker
 			});
 			this.thread = await spawn<T>(this.worker, {
-				timeout: 5000,
+				timeout: 10000,
 				...options?.spawn
 			});
 			const threadLifecycle = this.thread?.lifecycle$?.();
