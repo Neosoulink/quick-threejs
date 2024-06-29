@@ -90,13 +90,13 @@ export const recursiveDeserializeJSON = (obj: any) => {
 	}
 };
 
-export const copyProperties = <T extends object, U>(
+export const copyProperties = <T extends object, U extends keyof T = keyof T>(
 	src: T,
-	properties: (keyof U)[]
+	properties: U[]
 ) => {
 	const dst = {
 		type: (src as any)?.type
-	} as U & { type?: string };
+	} as Pick<T, U> & { type?: string };
 
 	for (const name of properties)
 		if (src[name as any] !== undefined) dst[name] = src[name as any];
