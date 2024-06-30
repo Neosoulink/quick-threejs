@@ -11,7 +11,7 @@
 		"@vercel/style-guide": "^5.2.0",
 		"eslint": "^8.45.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-config-turbo": "^2.0.0",
+		"eslint-config-turbo": "^2.0.4",
 		"eslint-plugin-only-warn": "^1.1.0",
 		"path": "^0.12.7",
 		"prettier": "^3.3.1",
