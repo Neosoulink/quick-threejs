@@ -1,7 +1,7 @@
-import { RegisterDto } from "../dtos/register.dto";
+import { RegisterPropsModel } from "../models/register-props.model";
 
 export interface CoreModuleMessageEventData
-	extends Omit<RegisterDto, "canvas" | "location"> {
+	extends Omit<RegisterPropsModel, "canvas" | "location"> {
 	/**
 	 * The canvas element based on.
 	 *

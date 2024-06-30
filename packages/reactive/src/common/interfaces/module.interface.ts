@@ -1,4 +1,4 @@
-import type { CoreModule } from "../../core/core.module";
+import type { CoreModule } from "../../modules/app/app.module";
 
 /**
  * @description Module representation.

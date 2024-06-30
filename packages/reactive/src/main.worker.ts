@@ -1,8 +1,6 @@
 import { Mesh, MeshNormalMaterial, TorusKnotGeometry } from "three";
 
-import { launchApp } from "./core/core.module-worker";
-
-export { launchApp };
+import { launchApp } from "./modules/app/app.module-worker";
 
 if (process.env.NODE_ENV === "development") {
 	launchApp({
@@ -28,3 +26,5 @@ if (process.env.NODE_ENV === "development") {
 		}
 	});
 }
+
+export { launchApp };

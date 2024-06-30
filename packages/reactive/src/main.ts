@@ -1,32 +1,6 @@
 import "reflect-metadata";
 
-import { container } from "tsyringe";
-
-import { AppModule } from "./app/app.module";
-import { RegisterDto } from "./common/dtos/register.dto";
-
-/**
- * @description Register the main logic of the app.
- *
- * @important __🏁 Should be called on your main thread. Separated from the core implementation__
- *
- * @param props Quick-three register properties.
- */
-export const register = (props: RegisterDto) => {
-	if (!props?.location)
-		throw new Error(
-			"Invalid register props detected. location path is required"
-		);
-
-	props.useDefaultCamera =
-		props.useDefaultCamera === undefined ? true : props.useDefaultCamera;
-	props.withMiniCamera = !!props.withMiniCamera;
-	props.startTimer = props.startTimer === undefined ? true : props.startTimer;
-	props.fullScreen = props.fullScreen === undefined ? true : props.fullScreen;
-
-	container.register(RegisterDto, { useValue: props });
-	return container.resolve(AppModule);
-};
+import { register } from "./modules/register/register.module";
 
 if (process.env.NODE_ENV === "development") {
 	const app = register({
