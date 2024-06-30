@@ -14,10 +14,12 @@ if (process.env.NODE_ENV === "development") {
 			app.world.scene().add(torus);
 
 			app.resize$?.().subscribe((event) => {
-				console.log(event);
+				console.log(event.type);
 			});
 
-			console.log(app);
+			app.wheel$?.().subscribe((event) => {
+				console.log(event.type);
+			});
 
 			app.timer.step$().subscribe(() => {
 				torus.rotateY(0.1);

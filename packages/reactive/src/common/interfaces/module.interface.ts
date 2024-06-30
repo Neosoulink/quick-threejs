@@ -1,4 +1,4 @@
-import type { CoreModule } from "../../modules/app/app.module";
+import type { AppModule } from "../../modules/app/app.module";
 
 /**
  * @description Module representation.
@@ -32,5 +32,5 @@ export class RegisterProps {
 /** @description `launchApp` initialization properties. */
 export interface LaunchAppProps {
 	/** @description event handler triggered when the app is ready. */
-	onReady?: (app: CoreModule) => unknown;
+	onReady?: (app: AppModule) => unknown;
 }
