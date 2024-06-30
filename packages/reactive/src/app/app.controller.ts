@@ -1,5 +1,5 @@
 import { inject, singleton } from "tsyringe";
-import { fromEvent, map, filter } from "rxjs";
+import { fromEvent, map, filter, Subject } from "rxjs";
 import { copyProperties } from "@quick-threejs/utils";
 
 import { AppComponent } from "./app.component";
@@ -13,6 +13,9 @@ export class AppController {
 	[x: string]: any;
 
 	private canvas!: HTMLCanvasElement;
+
+	public readonly lifecycle$$ = new Subject();
+	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(@inject(AppComponent) private readonly component: AppComponent) {}
 
@@ -41,7 +44,7 @@ export class AppController {
 
 			this[`${eventKey}$`] = fromEvent<MouseEvent>(
 				eventKey === "resize" ? window : canvas,
-				eventKey,
+				eventKey
 			)
 				.pipe(
 					// @ts-ignore
@@ -76,7 +79,7 @@ export class AppController {
 		};
 	}
 
-	public mouseEventHandler(e: MouseEvent) {
+	public mouseEventHandler(e: PointerEvent) {
 		return copyProperties(e, [
 			"ctrlKey",
 			"metaKey",

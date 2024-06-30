@@ -1,13 +1,13 @@
 import { expose, registerSerializer } from "threads/worker";
 import { ExposedWorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import type { WorkerFunction } from "threads/dist/types/worker";
 
 import { CoreModule, coreModule } from "./core.module";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
+import { LifecycleState } from "../common/enums/lifecycle.enum";
+import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
 import type { LaunchAppProps } from "../common/interfaces/module.interface";
 import type { Methods } from "../common/types/object.type";
-import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
-import { WorkerFunction } from "threads/dist/types/worker";
-import { LifecycleState } from "../common/enums/lifecycle.enum";
 
 registerSerializer(object3DSerializer);
 

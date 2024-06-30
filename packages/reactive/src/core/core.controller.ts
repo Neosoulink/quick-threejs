@@ -11,6 +11,7 @@ export class CoreController {
 	[x: string]: any;
 
 	public readonly lifecycle$$ = new Subject<LifecycleState>();
+	public readonly gui$$ = new Subject();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(

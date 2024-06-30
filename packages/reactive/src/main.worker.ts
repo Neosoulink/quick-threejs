@@ -9,6 +9,10 @@ if (process.env.NODE_ENV === "development") {
 		onReady: (app) => {
 			const torus = new Mesh(new TorusKnotGeometry(), new MeshNormalMaterial());
 
+			self.onmessage = (event: MessageEvent) => {
+				if (event.data?.type === "gui-event") console.log(event.data.type);
+			};
+
 			app.world.scene().add(torus);
 
 			app.timer.step$().subscribe(() => {

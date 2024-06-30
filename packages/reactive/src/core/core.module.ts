@@ -35,21 +35,24 @@ export class CoreModule implements Module, WorkerThreadModule {
 	) {
 		this._initProxyEvents();
 
-		self.onmessage = (event: CoreModuleMessageEvent) => {
-			const startTimer = !!event.data?.startTimer;
-			const useDefaultCamera = !!event.data?.useDefaultCamera;
-			const withMiniCamera = !!event.data?.withMiniCamera;
-			const fullScreen = !!event.data?.fullScreen;
+		self.addEventListener("message", this._onMessage.bind(this));
+	}
 
-			if (event.data?.canvas && !this.component.initialized)
-				this.init({
-					...event.data,
-					startTimer,
-					useDefaultCamera,
-					withMiniCamera,
-					fullScreen
-				});
-		};
+	private _onMessage(event: CoreModuleMessageEvent) {
+		if (!event.data?.canvas || this.component.initialized) return;
+
+		const startTimer = !!event.data?.startTimer;
+		const useDefaultCamera = !!event.data?.useDefaultCamera;
+		const withMiniCamera = !!event.data?.withMiniCamera;
+		const fullScreen = !!event.data?.fullScreen;
+
+		this.init({
+			...event.data,
+			startTimer,
+			useDefaultCamera,
+			withMiniCamera,
+			fullScreen
+		});
 	}
 
 	public isInitialized() {
@@ -91,6 +94,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.renderer.dispose();
 		this.sizes.dispose();
 		this.world.dispose();
+		self.removeEventListener("message", this._onMessage.bind(this));
 		this.controller.lifecycle$$.next(LifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 	}

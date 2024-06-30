@@ -106,6 +106,8 @@ export class AppModule implements Module {
 
 		this._initComponent(core);
 		this._initController();
+
+		this.controller.lifecycle$$.next(true);
 	}
 
 	public init(): void {
@@ -183,8 +185,16 @@ export class AppModule implements Module {
 		return this.component.canvas;
 	}
 
+	public gui() {
+		return this.component.gui;
+	}
+
 	public resize$() {
-		return this.controller.observablesHandlers.resize$;
+		return this.controller.resize$;
+	}
+
+	public lifecycle$() {
+		return this.controller.lifecycle$;
 	}
 
 	public dispose(): void {
