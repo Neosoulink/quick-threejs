@@ -1,26 +1,31 @@
 import { inject, singleton } from "tsyringe";
 import { Subject } from "rxjs";
-import { Vector2Like } from "three";
 
 import { CoreComponent } from "./core.component";
+import { ProxyEventHandlersModel } from "../common/models/proxy-event-handler.model";
+import { CoreLifecycleState } from "../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
-import { LifecycleState } from "../common/enums/lifecycle.enum";
 
 @singleton()
-export class CoreController {
-	[x: string]: any;
-
-	public readonly lifecycle$$ = new Subject<LifecycleState>();
+export class CoreController extends ProxyEventHandlersModel {
+	public readonly lifecycle$$ = new Subject<CoreLifecycleState>();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(
 		@inject(CoreComponent) private readonly component: CoreComponent
 	) {
-		for (const eventKey of PROXY_EVENT_LISTENERS) {
-			this[`${eventKey}$$`] = new Subject<Vector2Like>();
-			this[eventKey] = (sizes: Vector2Like) => {
-				this.component.proxyReceiver.handleEvent({ type: eventKey, ...sizes });
-				this[`${eventKey}$$`].next(sizes);
+		super();
+
+		for (const eventType of PROXY_EVENT_LISTENERS) {
+			this[`${eventType}$$`] = new Subject<Event>();
+			this[`${eventType}$`] = this[`${eventType}$$`].pipe();
+
+			this[eventType] = (event: Event) => {
+				this.component.proxyReceiver.handleEvent({
+					...event,
+					type: event.type || eventType
+				});
+				this[`${eventType}$$`].next(event);
 			};
 		}
 	}

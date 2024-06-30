@@ -1,7 +1,6 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import { Vector2Like } from "three";
 import type { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
 
 import { CoreController } from "./core.controller";
@@ -12,17 +11,21 @@ import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
-import { LifecycleState } from "../common/enums/lifecycle.enum";
+import { CoreLifecycleState } from "../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
 import type { Module } from "../common/interfaces/module.interface";
 import type { OffscreenCanvasWithStyle } from "../common/interfaces/canvas.interface";
 import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
-} from "./core.interface";
+} from "../common/interfaces/core.interface";
+import { CoreProxyEventHandlersModel } from "../common/models/core-proxy-event-handler.model";
 
 @singleton()
-export class CoreModule implements Module, WorkerThreadModule {
+export class CoreModule
+	extends CoreProxyEventHandlersModel
+	implements Module, WorkerThreadModule
+{
 	constructor(
 		@inject(CoreController) private readonly controller: CoreController,
 		@inject(CoreComponent) private readonly component: CoreComponent,
@@ -33,9 +36,20 @@ export class CoreModule implements Module, WorkerThreadModule {
 		@inject(RendererModule) public readonly renderer: RendererModule,
 		@inject(DebugModule) public readonly debug: DebugModule
 	) {
+		super();
 		this._initProxyEvents();
 
 		self.addEventListener("message", this._onMessage.bind(this));
+	}
+
+	private _initProxyEvents() {
+		PROXY_EVENT_LISTENERS.forEach((key) => {
+			this[key] = (event: Event) => {
+				this.controller?.[key]?.(event);
+			};
+
+			this[`${key}$`] = () => this.controller?.[`${key}$`];
+		});
 	}
 
 	private _onMessage(event: CoreModuleMessageEvent) {
@@ -55,10 +69,6 @@ export class CoreModule implements Module, WorkerThreadModule {
 		});
 	}
 
-	public isInitialized() {
-		return this.component.initialized;
-	}
-
 	public init(props: CoreModuleMessageEventData) {
 		if (!props.canvas || this.component.initialized) return;
 		this.component.initialized = true;
@@ -70,6 +80,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 		const canvas = props.canvas as OffscreenCanvasWithStyle;
 
 		this.component.canvas = canvas;
+
 		this.sizes.init(canvas);
 		this.timer.init(props.startTimer);
 		this.camera.init(props.useDefaultCamera, props.withMiniCamera);
@@ -77,15 +88,11 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.renderer.init(canvas);
 		this.debug.init(props);
 
-		this.controller.lifecycle$$.next(LifecycleState.INITIALIZED);
+		this.controller.lifecycle$$.next(CoreLifecycleState.INITIALIZED);
 	}
 
-	private _initProxyEvents() {
-		PROXY_EVENT_LISTENERS.forEach((key) => {
-			this[key] = (sizes: Vector2Like) => {
-				this.controller?.[key]?.(sizes);
-			};
-		});
+	public isInitialized() {
+		return this.component.initialized;
 	}
 
 	public dispose() {
@@ -95,7 +102,7 @@ export class CoreModule implements Module, WorkerThreadModule {
 		this.sizes.dispose();
 		this.world.dispose();
 		self.removeEventListener("message", this._onMessage.bind(this));
-		this.controller.lifecycle$$.next(LifecycleState.DISPOSED);
+		this.controller.lifecycle$$.next(CoreLifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 	}
 

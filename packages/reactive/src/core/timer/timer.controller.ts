@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { TimerComponent } from "./timer.component";
 import { StepPayload } from "../../common/interfaces/event.interface";
 import { CoreController } from "../core.controller";
-import { LifecycleState } from "../../common/enums/lifecycle.enum";
+import { CoreLifecycleState } from "../../common/enums/lifecycle.enum";
 
 @singleton()
 export class TimerController {
@@ -23,7 +23,7 @@ export class TimerController {
 	}
 
 	public animate() {
-		this.coreController.lifecycle$$.next(LifecycleState.UPDATE_STARTED);
+		this.coreController.lifecycle$$.next(CoreLifecycleState.UPDATE_STARTED);
 		if (this.component.enabled) {
 			this.component.delta =
 				this.component.clock.getDelta() ?? this.component.frame;
@@ -39,6 +39,6 @@ export class TimerController {
 
 		const animationFrameId = requestAnimationFrame(this.animationCallback);
 		if (!this.component.enabled) cancelAnimationFrame(animationFrameId);
-		this.coreController.lifecycle$$.next(LifecycleState.UPDATE_ENDED);
+		this.coreController.lifecycle$$.next(CoreLifecycleState.UPDATE_ENDED);
 	}
 }

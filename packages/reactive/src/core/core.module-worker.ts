@@ -4,36 +4,43 @@ import type { WorkerFunction } from "threads/dist/types/worker";
 
 import { CoreModule, coreModule } from "./core.module";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
-import { LifecycleState } from "../common/enums/lifecycle.enum";
+import { CoreLifecycleState } from "../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../common/constants/event.constants";
 import type { LaunchAppProps } from "../common/interfaces/module.interface";
-import type { Methods } from "../common/types/object.type";
+import type {
+	Methods,
+	ProxyEventListenerKeys
+} from "../common/types/object.type";
 
 registerSerializer(object3DSerializer);
 
 export const launchApp = (props?: LaunchAppProps) => {
 	coreModule.lifecycle$().subscribe((state) => {
-		if (state === LifecycleState.INITIALIZED && props?.onReady)
+		if (state === CoreLifecycleState.INITIALIZED && props?.onReady)
 			props.onReady(coreModule);
 	});
 
 	return coreModule;
 };
 
-const proxyEvents: {
-	[key in (typeof PROXY_EVENT_LISTENERS)[number]]?: WorkerFunction;
-} = {};
+const proxyEventHandlers: {
+	[key in (typeof PROXY_EVENT_LISTENERS)[number]]: WorkerFunction;
+} = {} as any;
+const proxyObservables: {
+	[key in `${ProxyEventListenerKeys}$`]: WorkerFunction;
+} = {} as any;
+
 PROXY_EVENT_LISTENERS.forEach((key) => {
-	proxyEvents[key] = coreModule[key].bind(coreModule);
+	proxyEventHandlers[key] = coreModule[key]?.bind?.(coreModule);
 });
 
 expose({
-	...proxyEvents,
+	...proxyEventHandlers,
+	...proxyObservables,
 	init: () => {},
 	dispose: coreModule.dispose.bind(coreModule),
 	isInitialized: coreModule.isInitialized.bind(coreModule),
 	lifecycle$: coreModule.lifecycle$.bind(coreModule)
 } satisfies ExposedCoreModule);
 
-export type ExposedCoreModule = ExposedWorkerThreadModule<Methods<CoreModule>> &
-	typeof proxyEvents;
+export type ExposedCoreModule = ExposedWorkerThreadModule<Methods<CoreModule>>;

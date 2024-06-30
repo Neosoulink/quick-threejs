@@ -1,4 +1,4 @@
-import { RegisterDto } from "../common/dtos/register.dto";
+import { RegisterDto } from "../dtos/register.dto";
 
 export interface CoreModuleMessageEventData
 	extends Omit<RegisterDto, "canvas" | "location"> {

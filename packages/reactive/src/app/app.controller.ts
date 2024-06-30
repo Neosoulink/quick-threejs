@@ -7,52 +7,49 @@ import {
 	KEYBOARD_EVENT_CODES,
 	PROXY_EVENT_LISTENERS
 } from "../common/constants/event.constants";
+import type { AppLifecycleState } from "../common/enums/lifecycle.enum";
+import { ProxyEventHandlersModel } from "../common/models/proxy-event-handler.model";
 
 @singleton()
-export class AppController {
-	[x: string]: any;
-
+export class AppController extends ProxyEventHandlersModel {
 	private canvas!: HTMLCanvasElement;
 
-	public readonly lifecycle$$ = new Subject();
+	public readonly lifecycle$$ = new Subject<AppLifecycleState>();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
-	constructor(@inject(AppComponent) private readonly component: AppComponent) {}
+	constructor(@inject(AppComponent) private readonly component: AppComponent) {
+		super();
+	}
 
 	init(canvas: HTMLCanvasElement) {
 		this.canvas = canvas;
 
-		const handlers = {
-			contextmenu: this.preventDefaultHandler,
-			resize: this.uiEventHandler,
-			mousedown: this.mouseEventHandler,
-			mousemove: this.mouseEventHandler,
-			mouseup: this.mouseEventHandler,
-			pointerdown: this.mouseEventHandler,
-			pointermove: this.mouseEventHandler,
-			pointercancel: this.mouseEventHandler,
-			pointerup: this.mouseEventHandler,
-			touchstart: this.touchEventHandler,
-			touchmove: this.touchEventHandler,
-			touchend: this.touchEventHandler,
-			wheel: this.wheelEventHandler,
-			keydown: this.keydownEventHandler
-		} as const;
+		for (const key of PROXY_EVENT_LISTENERS) {
+			const eventHandler =
+				key.startsWith("mouse") ||
+				key.startsWith("pointer") ||
+				key.startsWith("touch")
+					? this.mouseEventHandler
+					: key.startsWith("key")
+						? this.keyEventHandler
+						: key === "resize"
+							? this.uiEventHandler
+							: key === "wheel"
+								? this.wheelEventHandler
+								: this.preventDefaultHandler;
 
-		for (const eventKey of PROXY_EVENT_LISTENERS) {
-			const eventHandler = handlers[eventKey];
-
-			this[`${eventKey}$`] = fromEvent<MouseEvent>(
-				eventKey === "resize" ? window : canvas,
-				eventKey
+			// @ts-ignore
+			this[`${key}$`] = fromEvent<MouseEvent>(
+				key === "resize" ? window : canvas,
+				key
 			)
 				.pipe(
 					// @ts-ignore
 					map(eventHandler.bind(this)),
-					filter((e) => (eventKey === "keydown" && !e ? false : true))
+					filter((e) => (key === "keydown" && !e ? false : true))
 				)
 				.subscribe((event) => {
-					this.component.core.thread?.[eventKey]?.(event);
+					this.component.core.thread?.[key]?.(event);
 				});
 		}
 	}
@@ -117,7 +114,7 @@ export class AppController {
 		return copyProperties(e, ["deltaX", "deltaY"]);
 	}
 
-	public keydownEventHandler(e: KeyboardEvent) {
+	public keyEventHandler(e: KeyboardEvent) {
 		if (!KEYBOARD_EVENT_CODES.includes(e.code)) return undefined;
 
 		e.preventDefault();

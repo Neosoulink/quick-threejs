@@ -9,13 +9,16 @@ import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedCoreModule } from "../core/core.module-worker";
 import { object3DSerializer } from "../common/serializers/object3d.serializer";
 import { RegisterDto } from "../common/dtos/register.dto";
+import {
+	AppLifecycleState,
+	CoreLifecycleState
+} from "../common/enums/lifecycle.enum";
 import type { Module } from "../common/interfaces/module.interface";
 import type {
 	ProgressedResource,
 	Resource
 } from "../common/interfaces/resource.interface";
-import type { CoreModuleMessageEventData } from "../core/core.interface";
-import { LifecycleState } from "../common/enums/lifecycle.enum";
+import type { CoreModuleMessageEventData } from "../common/interfaces/core.interface";
 
 @singleton()
 export class AppModule implements Module {
@@ -27,7 +30,7 @@ export class AppModule implements Module {
 		this.init();
 	}
 
-	private _initCanvas() {
+	private async _initCanvas() {
 		try {
 			this.component.canvas = document.createElement("canvas");
 
@@ -50,12 +53,13 @@ export class AppModule implements Module {
 		}
 	}
 
-	private _initComponent(core: AppComponent["core"]) {
-		this.component.init(core);
+	private async _initComponent() {
+		this.component.init(this.core());
 	}
 
-	private _initController(): void {
+	private async _initController() {
 		this.controller.init(this.component.canvas);
+		if (!this.component.core?.thread || !this.component.core?.worker) return;
 
 		const rect = this.component.canvas.getBoundingClientRect();
 		this.component.core.thread?.resize?.({
@@ -78,11 +82,12 @@ export class AppModule implements Module {
 
 		this.component.core.thread
 			?.lifecycle$()
-			.subscribe((state: LifecycleState) => {
-				if (state === LifecycleState.UPDATE_STARTED)
+			.subscribe((state: CoreLifecycleState) => {
+				if (state === CoreLifecycleState.UPDATE_STARTED)
 					this.component.stats?.begin();
 
-				if (state === LifecycleState.UPDATE_ENDED) this.component.stats?.end();
+				if (state === CoreLifecycleState.UPDATE_ENDED)
+					this.component.stats?.end();
 			});
 	}
 
@@ -102,23 +107,21 @@ export class AppModule implements Module {
 			}
 		});
 
-		if (!core.thread || !core.worker) return;
+		if (!core.thread || !core.worker)
+			throw new Error("Unable to retrieve core info.");
 
-		this._initComponent(core);
-		this._initController();
-
-		this.controller.lifecycle$$.next(true);
+		this.component.core = core;
 	}
 
-	public init(): void {
+	public async init() {
 		registerSerializer(object3DSerializer);
 
-		this._initCanvas();
-		this._initCore();
-	}
+		await this._initCanvas();
+		await this._initCore();
+		await this._initComponent();
+		await this._initController();
 
-	public workerPool() {
-		return this.component.workerPool as unknown as WorkerPool;
+		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
 	}
 
 	public async loadResources(props: {
@@ -177,12 +180,16 @@ export class AppModule implements Module {
 		};
 	}
 
-	public core() {
-		return this.component.core;
+	public workerPool() {
+		return this.component.workerPool as unknown as WorkerPool;
 	}
 
 	public canvas() {
 		return this.component.canvas;
+	}
+
+	public core() {
+		return this.component.core;
 	}
 
 	public gui() {
@@ -199,5 +206,6 @@ export class AppModule implements Module {
 
 	public dispose(): void {
 		this.component.workerPool.terminateAll();
+		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
 	}
 }
