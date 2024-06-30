@@ -11,7 +11,9 @@ export class WorldModule implements Module {
 	constructor(
 		@inject(WorldComponent) private readonly component: WorldComponent,
 		@inject(WorldController) private readonly controller: WorldController
-	) {}
+	) {
+		this.controller;
+	}
 
 	public scene(value?: Scene) {
 		if (value instanceof Scene) this.component.scene = value;
