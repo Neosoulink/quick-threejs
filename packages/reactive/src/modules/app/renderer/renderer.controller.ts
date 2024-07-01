@@ -1,6 +1,5 @@
 import { inject, singleton } from "tsyringe";
 import { filter, Observable } from "rxjs";
-import { Vector2Like } from "three";
 
 import { SizesController } from "../sizes/sizes.controller";
 import { TimerController } from "../timer/timer.controller";
@@ -10,7 +9,7 @@ import { RendererComponent } from "./renderer.component";
 @singleton()
 export class RendererController {
 	public readonly step$: Observable<StepPayload>;
-	public readonly resize$: Observable<Vector2Like>;
+	public readonly resize$: Observable<Event>;
 
 	constructor(
 		@inject(RendererComponent)

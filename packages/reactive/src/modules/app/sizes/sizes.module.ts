@@ -13,7 +13,7 @@ export class SizesModule implements Module {
 	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
-		this.controller.resize$.subscribe((size) => {
+		this.controller.resize$.subscribe((size: any) => {
 			this.component.width = size.x;
 			this.component.height = size.y;
 			this.component.aspect = size.x / size.y;

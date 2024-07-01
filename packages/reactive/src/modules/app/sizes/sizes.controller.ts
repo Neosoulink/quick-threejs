@@ -1,13 +1,12 @@
 import { inject, singleton } from "tsyringe";
 import { filter, Observable } from "rxjs";
-import { Vector2Like } from "three";
 
 import { AppController } from "../app.controller";
 import { SizesComponent } from "./sizes.component";
 
 @singleton()
 export class SizesController {
-	public readonly resize$: Observable<Vector2Like>;
+	public readonly resize$: Observable<Event>;
 
 	constructor(
 		@inject(AppController) private readonly appController: AppController,

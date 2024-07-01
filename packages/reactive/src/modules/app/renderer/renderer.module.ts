@@ -15,7 +15,7 @@ export class RendererModule implements Module {
 	public init(canvas: OffscreenCanvasWithStyle): void {
 		this.controller.step$.subscribe(() => this.component.render());
 
-		this.controller.resize$.subscribe((size) =>
+		this.controller.resize$.subscribe((size: any) =>
 			this.component.setSize(size.x, size.y)
 		);
 
