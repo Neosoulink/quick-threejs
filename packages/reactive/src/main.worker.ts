@@ -8,7 +8,9 @@ if (process.env.NODE_ENV === "development") {
 			const torus = new Mesh(new TorusKnotGeometry(), new MeshNormalMaterial());
 
 			self.onmessage = (event: MessageEvent) => {
-				if (event.data?.type === "gui-event") console.log(event.data.type);
+				if (event.data?.type === "torus-x-gui-event") {
+					torus.position.x = event.data.value;
+				}
 			};
 
 			app.world.scene().add(torus);

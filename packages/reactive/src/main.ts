@@ -1,6 +1,7 @@
 import "reflect-metadata";
 
 import { register } from "./modules/register/register.module";
+import { RegisterLifecycleState } from "./common/enums/lifecycle.enum";
 
 if (process.env.NODE_ENV === "development") {
 	const app = register({
@@ -11,12 +12,14 @@ if (process.env.NODE_ENV === "development") {
 		withMiniCamera: true
 	});
 
-	app.lifecycle$().subscribe(() => {
-		app
-			.gui()
-			?.add({ props: 0 }, "props")
-			.onChange((value) => {
-				app.core().worker?.postMessage({ type: "gui-event", value });
-			});
+	app.lifecycle$().subscribe((state) => {
+		if (state === RegisterLifecycleState.INITIALIZED)
+			app
+				.gui()
+				?.add({ torusX: 0 }, "torusX")
+				.step(0.01)
+				.onChange((value) => {
+					app.core().worker?.postMessage({ type: "torus-x-gui-event", value });
+				});
 	});
 }

@@ -10,8 +10,8 @@ import { ExposedAppModule } from "../app/app.module-worker";
 import { object3DSerializer } from "../../common/serializers/object3d.serializer";
 import { RegisterPropsModel } from "../../common/models/register-props.model";
 import {
-	AppLifecycleState,
-	CoreLifecycleState
+	RegisterLifecycleState,
+	AppLifecycleState
 } from "../../common/enums/lifecycle.enum";
 import type { Module } from "../../common/interfaces/module.interface";
 import type {
@@ -82,11 +82,11 @@ export class RegisterModule implements Module {
 
 		this.component.core.thread
 			?.lifecycle$()
-			.subscribe((state: CoreLifecycleState) => {
-				if (state === CoreLifecycleState.UPDATE_STARTED)
+			.subscribe((state: AppLifecycleState) => {
+				if (state === AppLifecycleState.UPDATE_STARTED)
 					this.component.stats?.begin();
 
-				if (state === CoreLifecycleState.UPDATE_ENDED)
+				if (state === AppLifecycleState.UPDATE_ENDED)
 					this.component.stats?.end();
 			});
 	}
@@ -121,7 +121,7 @@ export class RegisterModule implements Module {
 		await this._initComponent();
 		await this._initController();
 
-		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
+		this.controller.lifecycle$$.next(RegisterLifecycleState.INITIALIZED);
 	}
 
 	public async loadResources(props: {
@@ -206,7 +206,7 @@ export class RegisterModule implements Module {
 
 	public dispose(): void {
 		this.component.workerPool.terminateAll();
-		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
+		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
 	}
 }
 

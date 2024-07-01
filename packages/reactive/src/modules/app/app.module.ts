@@ -11,7 +11,7 @@ import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
-import { CoreLifecycleState } from "../../common/enums/lifecycle.enum";
+import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import type { Module } from "../../common/interfaces/module.interface";
 import type { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
@@ -88,7 +88,7 @@ export class AppModule
 		this.renderer.init(canvas);
 		this.debug.init(props);
 
-		this.controller.lifecycle$$.next(CoreLifecycleState.INITIALIZED);
+		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
 	}
 
 	public isInitialized() {
@@ -102,7 +102,7 @@ export class AppModule
 		this.sizes.dispose();
 		this.world.dispose();
 		self.removeEventListener("message", this._onMessage.bind(this));
-		this.controller.lifecycle$$.next(CoreLifecycleState.DISPOSED);
+		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 	}
 

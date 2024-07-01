@@ -4,7 +4,7 @@ import type { WorkerFunction } from "threads/dist/types/worker";
 
 import { AppModule, appModule } from "./app.module";
 import { object3DSerializer } from "../../common/serializers/object3d.serializer";
-import { CoreLifecycleState } from "../../common/enums/lifecycle.enum";
+import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import type { LaunchAppProps } from "../../common/interfaces/module.interface";
 import type {
@@ -16,7 +16,7 @@ registerSerializer(object3DSerializer);
 
 export const launchApp = (props?: LaunchAppProps) => {
 	appModule.lifecycle$().subscribe((state) => {
-		if (state === CoreLifecycleState.INITIALIZED && props?.onReady)
+		if (state === AppLifecycleState.INITIALIZED && props?.onReady)
 			props.onReady(appModule);
 	});
 

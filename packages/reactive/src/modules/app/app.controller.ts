@@ -3,12 +3,12 @@ import { Subject } from "rxjs";
 
 import { AppComponent } from "./app.component";
 import { ProxyEventHandlersModel } from "../../common/models/proxy-event-handler.model";
-import { CoreLifecycleState } from "../../common/enums/lifecycle.enum";
+import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 
 @singleton()
 export class AppController extends ProxyEventHandlersModel {
-	public readonly lifecycle$$ = new Subject<CoreLifecycleState>();
+	public readonly lifecycle$$ = new Subject<AppLifecycleState>();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(

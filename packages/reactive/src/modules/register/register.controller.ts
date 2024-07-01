@@ -7,14 +7,14 @@ import {
 	KEYBOARD_EVENT_CODES,
 	PROXY_EVENT_LISTENERS
 } from "../../common/constants/event.constants";
-import type { AppLifecycleState } from "../../common/enums/lifecycle.enum";
+import type { RegisterLifecycleState } from "../../common/enums/lifecycle.enum";
 import { ProxyEventHandlersModel } from "../../common/models/proxy-event-handler.model";
 
 @singleton()
 export class RegisterController extends ProxyEventHandlersModel {
 	private canvas!: HTMLCanvasElement;
 
-	public readonly lifecycle$$ = new Subject<AppLifecycleState>();
+	public readonly lifecycle$$ = new Subject<RegisterLifecycleState>();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
 	constructor(

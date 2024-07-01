@@ -1,9 +1,9 @@
-export enum AppLifecycleState {
+export enum RegisterLifecycleState {
 	INITIALIZED,
 	DISPOSED
 }
 
-export enum CoreLifecycleState {
+export enum AppLifecycleState {
 	INITIALIZED,
 	UPDATE_STARTED,
 	UPDATE_ENDED,
