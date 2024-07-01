@@ -32,7 +32,7 @@
 		"preversion": "npm run lint",
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np"
+		"release": "npm run prepare && np --branch main"
 	},
 	"dependencies": {
 		"three": "^0.165.0"

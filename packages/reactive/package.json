@@ -31,7 +31,7 @@
 		"preversion": "npm run lint",
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np",
+		"release": "npm run prepare && np --branch main",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint --ext .ts,.js ./src"
 	},

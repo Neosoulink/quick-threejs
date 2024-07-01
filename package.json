@@ -10,12 +10,7 @@
 		"test:e2e": "turbo test:e2e",
 		"lint": "eslint --ext .ts,.js ./ && turbo lint",
 		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\"",
-		"prepublishOnly": "npm test && npm run lint",
-		"prepare": "npm run build",
-		"preversion": "npm run lint",
-		"version": "npm run format && git add -A src",
-		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np"
+		"release": "turbo run release"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
