@@ -1,7 +1,7 @@
 {
 	"name": "quick-threejs",
-	"version": "0.2.0",
-	"description": "Quick start your threejs app ⚡️",
+	"version": "0.1.4",
+	"description": "Three,js quick starters",
 	"private": true,
 	"scripts": {
 		"dev": "turbo dev",
@@ -9,7 +9,13 @@
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
 		"lint": "eslint --ext .ts,.js ./ && turbo lint",
-		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\""
+		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\"",
+		"prepublishOnly": "npm test && npm run lint",
+		"prepare": "npm run build",
+		"preversion": "npm run lint",
+		"version": "npm run format && git add -A src",
+		"postversion": "git push && git push --tags",
+		"release": "npm run prepare && np"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
