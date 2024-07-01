@@ -3,6 +3,13 @@ import { DefaultCameraType } from "../enums/camera.enum";
 /** @description Quick-three register properties. */
 export class RegisterPropsModel {
 	/**
+	 * @description The app worker logic location.
+	 *
+	 * @required
+	 */
+	location!: string;
+
+	/**
 	 * @description App `canvas` element reference.
 	 *
 	 * @default undefined
@@ -10,86 +17,61 @@ export class RegisterPropsModel {
 	canvas?: HTMLCanvasElement;
 
 	/**
+	 * @description Set the `canvas` view in fullscreen and auto-resize it.
+	 *
+	 * @default true
+	 */
+	fullScreen?: boolean;
+
+	/**
+	 * Default used camera.
+	 *
+	 * @see {@link DefaultCameraType}
+	 *
+	 * @default DefaultCameraType.PERSPECTIVE
+	 */
+	defaultCamera?: DefaultCameraType;
+
+	/**
+	 * @description Start timer update on launch.
+	 *
+	 * @default true
+	 */
+	startTimer?: boolean;
+
+	/**
 	 * Enable the debug mode
 	 *
-	 * @defaultValue `false`
+	 * @default undefined
 	 */
 	enableDebug?: boolean;
 
 	/**
 	 * Define the {@link THREE.AxesHelper} sizes.
 	 *
-	 * @remarks
-	 * *Deactivated if the value is `0` or `undefined`*
-	 * @remarks
-	 * *🚧 This property require the {@link InitThreeProps.enableDebug} to be `true`*
+	 * @remark __Deactivated if the value is `0` or `undefined`__
+	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
 	 *
-	 * @defaultValue `undefined`
+	 * @default undefined
 	 */
 	axesSizes?: number;
 
 	/**
 	 * Define the {@link THREE.GridHelper} sizes.
 	 *
-	 * @remarks
-	 * *Deactivated if the value is `0` or `undefined`*
-	 * @remarks
-	 * *🚧 This property require the {@link InitThreeProps.enableDebug} to be `true`*
+	 * @remark __Deactivated if the value is `0` or `undefined`__
+	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
 	 *
-	 * @defaultValue `undefined`
+	 * @default undefined
 	 */
 	gridSizes?: number;
 
 	/**
-	 * Enable the scene auto resizing
-	 *
-	 * @defaultValue `true`
-	 */
-	autoSceneResize?: boolean;
-
-	/**
-	 * The camera to use for the scene.
-	 *
-	 * @remarks
-	 * *Will use `Perspective` camera if the value is `undefined`*
-	 *
-	 * @see {@link Camera}
-	 * @see {@link CameraProps}
-	 *
-	 * @defaultValue `undefined`
-	 */
-	defaultCamera?: DefaultCameraType;
-
-	/**
 	 * Display a mini perfective camera at the top right corner of the screen.
 	 *
-	 * @remarks
-	 * *🚧 This property require the {@link InitThreeProps.enableDebug} to be `true`*
+	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
 	 *
-	 * @see {@link Camera}
-	 * @see {@link CameraProps}
-	 *
-	 * @defaultValue `false`
+	 * @default false
 	 */
 	withMiniCamera?: boolean;
-
-	/**
-	 * @description App location or `URL`.
-	 *
-	 * @require
-	 */
-	location!: string;
-
-	/**
-	 * @description Start timer on launch.
-	 *
-	 * @default true
-	 */
-	startTimer?: boolean;
-
-	/** @description */
-	useDefaultCamera?: boolean;
-
-	/** @description */
-	fullScreen?: boolean;
 }

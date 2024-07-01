@@ -14,8 +14,8 @@ export class CameraModule implements Module {
 		@inject(CameraController) private readonly controller: CameraController
 	) {}
 
-	public init(useDefaultCamera?: boolean, withMiniCamera?: boolean) {
-		if (useDefaultCamera) this.component.setDefaultCamera();
+	public init(withMiniCamera?: boolean) {
+		this.component.setDefaultCamera();
 		if (withMiniCamera) this.component.setMiniCamera();
 
 		this.controller.step$.subscribe(() => {

@@ -1,5 +1,3 @@
-import "reflect-metadata";
-
 import { register } from "./modules/register/register.module";
 import { RegisterLifecycleState } from "./common/enums/lifecycle.enum";
 

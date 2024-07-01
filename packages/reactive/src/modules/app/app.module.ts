@@ -56,14 +56,12 @@ export class AppModule
 		if (!event.data?.canvas || this.component.initialized) return;
 
 		const startTimer = !!event.data?.startTimer;
-		const useDefaultCamera = !!event.data?.useDefaultCamera;
 		const withMiniCamera = !!event.data?.withMiniCamera;
 		const fullScreen = !!event.data?.fullScreen;
 
 		this.init({
 			...event.data,
 			startTimer,
-			useDefaultCamera,
 			withMiniCamera,
 			fullScreen
 		});
@@ -83,7 +81,7 @@ export class AppModule
 
 		this.sizes.init(canvas);
 		this.timer.init(props.startTimer);
-		this.camera.init(props.useDefaultCamera, props.withMiniCamera);
+		this.camera.init(props.withMiniCamera);
 		this.world.init();
 		this.renderer.init(canvas);
 		this.debug.init(props);

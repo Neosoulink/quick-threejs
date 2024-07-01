@@ -1,6 +1,13 @@
+import "reflect-metadata";
+
 import { container, inject, singleton } from "tsyringe";
 import { registerSerializer } from "threads";
-import { excludeProperties, WorkerPool } from "@quick-threejs/utils";
+import {
+	excludeProperties,
+	isBoolean,
+	isUndefined,
+	WorkerPool
+} from "@quick-threejs/utils";
 
 import { RegisterComponent } from "./register.component";
 import { RegisterController } from "./register.controller";
@@ -13,19 +20,21 @@ import {
 	RegisterLifecycleState,
 	AppLifecycleState
 } from "../../common/enums/lifecycle.enum";
-import type { Module } from "../../common/interfaces/module.interface";
+import { DefaultCameraType } from "../../common/enums/camera.enum";
 import type {
 	ProgressedResource,
 	Resource
 } from "../../common/interfaces/resource.interface";
+import type { Module } from "../../common/interfaces/module.interface";
 import type { CoreModuleMessageEventData } from "../../common/interfaces/core.interface";
 
 @singleton()
 export class RegisterModule implements Module {
 	constructor(
-		@inject(RegisterPropsModel) private readonly props: RegisterPropsModel,
 		@inject(RegisterComponent) private readonly component: RegisterComponent,
-		@inject(RegisterController) private readonly controller: RegisterController
+		@inject(RegisterController) private readonly controller: RegisterController,
+		@inject(RegisterPropsModel)
+		private readonly registerProps: RegisterPropsModel
 	) {
 		this.init();
 	}
@@ -34,11 +43,13 @@ export class RegisterModule implements Module {
 		try {
 			this.component.canvas = document.createElement("canvas");
 
-			if (this.props.canvas instanceof HTMLCanvasElement)
-				this.component.canvas = this.props.canvas;
+			if (this.registerProps.canvas instanceof HTMLCanvasElement)
+				this.component.canvas = this.registerProps.canvas;
 
-			if (typeof this.props.canvas === "string") {
-				const canvas_ = document.querySelector(this.props.canvas as string);
+			if (typeof this.registerProps.canvas === "string") {
+				const canvas_ = document.querySelector(
+					this.registerProps.canvas as string
+				);
 
 				if (canvas_ instanceof HTMLCanvasElement)
 					this.component.canvas = canvas_;
@@ -64,18 +75,18 @@ export class RegisterModule implements Module {
 		const rect = this.component.canvas.getBoundingClientRect();
 		this.component.core.thread?.resize?.({
 			type: "resize",
-			x: this.props.fullScreen
+			x: this.registerProps.fullScreen
 				? window.innerWidth
 				: this.component.canvas.width,
-			y: this.props.fullScreen
+			y: this.registerProps.fullScreen
 				? window.innerHeight
 				: this.component.canvas.height,
 			top: rect.top,
 			left: rect.left,
-			width: this.props.fullScreen
+			width: this.registerProps.fullScreen
 				? window.innerWidth
 				: this.component.canvas.width,
-			height: this.props.fullScreen
+			height: this.registerProps.fullScreen
 				? window.innerHeight
 				: this.component.canvas.height
 		});
@@ -98,9 +109,9 @@ export class RegisterModule implements Module {
 
 		const core = await this.component.workerPool.run<ExposedAppModule>({
 			payload: {
-				path: this.props.location,
+				path: this.registerProps.location,
 				subject: {
-					...excludeProperties(this.props, ["canvas", "location"]),
+					...excludeProperties(this.registerProps, ["canvas", "location"]),
 					canvas: offscreenCanvas
 				} satisfies CoreModuleMessageEventData,
 				transferSubject: [offscreenCanvas]
@@ -213,21 +224,36 @@ export class RegisterModule implements Module {
 /**
  * @description Register the main logic of the app.
  *
- * @important __🏁 Should be called on your main thread. Separated from the core implementation__
+ * @remark __🏁 Should be called on your main thread. Separated from the core implementation__
  *
  * @param props Quick-three register properties.
  */
 export const register = (props: RegisterPropsModel) => {
-	if (!props?.location)
+	if (
+		typeof props?.location !== "string" &&
+		!((props?.location as any) instanceof URL)
+	)
 		throw new Error(
 			"Invalid register props detected. location path is required"
 		);
 
-	props.useDefaultCamera =
-		props.useDefaultCamera === undefined ? true : props.useDefaultCamera;
-	props.withMiniCamera = !!props.withMiniCamera;
-	props.startTimer = props.startTimer === undefined ? true : props.startTimer;
-	props.fullScreen = props.fullScreen === undefined ? true : props.fullScreen;
+	props.defaultCamera = !(
+		props?.defaultCamera && props.defaultCamera in DefaultCameraType
+	)
+		? DefaultCameraType.PERSPECTIVE
+		: props.defaultCamera;
+	props.withMiniCamera =
+		isUndefined(props.withMiniCamera) || !isBoolean(props.withMiniCamera)
+			? false
+			: props.withMiniCamera;
+	props.startTimer =
+		isUndefined(props.startTimer) || !isBoolean(props.startTimer)
+			? true
+			: props.startTimer;
+	props.fullScreen =
+		isUndefined(props.fullScreen) || !isBoolean(props.fullScreen)
+			? true
+			: props.fullScreen;
 
 	container.register(RegisterPropsModel, { useValue: props });
 	return container.resolve(RegisterModule);
