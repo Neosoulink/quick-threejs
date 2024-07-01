@@ -5,6 +5,7 @@ import { registerSerializer } from "threads";
 import {
 	excludeProperties,
 	isBoolean,
+	isFunction,
 	isUndefined,
 	WorkerPool
 } from "@quick-threejs/utils";
@@ -105,7 +106,7 @@ export class RegisterModule implements Module {
 			});
 	}
 
-	private async _initCore() {
+	private async _initWorkerThread() {
 		const offscreenCanvas = this.component.canvas.transferControlToOffscreen();
 		offscreenCanvas.width = this.component.canvas.clientWidth;
 		offscreenCanvas.height = this.component.canvas.clientHeight;
@@ -114,7 +115,7 @@ export class RegisterModule implements Module {
 			payload: {
 				path: this.registerProps.location,
 				subject: {
-					...excludeProperties(this.registerProps, ["canvas", "location"]),
+					...excludeProperties(this.registerProps, ["canvas", "location", "onReady"]),
 					canvas: offscreenCanvas
 				} satisfies CoreModuleMessageEventData,
 				transferSubject: [offscreenCanvas]
@@ -132,11 +133,12 @@ export class RegisterModule implements Module {
 		registerSerializer(object3DSerializer);
 
 		await this._initCanvas();
-		await this._initCore();
+		await this._initWorkerThread();
 		await this._initComponent();
 		await this._initController();
 
 		this.controller.lifecycle$$.next(RegisterLifecycleState.INITIALIZED);
+		this.registerProps.onReady?.(this);
 	}
 
 	public async loadResources(props: {
@@ -262,6 +264,7 @@ export const register = (props: RegisterPropsModel) => {
 		isUndefined(props.fullScreen) || !isBoolean(props.fullScreen)
 			? true
 			: props.fullScreen;
+	props.onReady = !isFunction(props.onReady) ? undefined : props.onReady;
 
 	container.register(RegisterPropsModel, { useValue: props });
 	return container.resolve(RegisterModule);

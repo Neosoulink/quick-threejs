@@ -1,4 +1,5 @@
-import { DefaultCameraType } from "../enums/camera.enum";
+import type { RegisterModule } from "../../modules/register/register.module";
+import type { DefaultCameraType } from "../enums/camera.enum";
 
 /** @description Quick-three register properties. */
 export class RegisterPropsModel {
@@ -74,4 +75,11 @@ export class RegisterPropsModel {
 	 * @default false
 	 */
 	withMiniCamera?: boolean;
+
+	/**
+	 * @description Handler called when the app is ready.
+	 *
+	 * @default undefined
+	 */
+	onReady?: (register: RegisterModule) => unknown;
 }
