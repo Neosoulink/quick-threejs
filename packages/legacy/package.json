@@ -38,7 +38,7 @@
 		"three": "^0.165.0"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.22.4",
+		"@babel/preset-env": "^7.24.7",
 		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.3",
 		"@types/stats.js": "^0.17.0",
