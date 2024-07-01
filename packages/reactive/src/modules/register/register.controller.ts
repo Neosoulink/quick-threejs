@@ -51,7 +51,7 @@ export class RegisterController extends ProxyEventHandlersModel {
 					filter((e) => (key === "keydown" && !e ? false : true))
 				)
 				.subscribe((event) => {
-					this.component.core.thread?.[key]?.(event);
+					this.component.thread?.[key]?.(event);
 				});
 		}
 	}

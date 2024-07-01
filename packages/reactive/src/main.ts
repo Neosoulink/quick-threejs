@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "development") {
 				?.add({ torusX: 0 }, "torusX")
 				.step(0.01)
 				.onChange((value) => {
-					app.core().worker?.postMessage({ type: "torus-x-gui-event", value });
+					app.worker()?.postMessage({ type: "torus-x-gui-event", value });
 				});
 	});
 }

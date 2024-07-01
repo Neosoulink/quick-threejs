@@ -65,15 +65,18 @@ export class RegisterModule implements Module {
 	}
 
 	private async _initComponent() {
-		this.component.init(this.core());
+		this.component.init({
+			worker: this.component.worker,
+			thread: this.component.thread
+		});
 	}
 
 	private async _initController() {
 		this.controller.init(this.component.canvas);
-		if (!this.component.core?.thread || !this.component.core?.worker) return;
+		if (!this.component.thread || !this.component.worker) return;
 
 		const rect = this.component.canvas.getBoundingClientRect();
-		this.component.core.thread?.resize?.({
+		this.component.thread?.resize?.({
 			type: "resize",
 			x: this.registerProps.fullScreen
 				? window.innerWidth
@@ -91,7 +94,7 @@ export class RegisterModule implements Module {
 				: this.component.canvas.height
 		});
 
-		this.component.core.thread
+		this.component.thread
 			?.lifecycle$()
 			.subscribe((state: AppLifecycleState) => {
 				if (state === AppLifecycleState.UPDATE_STARTED)
@@ -107,7 +110,7 @@ export class RegisterModule implements Module {
 		offscreenCanvas.width = this.component.canvas.clientWidth;
 		offscreenCanvas.height = this.component.canvas.clientHeight;
 
-		const core = await this.component.workerPool.run<ExposedAppModule>({
+		const app = await this.component.workerPool.run<ExposedAppModule>({
 			payload: {
 				path: this.registerProps.location,
 				subject: {
@@ -118,10 +121,11 @@ export class RegisterModule implements Module {
 			}
 		});
 
-		if (!core.thread || !core.worker)
-			throw new Error("Unable to retrieve core info.");
+		if (!app.thread || !app.worker)
+			throw new Error("Unable to retrieve app worker info.");
 
-		this.component.core = core;
+		this.component.worker = app.worker;
+		this.component.thread = app.thread;
 	}
 
 	public async init() {
@@ -199,12 +203,21 @@ export class RegisterModule implements Module {
 		return this.component.canvas;
 	}
 
-	public core() {
-		return this.component.core;
+	public worker() {
+		return this.component.worker;
+	}
+
+	public thread() {
+		return this.component.thread;
 	}
 
 	public gui() {
 		return this.component.gui;
+	}
+
+	public dispose(): void {
+		this.component.workerPool.terminateAll();
+		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
 	}
 
 	public resize$() {
@@ -213,11 +226,6 @@ export class RegisterModule implements Module {
 
 	public lifecycle$() {
 		return this.controller.lifecycle$;
-	}
-
-	public dispose(): void {
-		this.component.workerPool.terminateAll();
-		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
 	}
 }
 

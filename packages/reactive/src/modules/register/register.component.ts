@@ -10,13 +10,15 @@ import { ExposedAppModule } from "../app/app.module-worker";
 export class RegisterComponent {
 	public readonly workerPool = createWorkerPool() as unknown as WorkerPool;
 
+	public canvas!: HTMLCanvasElement;
+	public worker!: WorkerThreadResolution<ExposedAppModule>["worker"];
+	public thread!: WorkerThreadResolution<ExposedAppModule>["thread"];
 	public gui?: GUI;
 	public stats?: Stats;
-	public canvas!: HTMLCanvasElement;
-	public core!: WorkerThreadResolution<ExposedAppModule>;
 
-	init(core: typeof this.core) {
-		this.core = core;
+	init(app: WorkerThreadResolution<ExposedAppModule>) {
+		this.worker = app.worker;
+		this.thread = app.thread;
 		this.gui = new GUI();
 		this.stats = new Stats();
 		this.stats.showPanel(0);
