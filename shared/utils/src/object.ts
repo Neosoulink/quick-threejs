@@ -1,10 +1,7 @@
 import { Object3D, ObjectLoader } from "three";
 
 import { SerializedPosition, SerializedRotation } from "./types/object.type";
-
-export const isObject = (obj: any) => {
-	return !!obj && typeof obj === "object";
-};
+import { isObject } from "./type";
 
 export const toSerializedJSON = (obj: Object3D) => {
 	const serializedObject = obj.toJSON();
