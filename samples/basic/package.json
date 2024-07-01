@@ -10,10 +10,10 @@
 	},
 	"dependencies": {
 		"@quick-threejs/legacy": "workspace:*",
-		"three": "^0.165.0"
+		"three": "^0.166.0"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/three": "^0.165.0"
+		"@types/three": "^0.166.0"
 	}
 }
