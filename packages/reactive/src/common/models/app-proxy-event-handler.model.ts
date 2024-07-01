@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 
-export class CoreProxyEventHandlersModel {
+export class AppProxyEventHandlersModel {
 	public contextmenu$?: () => Observable<Event>;
 	public resize$?: () => Observable<Event>;
 	public mousedown$?: () => Observable<Event>;

@@ -13,17 +13,17 @@ import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
 import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
+import { AppProxyEventHandlersModel } from "../../common/models/app-proxy-event-handler.model";
 import type { Module } from "../../common/interfaces/module.interface";
 import type { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
 import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
 } from "../../common/interfaces/core.interface";
-import { CoreProxyEventHandlersModel } from "../../common/models/core-proxy-event-handler.model";
 
 @singleton()
 export class AppModule
-	extends CoreProxyEventHandlersModel
+	extends AppProxyEventHandlersModel
 	implements Module, WorkerThreadModule
 {
 	constructor(

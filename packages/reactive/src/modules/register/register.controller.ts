@@ -44,15 +44,14 @@ export class RegisterController extends ProxyEventHandlersModel {
 			this[`${key}$`] = fromEvent<MouseEvent>(
 				key === "resize" ? window : canvas,
 				key
-			)
-				.pipe(
-					// @ts-ignore
-					map(eventHandler.bind(this)),
-					filter((e) => (key === "keydown" && !e ? false : true))
-				)
-				.subscribe((event) => {
-					this.component.thread?.[key]?.(event);
-				});
+			).pipe(
+				// @ts-ignore
+				map(eventHandler.bind(this)),
+				filter((e) => (key === "keydown" && !e ? false : true))
+			);
+			this[`${key}$`].subscribe((event) => {
+				this.component.thread?.[key]?.(event);
+			});
 		}
 	}
 

@@ -22,6 +22,8 @@ import {
 	AppLifecycleState
 } from "../../common/enums/lifecycle.enum";
 import { DefaultCameraType } from "../../common/enums/camera.enum";
+import { RegisterProxyEventHandlersModel } from "../../common/models/register-proxy-event-handler.model";
+import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import type {
 	ProgressedResource,
 	Resource
@@ -30,13 +32,17 @@ import type { Module } from "../../common/interfaces/module.interface";
 import type { CoreModuleMessageEventData } from "../../common/interfaces/core.interface";
 
 @singleton()
-export class RegisterModule implements Module {
+export class RegisterModule
+	extends RegisterProxyEventHandlersModel
+	implements Module
+{
 	constructor(
 		@inject(RegisterComponent) private readonly component: RegisterComponent,
 		@inject(RegisterController) private readonly controller: RegisterController,
 		@inject(RegisterPropsModel)
 		private readonly registerProps: RegisterPropsModel
 	) {
+		super();
 		this.init();
 	}
 
@@ -115,7 +121,11 @@ export class RegisterModule implements Module {
 			payload: {
 				path: this.registerProps.location,
 				subject: {
-					...excludeProperties(this.registerProps, ["canvas", "location", "onReady"]),
+					...excludeProperties(this.registerProps, [
+						"canvas",
+						"location",
+						"onReady"
+					]),
 					canvas: offscreenCanvas
 				} satisfies CoreModuleMessageEventData,
 				transferSubject: [offscreenCanvas]
@@ -129,6 +139,12 @@ export class RegisterModule implements Module {
 		this.component.thread = app.thread;
 	}
 
+	private async _initProxyEvents() {
+		PROXY_EVENT_LISTENERS.forEach(
+			(key) => (this[`${key}$`] = () => this.controller?.[`${key}$`])
+		);
+	}
+
 	public async init() {
 		registerSerializer(object3DSerializer);
 
@@ -136,6 +152,7 @@ export class RegisterModule implements Module {
 		await this._initWorkerThread();
 		await this._initComponent();
 		await this._initController();
+		await this._initProxyEvents();
 
 		this.controller.lifecycle$$.next(RegisterLifecycleState.INITIALIZED);
 		this.registerProps.onReady?.(this);
@@ -222,10 +239,6 @@ export class RegisterModule implements Module {
 		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
 	}
 
-	public resize$() {
-		return this.controller.resize$;
-	}
-
 	public lifecycle$() {
 		return this.controller.lifecycle$;
 	}
@@ -234,7 +247,7 @@ export class RegisterModule implements Module {
 /**
  * @description Register the main logic of the app.
  *
- * @remark __🏁 Should be called on your main thread. Separated from the core implementation__
+ * @remark __🏁 Should be called on your main thread. Separated from the worker thread implementation__
  *
  * @param props Quick-three register properties.
  */
@@ -267,5 +280,5 @@ export const register = (props: RegisterPropsModel) => {
 	props.onReady = !isFunction(props.onReady) ? undefined : props.onReady;
 
 	container.register(RegisterPropsModel, { useValue: props });
-	return container.resolve(RegisterModule);
+	return container.resolve<RegisterModule & { ƒ: "s" }>(RegisterModule as any);
 };
