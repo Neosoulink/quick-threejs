@@ -19,7 +19,7 @@
 		"@types/three": "^0.165.0",
 		"tsyringe": "^4.8.0",
 		"typescript": "^5.3.3",
-		"vite": "^5.2.12"
+		"vite": "^5.3.2"
 	},
 	"dependencies": {
 		"rxjs": "^7.8.1",
