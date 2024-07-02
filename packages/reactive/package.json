@@ -11,11 +11,23 @@
 		"js",
 		"ts"
 	],
+	"type": "module",
+	"main": "./dist/main.js",
+	"module": "./dist/main.js",
+	"types": "dist/**/*",
 	"files": [
 		"dist/**/*"
 	],
-	"main": "./dist/main.js",
-	"types": "./dist/main.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/main.d.ts",
+			"import": "./dist/main.js"
+		},
+		"./worker": {
+			"types": "./dist/main.worker.d.ts",
+			"import": "./dist/main.worker.js"
+		}
+	},
 	"author": "Neosoulink",
 	"license": "ISC",
 	"bugs": {
@@ -23,17 +35,14 @@
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"scripts": {
-		"prepare": "npm run build",
-		"dev": "vite --host",
-		"test": "jest",
 		"build": "tsc",
-		"prepublishOnly": "npm test && npm run lint",
-		"preversion": "npm run lint",
-		"version": "npm run format && git add -A src",
-		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np --branch main",
+		"dev": "vite --host",
 		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint --ext .ts,.js ./src"
+		"lint": "eslint --ext .ts,.js ./src",
+		"prepare": "pnpm run lint && pnpm run build",
+		"release": "npx changeset publish",
+		"test": "jest",
+		"version": "npx changeset version"
 	},
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
@@ -41,6 +50,7 @@
 		"three": "^0.165.0"
 	},
 	"devDependencies": {
+		"@changesets/cli": "^2.27.7",
 		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.3",

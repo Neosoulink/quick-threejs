@@ -6,9 +6,6 @@ const appEntryPath = resolve(`./src/main.ts`);
 
 export default defineConfig({
 	...vite,
-	optimizeDeps: {
-		exclude: ["three"]
-	},
 	plugins: [
 		(() => {
 			return {
@@ -34,5 +31,23 @@ export default defineConfig({
 				}
 			};
 		})()
-	]
+	],
+	build: {
+		watch: {
+			include: [resolve(__dirname, "src")]
+		},
+		copyPublicDir: false,
+		rollupOptions: {
+			external: ["three"],
+			output: {
+				exports: "named",
+				globals: {
+					three: "Three"
+				}
+			}
+		}
+	},
+	optimizeDeps: {
+		exclude: ["three"]
+	}
 });

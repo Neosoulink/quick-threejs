@@ -3,30 +3,32 @@
 	"display": "Default",
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"target": "ESNext",
 		"module": "ESNext",
+		"target": "ESNext",
 		"useDefineForClassFields": true,
 
-		"moduleResolution": "Node",
-		"noImplicitReturns": true,
-		"noImplicitAny": false,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
 		"declaration": true,
-
-		"strict": true,
-		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"moduleResolution": "Node",
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": false,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-		"resolveJsonModule": true,
+		"skipLibCheck": true,
 
-		"declarationMap": true,
+		"alwaysStrict": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"preserveConstEnums": true,
+
 		"incremental": false,
 		"isolatedModules": true,
 		"moduleDetection": "force",
-		"noUncheckedIndexedAccess": true
+		"sourceMap": true
 	},
 	"ts-node": {
 		"esm": true,
