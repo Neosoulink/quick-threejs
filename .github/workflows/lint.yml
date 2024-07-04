@@ -1,9 +1,9 @@
-name: Pre-release CI
+name: Lint
 
 on:
   push:
-    branches:
-      - "dev"
+    branches-ignore:
+      - "main"
 
 jobs:
   build:
@@ -35,7 +35,5 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint project
+        run: pnpm run lint && pnpm run build

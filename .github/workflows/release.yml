@@ -36,8 +36,10 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Publish to NPM resgistery
-        run: pnpm run release
+      - name: Create Release Pull Request & Publish
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run publish-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
