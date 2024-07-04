@@ -10,13 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: "pnpm"
+          cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Install Dependencies
+        run: |
+          retry() {
+            for i in {1..5}; do $@ && break || sleep 30; done
+          }
+          retry pnpm install --frozen-lockfile
+
+      - name: Build Project
+        run: pnpm run build
