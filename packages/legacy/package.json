@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/legacy",
-	"version": "0.1.4",
+	"version": "0.1.0",
 	"description": "Quick threejs helper",
 	"repository": {
 		"type": "git",
@@ -23,10 +23,10 @@
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"scripts": {
-		"test": "jest",
+		"test": "jest --passWithNoTests",
 		"build": "tsc",
 		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint --ext .ts,.js ./src",
+		"lint": "eslint",
 		"prepublishOnly": "npm test && npm run lint",
 		"prepare": "npm run build",
 		"preversion": "npm run lint",
@@ -39,6 +39,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.22.4",
+		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.3",
 		"@types/stats.js": "^0.17.0",

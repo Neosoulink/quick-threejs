@@ -16,6 +16,10 @@
 		},
 		"release": {
 			"dependsOn": ["^build"]
+		},
+		"test": {},
+		"publish-packages": {
+			"dependsOn": ["^lint", "^build"]
 		}
 	}
 }

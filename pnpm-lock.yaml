@@ -7,10 +7,23 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@changesets/cli':
+        specifier: ^2.27.7
+        version: 2.27.7
     devDependencies:
+      '@eslint/eslintrc':
+        specifier: ^3.1.0
+        version: 3.1.0
+      '@eslint/js':
+        specifier: ^9.6.0
+        version: 9.6.0
       '@quick-threejs/config':
         specifier: workspace:*
         version: link:shared/config
+      globals:
+        specifier: ^15.8.0
+        version: 15.8.0
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -27,6 +40,9 @@ importers:
       '@babel/preset-env':
         specifier: ^7.22.4
         version: 7.24.6(@babel/core@7.24.6)
+      '@quick-threejs/config':
+        specifier: workspace:*
+        version: link:../../shared/config
       '@types/events':
         specifier: ^3.0.3
         version: 3.0.3
@@ -82,9 +98,6 @@ importers:
         specifier: ^0.165.0
         version: 0.165.0
     devDependencies:
-      '@changesets/cli':
-        specifier: ^2.27.7
-        version: 2.27.7
       '@quick-threejs/config':
         specifier: workspace:*
         version: link:../../shared/config
@@ -2348,6 +2361,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@15.8.0:
+    resolution: {integrity: sha512-VZAJ4cewHTExBWDHR6yptdIBlx9YSSZuwojj9Nt5mBRXQzrKakDsVKQ1J63sklLvzAJm0X5+RpO4i3Y2hcOnFw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.3:
@@ -6475,6 +6492,8 @@ snapshots:
   globals@11.12.0: {}
 
   globals@14.0.0: {}
+
+  globals@15.8.0: {}
 
   globalthis@1.0.3:
     dependencies:

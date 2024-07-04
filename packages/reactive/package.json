@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/reactive",
-	"version": "0.1.4",
+	"version": "0.1.0",
 	"description": "Reactively Three.js quick starter ⚡️",
 	"repository": {
 		"type": "git",
@@ -38,11 +38,9 @@
 		"build": "tsc",
 		"dev": "vite --host",
 		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint --ext .ts,.js ./src",
+		"lint": "eslint",
 		"prepare": "pnpm run lint && pnpm run build",
-		"release": "npx changeset publish",
-		"test": "jest",
-		"version": "npx changeset version"
+		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
@@ -50,7 +48,6 @@
 		"three": "^0.165.0"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.27.7",
 		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.3",

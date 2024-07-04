@@ -1,6 +1,6 @@
 {
 	"name": "quick-threejs",
-	"version": "0.1.4",
+	"version": "0.0.0",
 	"description": "Three,js quick starters",
 	"private": true,
 	"scripts": {
@@ -8,14 +8,21 @@
 		"build": "turbo build",
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
-		"lint": "eslint --ext .ts,.js ./ && turbo lint",
+		"lint": "eslint . && turbo lint",
 		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\"",
-		"release": "turbo run release"
+		"release": "turbo run release",
+		"publish-packages": "turbo run build lint && changeset version && changeset publish"
 	},
 	"devDependencies": {
+		"@eslint/eslintrc": "^3.1.0",
+		"@eslint/js": "^9.6.0",
 		"@quick-threejs/config": "workspace:*",
+		"globals": "^15.8.0",
 		"prettier": "^3.2.5",
 		"turbo": "latest"
+	},
+	"dependencies": {
+		"@changesets/cli": "^2.27.7"
 	},
 	"packageManager": "pnpm@8.15.6",
 	"engines": {

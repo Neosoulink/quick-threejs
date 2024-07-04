@@ -15,32 +15,29 @@ jobs:
   publish:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
         with:
-          node-version: 16.x
-          cache: "pnpm"
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 7
+          node-version: 20
 
       - name: Install Dependencies
-        run: |
-          retry() {
-            for i in {1..5}; do $@ && break || sleep 30; done
-          }
-          retry pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
-      - name: Create Release Pull Request or Publish
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: pnpm run release
+      - name: Publish to NPM resgistery
+        run: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
