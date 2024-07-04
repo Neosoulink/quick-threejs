@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { createWorkerPool, WorkerPool } from "@quick-threejs/utils";
+import { createWorkerPool } from "@quick-threejs/utils";
 import { WorkerThreadResolution } from "@quick-threejs/utils/dist/types/worker.type";
 import Stats from "stats.js";
 
@@ -8,7 +8,7 @@ import { ExposedAppModule } from "../app/app.module-worker";
 
 @singleton()
 export class RegisterComponent {
-	public readonly workerPool = createWorkerPool() as unknown as WorkerPool;
+	public readonly workerPool = createWorkerPool();
 
 	public canvas!: HTMLCanvasElement;
 	public worker!: WorkerThreadResolution<ExposedAppModule>["worker"];

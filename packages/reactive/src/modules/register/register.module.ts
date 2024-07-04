@@ -6,8 +6,7 @@ import {
 	excludeProperties,
 	isBoolean,
 	isFunction,
-	isUndefined,
-	WorkerPool
+	isUndefined
 } from "@quick-threejs/utils";
 
 import { RegisterComponent } from "./register.component";
@@ -215,7 +214,7 @@ export class RegisterModule
 	}
 
 	public workerPool() {
-		return this.component.workerPool as unknown as WorkerPool;
+		return this.component.workerPool;
 	}
 
 	public canvas() {
