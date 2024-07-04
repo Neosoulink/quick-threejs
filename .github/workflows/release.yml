@@ -2,7 +2,7 @@ name: Release
 
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [Lint]
     branches: [master]
     types: [completed]
 
@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      - name: Install DependenLintes
         run: pnpm install --frozen-lockfile
 
       - name: Publish to NPM registery
