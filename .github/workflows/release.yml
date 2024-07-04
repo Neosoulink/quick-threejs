@@ -1,4 +1,5 @@
-name: Publish
+name: Release
+
 on:
   workflow_run:
     workflows: [CI]
@@ -36,10 +37,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create Release Pull Request & Publish
-        uses: changesets/action@v1
-        with:
-          publish: pnpm run publish-packages
+      - name: Publish to NPM registery
+        run: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

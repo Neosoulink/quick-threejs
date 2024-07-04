@@ -1,12 +1,17 @@
-name: Lint
+name: Pre-release
 
 on:
-  push:
-    branches:
-      - "**"
+  workflow_run:
+    workflows: [CI]
+    branches: [dev]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,14 +31,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-          run_install: false
-
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint project
-        run: pnpm run lint && pnpm run build
+      - name: Create Release Pull Request & Publish
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

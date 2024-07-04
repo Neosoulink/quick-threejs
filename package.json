@@ -10,8 +10,7 @@
 		"test:e2e": "turbo test:e2e",
 		"lint": "eslint . && turbo lint",
 		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\"",
-		"release": "turbo run release",
-		"publish-packages": "turbo run build lint && changeset version && changeset publish"
+		"release": "turbo run build lint && changeset version && changeset publish"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.1.0",
