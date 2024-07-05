@@ -18,7 +18,7 @@
 		"@types/node": "^20.14.2",
 		"@types/three": "^0.165.0",
 		"tsyringe": "^4.8.0",
-		"typescript": "^5.3.3",
+		"typescript": "^5.5.3",
 		"vite": "^5.2.12"
 	},
 	"dependencies": {
