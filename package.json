@@ -9,7 +9,8 @@
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
 		"lint": "eslint . && turbo lint",
-		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\""
+		"format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,md}\"",
+		"release": "pnpm changeset publish && git push --follow-tags"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.1.0",

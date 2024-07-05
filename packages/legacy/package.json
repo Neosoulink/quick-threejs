@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/legacy",
-	"version": "1.0.0",
+	"version": "0.1.1",
 	"description": "Quick threejs helper",
 	"repository": {
 		"type": "git",
@@ -27,12 +27,7 @@
 		"build": "tsc",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint",
-		"prepublishOnly": "npm test && npm run lint",
-		"prepare": "npm run build",
-		"preversion": "npm run lint",
-		"version": "npm run format && git add -A src",
-		"postversion": "git push && git push --tags",
-		"release": "npm run prepare && np --branch main"
+		"prepare": "npm run build"
 	},
 	"dependencies": {
 		"three": "^0.165.0"
