@@ -1,5 +1,11 @@
 # @quick-threejs/config
 
+## 0.1.5
+
+### Patch Changes
+
+- 9a08379: v0.1.4
+
 ## 0.1.4
 
 ### Patch Changes
