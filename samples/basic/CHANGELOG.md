@@ -1,5 +1,13 @@
 # basic-sample
 
+## 0.1.5
+
+### Patch Changes
+
+- 9a08379: v0.1.4
+- Updated dependencies [9a08379]
+  - @quick-threejs/legacy@0.1.5
+
 ## 0.1.4
 
 ### Patch Changes
