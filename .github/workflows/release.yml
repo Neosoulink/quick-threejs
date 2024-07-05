@@ -1,4 +1,4 @@
-name: QuickThree Legacy Release
+name: Releases
 
 on:
   workflow_run:
