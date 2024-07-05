@@ -14,9 +14,6 @@
 			"cache": false,
 			"persistent": true
 		},
-		"release": {
-			"dependsOn": ["^build"]
-		},
 		"test": {}
 	}
 }
