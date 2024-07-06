@@ -26,8 +26,8 @@ jobs:
           echo "PR Base Branch: $PR_BASE_BRANCH"
           echo "PR Head Branch: $PR_HEAD_BRANCH"
           if [ "$PR_BASE_BRANCH" == "master" ] && [ "$PR_HEAD_BRANCH" != "dev" ]; then
-            echo "Error: The branch `$PR_HEAD_BRANCH` should not point to the `master` branch."
-            echo "Error: Please change the base branch to `dev`."
+            echo "Error: The branch '$PR_HEAD_BRANCH' should not point to the 'master' branch."
+            echo "Error: Please change the base branch to 'dev'."
             exit 1
           else
             echo "Branch check passed."
