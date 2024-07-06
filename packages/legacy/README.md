@@ -5,19 +5,19 @@ As its name says, the lib will quickly set up a 3D scene with as little configur
 
 ## 🚀 Quick start
 
-Simply import `quick-threejs` and instantiate it as follows:
+Simply import `@quick-threejs/legacy` and instantiate it as follows:
 
 ```typescript
-import QuickThreejs from "quick-threejs";
+import QuickThreejs from "@quick-threejs/legacy";
 
 let APP = new QuickThreejs(
-	{
-		axesSizes: 5,
-		gridSizes: 10,
-		enableDebug: true,
-		withMiniCamera: true
-	},
-	"#experience"
+ {
+  axesSizes: 5,
+  gridSizes: 10,
+  enableDebug: true,
+  withMiniCamera: true
+ },
+ "#experience"
 );
 ```
 
@@ -26,12 +26,10 @@ That's it! Now you should see the following screen on your local development ser
 
 > 💡 The first parameter is the initialization properties and the second is the dom element reference.
 >
-> See the types definitions:
->
 > - [Initialization property](./src/index.ts?plain=1#L14)
 > - [QuickThreejs class](./src/index.ts?plain=1#L97)
 
-Checkout the [Example folder](./example/) for more details
+See the [Example folder](./example/) for more details
 
 ## 🚧 Disclaimer
 
