@@ -30,7 +30,7 @@
 		"prepare": "npm run build"
 	},
 	"dependencies": {
-		"three": "^0.165.0"
+		"three": "^0.166.1"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.24.7",

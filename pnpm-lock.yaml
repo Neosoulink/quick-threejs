@@ -34,8 +34,8 @@ importers:
   packages/legacy:
     dependencies:
       three:
-        specifier: ^0.165.0
-        version: 0.165.0
+        specifier: ^0.166.1
+        version: 0.166.1
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.24.7
@@ -95,8 +95,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.165.0
-        version: 0.165.0
+        specifier: ^0.166.1
+        version: 0.166.1
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -156,8 +156,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/legacy
       three:
-        specifier: ^0.165.0
-        version: 0.165.0
+        specifier: ^0.166.1
+        version: 0.166.1
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -211,8 +211,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.165.0
-        version: 0.165.0
+        specifier: ^0.166.1
+        version: 0.166.1
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -6733,8 +6733,8 @@ packages:
       - supports-color
     dev: false
 
-  /three@0.165.0:
-    resolution: {integrity: sha512-cc96IlVYGydeceu0e5xq70H8/yoVT/tXBxV/W8A/U6uOq7DXc4/s1Mkmnu6SqoYGhSRWWYFOhVwvq6V0VtbplA==}
+  /three@0.166.1:
+    resolution: {integrity: sha512-LtuafkKHHzm61AQA1be2MAYIw1IjmhOUxhBa0prrLpEMWbV7ijvxCRHjSgHPGp2493wLBzwKV46tA9nivLEgKg==}
     dev: false
 
   /tiny-worker@2.3.0:
