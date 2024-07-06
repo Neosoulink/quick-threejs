@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/node": "^20.14.2",
+		"@types/node": "^20.14.10",
 		"@types/three": "^0.165.0",
 		"tsyringe": "^4.8.0",
 		"typescript": "^5.3.3",
