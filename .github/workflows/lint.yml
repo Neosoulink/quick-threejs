@@ -1,5 +1,10 @@
 name: Lint
 
+env:
+  NODE_VERSION: 20
+  PNPM_CACHE_FOLDER: .pnpm-store
+  PNPM_VERSION: 9
+
 on:
   push:
     branches:
@@ -21,19 +26,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Install Node.js
+      - name: Setup Node.js v${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      - name: Install & audit PNPM
+        uses: ./.github/actions/pnpm
         with:
-          version: 9
-          run_install: false
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+          cache: ${{ env.PNPM_CACHE_FOLDER }}
+          version: ${{ env.PNPM_VERSION }}
 
       - name: Lint project
         run: pnpm run lint && pnpm run build

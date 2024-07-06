@@ -1,10 +1,13 @@
 name: Releases
 
+env:
+  NODE_VERSION: 20
+  PNPM_CACHE_FOLDER: .pnpm-store
+  PNPM_VERSION: 9
+
 on:
-  workflow_run:
-    workflows: [Lint]
+  push:
     branches: [master]
-    types: [completed]
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -14,11 +17,10 @@ permissions:
 
 jobs:
   release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository Workflow
         uses: actions/checkout@v4
 
       - name: Cache turbo build setup
@@ -29,23 +31,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Install Node.js
+      - name: Setup Node.js v${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      - name: Install & Audit PNPM
+        uses: ./.github/actions/pnpm
         with:
-          version: 9
-          run_install: false
+          cache: ${{ env.PNPM_CACHE_FOLDER }}
+          version: ${{ env.PNPM_VERSION }}
 
-      - name: Install DependenLintes
-        run: pnpm install --frozen-lockfile
-
-      - name: Publish to NPM registery
-        run: pnpm run release
+      - name: Create Release Pull Request & Release
+        uses: changesets/action@v1
+        with:
+          commit: chore(version) upgrade packages
+          title: chore(version) upgrade packages
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

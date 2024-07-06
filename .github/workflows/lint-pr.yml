@@ -1,0 +1,28 @@
+name: "Lint PR"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  lint-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  check-scope:
+    if: github.ref_name != 'dev' && github.base_ref == 'master'
+    name: Validate PR Base Ref
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Error Message
+        run: |
+          echo "The branch ${{ github.ref_name }} should not point to the master branch."
+          exit 1

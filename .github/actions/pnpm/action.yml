@@ -1,0 +1,38 @@
+# From https://github.com/remirror/template/blob/4f8c5f5629a081217672a8cce1df085510f43913/.github/actions/pnpm/action.yml
+name: "PNPM installation"
+description: "Install and audit dependencies for PNPM"
+
+inputs:
+  cache:
+    description: "PNPM caches folder's location"
+    required: true
+    default: ".pnpm-store"
+  version:
+    description: "The version to use"
+    required: false
+    default: "9"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PNPM cache at `${{ inputs.cache }}`
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.cache }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install PNPM v${{ inputs.version }}
+      uses: pnpm/action-setup@v3
+      with:
+        version: ${{ inputs.version }}
+        run_install: false
+
+    - name: Setup PNPM Config
+      run: pnpm config set store-dir ${{ inputs.cache }}
+      shell: bash
+
+    - name: Install Dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
