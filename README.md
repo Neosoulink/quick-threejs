@@ -1,81 +1,23 @@
-# Turborepo starter
+# @quick-threejs
 
-This is an official starter Turborepo.
+`@quick-threejs` is like a shared code from a friend that contains all the annoying configurations and optimization that you need to quickly start your [three.js](https://threejs.org/) project.
 
-## Using this example
+## Packages
 
-Run the following command:
+- [@quick-threejs/legacy](./packages/legacy/README.md)
+- [@quick-threejs/reactive](./packages/reactive/README.md)
 
-```sh
-npx create-turbo@latest
-```
+## 🚧 Disclaimer
 
-## What's inside?
+I have to apologize for not documenting this library well.
 
-This Turborepo includes the following packages/apps:
+At the current time, this library is mainly for personal use.
 
-### Apps and Packages
+If find this library interesting or useful and need to improve the library, please raise an [issue](https://github.com/Neosoulink/quick-threejs/issues).
+I'll be glad to have your feedback ❤.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@quick-threejs/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@quick-threejs/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@quick-threejs/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## License
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+MIT License. See the license file for more details.
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Copyright @ 2024. Made with ❤ by [@Neosoulink](https://github.com/Neosoulink).

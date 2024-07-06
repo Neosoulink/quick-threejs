@@ -1,0 +1,37 @@
+name: "Lint PR"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  lint-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  check-scope:
+    name: Validate PR Scope
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wrong Branch Scope
+        run: |
+          echo "Checking PR source and target branches"
+          PR_BASE_BRANCH=$(jq -r .pull_request.base.ref < "${GITHUB_EVENT_PATH}")
+          PR_HEAD_BRANCH=$(jq -r .pull_request.head.ref < "${GITHUB_EVENT_PATH}")
+          echo "PR Base Branch: $PR_BASE_BRANCH"
+          echo "PR Head Branch: $PR_HEAD_BRANCH"
+          if [ "$PR_BASE_BRANCH" == "master" ] && [ "$PR_HEAD_BRANCH" != "dev" ]; then
+            echo "Error: The branch '$PR_HEAD_BRANCH' should not point to the 'master' branch."
+            echo "Error: Please change the base branch to 'dev'."
+            exit 1
+          else
+            echo "Branch check passed."
+          fi
