@@ -45,7 +45,7 @@
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
 		"threads": "^1.7.0",
-		"three": "^0.165.0"
+		"three": "^0.166.1"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
