@@ -1,7 +1,6 @@
 {
 	"name": "@quick-threejs/config",
 	"version": "0.1.5",
-	"private": true,
 	"files": [
 		"./**"
 	],
