@@ -49,8 +49,8 @@ jobs:
       - name: Create Release Pull Request & Release
         uses: changesets/action@v1
         with:
-          commit: chore(version) upgrade packages
-          title: chore(version) upgrade packages
+          commit: "chore(version): upgrade packages"
+          title: "chore(version): upgrade packages"
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
