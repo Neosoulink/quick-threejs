@@ -1,5 +1,12 @@
 # @quick-threejs/reactive
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [1d2c441]
+  - @quick-threejs/utils@0.1.6
+
 ## 0.1.6
 
 ### Patch Changes
