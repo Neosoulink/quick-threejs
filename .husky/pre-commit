@@ -1,1 +1,1 @@
-npx lint-staged --concurrent false
+pnpm run format && pnpm run lint && git add .

@@ -7,7 +7,7 @@
 		"build": "turbo build",
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
-		"lint": "turbo lint && eslint",
+		"lint": "eslint . && turbo lint",
 		"format": "prettier --ignore-unknown --write \"**/*.{js,jsx,cjs,mjs,ts,tsx,html,json,css,scss,md,mdx}\"",
 		"release": "pnpm changeset publish && git push --follow-tags",
 		"prepare": "husky"
@@ -20,7 +20,6 @@
 		"@quick-threejs/config": "workspace:*",
 		"globals": "^15.8.0",
 		"husky": "^9.0.11",
-		"lint-staged": "^15.2.7",
 		"prettier": "^3.2.5",
 		"turbo": "latest"
 	},
