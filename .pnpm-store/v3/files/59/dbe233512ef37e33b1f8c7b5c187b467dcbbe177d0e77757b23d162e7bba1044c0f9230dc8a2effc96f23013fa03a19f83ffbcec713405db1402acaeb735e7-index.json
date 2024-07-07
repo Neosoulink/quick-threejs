@@ -1,0 +1,31 @@
+{
+	"name": "eslint-import-resolver-alias",
+	"version": "1.1.2",
+	"requiresBuild": false,
+	"files": {
+		"package.json": {
+			"checkedAt": 1720272863354,
+			"integrity": "sha512-1pmSSGB8kx2kZtmQc+hGDzqWVk/7Qogb6bk/uc2bhoUq/9g3dl6HBaQd/iX81F+zs6Y2j8uYLKzl/0mWiE+mWQ==",
+			"mode": 420,
+			"size": 1401
+		},
+		"core.js": {
+			"checkedAt": 1720272863354,
+			"integrity": "sha512-RNstzx7UWmcBB12U2LbrRlHCqpVPWu5UDrZei1J54XfMzu9g4Be2Zl40Cb3OLZYC6cJJK2XLkNexApkLuxxePQ==",
+			"mode": 420,
+			"size": 162
+		},
+		"index.js": {
+			"checkedAt": 1720272863355,
+			"integrity": "sha512-LV0pOZgshPeFdUHeP0HqXVgZVU8Kpi1BDF4/Ro03hNF6R2FBZcUOMQ2iclNNkz8vB0HCIY91e28PzXkyXXSxmA==",
+			"mode": 420,
+			"size": 4146
+		},
+		"README.md": {
+			"checkedAt": 1720272863355,
+			"integrity": "sha512-yE3aL2mECzvpC0RAMn48AXARYwy22FxoGUviZ7YL6fTZWZVvQTa2+XblgafuFEY+217i7GQIkAKs24sJvnjJDA==",
+			"mode": 420,
+			"size": 4229
+		}
+	}
+}

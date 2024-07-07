@@ -1,0 +1,31 @@
+{
+	"name": "is-observable",
+	"version": "2.1.0",
+	"requiresBuild": false,
+	"files": {
+		"license": {
+			"checkedAt": 1720272862629,
+			"integrity": "sha512-0fM2/ycrxrltyaBKfQ748Ck23VlPUUBgNAR47ldf4B1V/HoXTfWBSk+vcshGKwEpmOynu4mOP5o+hyBfuRNa8g==",
+			"mode": 420,
+			"size": 1117
+		},
+		"index.js": {
+			"checkedAt": 1720272862629,
+			"integrity": "sha512-6YqL9rau9bjfeKighKkKNx8Lkgg4XQmFbsMHWQll+NpaxCcXqz/n1zMxVaM50QDgEbfk3a2juKmaItCPJ9cUjg==",
+			"mode": 420,
+			"size": 486
+		},
+		"package.json": {
+			"checkedAt": 1720272862630,
+			"integrity": "sha512-/fJReJlKKi4J+6GukQp2rpbnWOFCLFOsLsZWql53zs7XfkynaaSzQho0/8fb3BusJG9n62uVwdgzeRdDXBvoGQ==",
+			"mode": 420,
+			"size": 730
+		},
+		"readme.md": {
+			"checkedAt": 1720272862630,
+			"integrity": "sha512-jTUMI72NDIm2tfxV9Eo+vxf3Y6F3MOVPD7IsDzMXr+JLeHfCVuGMSXnJFveSFXgPDMsznA7i5x540QVRfuR82Q==",
+			"mode": 420,
+			"size": 981
+		}
+	}
+}

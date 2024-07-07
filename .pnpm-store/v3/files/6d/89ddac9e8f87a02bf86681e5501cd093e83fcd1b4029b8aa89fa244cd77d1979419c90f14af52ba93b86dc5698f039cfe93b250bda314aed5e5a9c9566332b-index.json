@@ -1,0 +1,49 @@
+{
+	"name": "@babel/plugin-bugfix-firefox-class-in-computed-class-key",
+	"version": "7.24.6",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720272861738,
+			"integrity": "sha512-KYRMN3MVTuiy5XkFDHd5PnQmHaQnt3z16nsBDePxZ9YNmq7IFlslpBBlR3UI+zvlbEemzowOYeKil9a0ZkOYxQ==",
+			"mode": 420,
+			"size": 1106
+		},
+		"README.md": {
+			"checkedAt": 1720272861738,
+			"integrity": "sha512-KjpDbhwWM97OB23CZ0BW2Hm8HmOGLo54xVvRiYlRb5KEF+/8bTyKaLlg7QdurkjbZzA4dQ3Xhw1zJFFWrLiHNg==",
+			"mode": 420,
+			"size": 576
+		},
+		"lib/index.js": {
+			"checkedAt": 1720272861739,
+			"integrity": "sha512-C3fFBg1sjzhXGRMGRPQDnhAZIkvZfREHkcZLIdCdFp8z6V4fduyk5Df539sqHeTsAdsDF8FFxIysMLRQjthqxA==",
+			"mode": 420,
+			"size": 2429
+		},
+		"lib/index.js.map": {
+			"checkedAt": 1720272861739,
+			"integrity": "sha512-x9ofhC7eTrDQ7SF9C9/B3ff3bevbSNjBV+tqvbcEJIBZP7J9xT60kD2YMzJNVUrhNJ0+F9PSs1SR9N4LeUhGEQ==",
+			"mode": 420,
+			"size": 6866
+		},
+		"package.json": {
+			"checkedAt": 1720272861739,
+			"integrity": "sha512-AEdGH7Tqj3WcXVjdNei4O2FI5581TWTysMLa375W0n0NLIH8RbhPs/lAQtXtsbvLxpGLgiRQI1NYSF36iYWQLg==",
+			"mode": 420,
+			"size": 1251
+		},
+		"tsconfig.json": {
+			"checkedAt": 1720272861739,
+			"integrity": "sha512-AJqSsrx4CAPGg23wTlTGr+cIE5QA8EVVCCZyGaY6I6LZSUse1Nu6G+C8/1Va5DikYDRHK0f1JgPLfkmDYLvv8g==",
+			"mode": 420,
+			"size": 433
+		},
+		"tsconfig.tsbuildinfo": {
+			"checkedAt": 1720272861739,
+			"integrity": "sha512-QaQW7k8sNDvcrKFGFpSCe+2g4jGLcSMfFOjks6+TUB9XSbDY03cYpIIW1VKHnxYrEbY3gyx+9s8pH6tzitUPJA==",
+			"mode": 420,
+			"size": 65706
+		}
+	}
+}

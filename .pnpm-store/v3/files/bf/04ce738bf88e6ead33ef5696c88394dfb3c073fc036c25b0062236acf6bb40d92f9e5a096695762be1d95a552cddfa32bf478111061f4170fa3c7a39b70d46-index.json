@@ -1,0 +1,31 @@
+{
+	"name": "turbo-linux-64",
+	"version": "2.0.1",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720272863963,
+			"integrity": "sha512-5eGNat9dugBvX/w1SDHUIXRDhMiBUUTwOnIh7aRgaCgztG0pMOcgD3dNKw4WFKfTphxke+oZzBofOsOuLaO6Yw==",
+			"mode": 420,
+			"size": 1055
+		},
+		"README.md": {
+			"checkedAt": 1720272864311,
+			"integrity": "sha512-BeK+q4acMv0ZS3kvT9u/HtnBytNWbObHD95EHG0d9ajcHdBa4R2LNqvX687VgU98O2EMDrkzuZ5q/nLlPR7DAQ==",
+			"mode": 420,
+			"size": 135
+		},
+		"package.json": {
+			"checkedAt": 1720272864311,
+			"integrity": "sha512-vQGjyNHNXtVFKbFhigWjdEiC8i04QufgNUT4yYbXBN6a1HseA6zSnGaUc/Y2Z1KWCiPVoz0aS8RTrX5KuOGh4g==",
+			"mode": 420,
+			"size": 373
+		},
+		"bin/turbo": {
+			"checkedAt": 1720272864370,
+			"integrity": "sha512-oXdIshW03kaYyjSEpMdz6l5VTUwA10cq+NfexMcz52rXCNaC6QTVum1m4tsy69BjSVafPlwrVvN09JaM83D6/w==",
+			"mode": 493,
+			"size": 22460776
+		}
+	}
+}

@@ -1,0 +1,31 @@
+{
+	"name": "turbo",
+	"version": "2.0.1",
+	"requiresBuild": false,
+	"files": {
+		"bin/turbo": {
+			"checkedAt": 1720272864163,
+			"integrity": "sha512-FH5rDbGBnQ6im1Y/U9xkRG6K6OjXGBezh2KnsVEQmBOy0cauzLYNBkHymarTJrVuDAmitnmGF+5nroAro4hyuQ==",
+			"mode": 493,
+			"size": 10722
+		},
+		"README.md": {
+			"checkedAt": 1720272864163,
+			"integrity": "sha512-zwDKzTGO77lZ5lcznRvRjZju4xcvIZOduW0GtlCHfvPFhSXEeaswqNi31kSJNHtvxuefBsesWDT5xKolMVF2Uw==",
+			"mode": 420,
+			"size": 2442
+		},
+		"LICENSE": {
+			"checkedAt": 1720272863963,
+			"integrity": "sha512-5eGNat9dugBvX/w1SDHUIXRDhMiBUUTwOnIh7aRgaCgztG0pMOcgD3dNKw4WFKfTphxke+oZzBofOsOuLaO6Yw==",
+			"mode": 420,
+			"size": 1055
+		},
+		"package.json": {
+			"checkedAt": 1720272864163,
+			"integrity": "sha512-jyl+B+eISU1g41mCx9K6b+gR+kupChsztdkwt/Gnllfn/PnkfL0BcjnSbcqgLYyqb7abUdDGzuQg61/HowAdiA==",
+			"mode": 420,
+			"size": 705
+		}
+	}
+}

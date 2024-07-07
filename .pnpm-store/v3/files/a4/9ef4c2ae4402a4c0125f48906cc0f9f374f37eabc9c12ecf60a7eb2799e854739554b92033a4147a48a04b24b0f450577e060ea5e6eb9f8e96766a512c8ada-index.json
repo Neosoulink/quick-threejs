@@ -1,0 +1,43 @@
+{
+	"name": "tiny-worker",
+	"version": "2.3.0",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720272862622,
+			"integrity": "sha512-1Lk4o5Ab06SmkC0CVI+ppC2TTd7mGafaqDa0ct7p7iuxQjCUZIXzriN2ctG7ljZRYLLUfqGxSbJayQeDw7OaBg==",
+			"mode": 438,
+			"size": 1512
+		},
+		"lib/index.js": {
+			"checkedAt": 1720272862622,
+			"integrity": "sha512-zJz7ykjL3R7IxuVom/MHNdcXs00YZB93CEGGs2TU1+EWnciELlbG8vmmpEVPjEJh0+HanscZjyuAAHl/srqqyw==",
+			"mode": 438,
+			"size": 4219
+		},
+		"lib/noop.js": {
+			"checkedAt": 1720272862622,
+			"integrity": "sha512-LDhWP6Y8+xtV8touk6QUi4lFHVOghF3RKKKDGlZpZYlVdemLEBfM4vIHgD2Pzm603/kn6s7yNJttgLk7ehyAkg==",
+			"mode": 438,
+			"size": 66
+		},
+		"lib/worker.js": {
+			"checkedAt": 1720272862622,
+			"integrity": "sha512-OqrD2PEiJv/tr0p9RhPWuk/OIg5P437knh6JsXcsdu5k8+ODSIaN4nC3+jW0BaVBSR7nSmelBaTG1ENpd24XhQ==",
+			"mode": 438,
+			"size": 2135
+		},
+		"package.json": {
+			"checkedAt": 1720272862623,
+			"integrity": "sha512-S+I5X5bgCWmC7vvQK4e4AeTM5jcYn1fN3JeRk8WQ+KfTPHDCH5PwV7Nmh7zfG2uXGeX0NECknwj4P8l0NbGJEg==",
+			"mode": 438,
+			"size": 926
+		},
+		"README.md": {
+			"checkedAt": 1720272862623,
+			"integrity": "sha512-dPIRmQHc28igOCpYwxzDTNeIvdBp81dy27nRfXGEOdUOf63wmmcXQCJYnsz1vfJk13R4+T3dwuuVhGafsASdjA==",
+			"mode": 438,
+			"size": 3804
+		}
+	}
+}

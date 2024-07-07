@@ -1,0 +1,67 @@
+{
+	"name": "lil-gui",
+	"version": "0.19.2",
+	"requiresBuild": false,
+	"files": {
+		"dist/lil-gui.css": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-pZNPNm3cIxFmSR6pZQsoeQzmo6DHjn/fhOB+35FW/eKS/eQ3skLYtl6PpY2W9ZwfJ8KRa3n5Q2YIAoCe5d2XDg==",
+			"mode": 420,
+			"size": 12051
+		},
+		"dist/lil-gui.min.css": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-A/7o9i5DxYd08Y71Sc85ulyxzZTcRb/hE/mWjQ1kZwBnGZMACNV87mgUFcv/svqxdh/FS1IUcZ7R986PUll49A==",
+			"mode": 420,
+			"size": 10448
+		},
+		"dist/lil-gui.esm.js": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-kiFSP04G6X1R21uOTG7QJQUfl67WNyutPpUIXrH7AKDyxP951+z1F0hEaKEeGxx8nDjuPT5BCjFu6TAjLq6MZw==",
+			"mode": 420,
+			"size": 59438
+		},
+		"dist/lil-gui.esm.min.js": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-MvB130PPSTktMAw0Efnam+yZ2ryqDrzKbWtNRIlvMlWshA4EntinAyqL8zLmaMknnlUdyO8tMhJWubsrYTItSw==",
+			"mode": 420,
+			"size": 29869
+		},
+		"dist/lil-gui.umd.js": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-5Vp6HCjZX2L9Dfaxu0KydVc/TFRduP2+jaOR1F0epzHyZrpmXu0tMi6g9QIrSJNrLM/5kApCGI4LqDH8ExVrhA==",
+			"mode": 420,
+			"size": 61471
+		},
+		"dist/lil-gui.umd.min.js": {
+			"checkedAt": 1720272862547,
+			"integrity": "sha512-kTBR57IO35vZwShWpSBdwJ/BmcA7dRsdpzAD33Nq14o00rfB5LxNI3zvekmoKzQEIVTDqyrRfgeVnWQJcmF8cw==",
+			"mode": 420,
+			"size": 30093
+		},
+		"package.json": {
+			"checkedAt": 1720272862548,
+			"integrity": "sha512-7LYo/b9A0/Ga6s3iPduE7TTwC7WDJTPMxCfZ+8R6Qkg0Cs+/FRdu1qaGLYd7ghtytyCF4mBa93WfFRiLxxvwbw==",
+			"mode": 420,
+			"size": 2385
+		},
+		"LICENSE.md": {
+			"checkedAt": 1720272862548,
+			"integrity": "sha512-xCH93xIm+ZCa+ZbYgX7TarLOLwquCt6/Akmk+45uuo8XGVwRGY+JSWVgZE7D6xH1KWuEutHslaLZtjgaVIs2aQ==",
+			"mode": 420,
+			"size": 1077
+		},
+		"README.md": {
+			"checkedAt": 1720272862548,
+			"integrity": "sha512-X8UBv08DllNuCag3gcw5GD4p3zzQxnlMqFn4ETQJxHO9k69e7TH4XOiPlf8q3b6pVMa7Srzmd9GO9WWlOBShJQ==",
+			"mode": 420,
+			"size": 1604
+		},
+		"dist/lil-gui.esm.d.ts": {
+			"checkedAt": 1720272862548,
+			"integrity": "sha512-OaWSnFDU0nuJCfY9lTKXXXXlYuGzFzM4fml3oJnNRbDauJShDzLgHdNFU1LwEi840nemzbCh+WphK8aLUhZdlQ==",
+			"mode": 420,
+			"size": 21224
+		}
+	}
+}

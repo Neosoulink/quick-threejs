@@ -1,0 +1,31 @@
+{
+	"name": "@types/webxr",
+	"version": "0.5.19",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720377466146,
+			"integrity": "sha512-HQaIQk9pwOcyKutyDk4o2a87WnotwYuLGYFW43emGm4FvIJFKPyg+OYaw5sTegKAKf+C5SKa1ACjzCLivbaHrQ==",
+			"mode": 420,
+			"size": 1141
+		},
+		"README.md": {
+			"checkedAt": 1720377466146,
+			"integrity": "sha512-8z9gaZvxjK8bRwVM3SLk5akdj51IGHqwXFnXVP5jYgWh8/JhtjfG6YkRi1bGQT4XX3zzJb9yvwZmEWMXeqbyog==",
+			"mode": 420,
+			"size": 593
+		},
+		"index.d.ts": {
+			"checkedAt": 1720377466146,
+			"integrity": "sha512-fCQjcC/z//9HK2jFNELyx1FZcjG1TZA4DZa7c4bfdRoaBFkHpQx+LPWUE/2PLEvto9MSOpp46Nl2OIUdqW9gxw==",
+			"mode": 420,
+			"size": 40005
+		},
+		"package.json": {
+			"checkedAt": 1720377466146,
+			"integrity": "sha512-YuvPlVP3kX0xqv/LHBvsVrApivdria63FSPC/sVACvF/NK0Eu0cXv06gZUS+PCGi8aZyx9bWjxtIz5OMpYYm4w==",
+			"mode": 420,
+			"size": 1227
+		}
+	}
+}

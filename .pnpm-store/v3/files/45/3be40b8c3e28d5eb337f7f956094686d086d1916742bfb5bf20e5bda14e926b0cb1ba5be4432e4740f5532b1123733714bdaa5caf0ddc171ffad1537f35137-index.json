@@ -1,0 +1,67 @@
+{
+	"name": "acorn",
+	"version": "8.12.0",
+	"requiresBuild": false,
+	"files": {
+		"bin/acorn": {
+			"checkedAt": 1720272863137,
+			"integrity": "sha512-MLaQItkJuwyhrOKJyF/FKtIdJwIiCu8UK0PSNMdp2ycxUj54eYbX+eJ5qErbBGeZHapr4AdsuP9H+7gw1Kk0pA==",
+			"mode": 493,
+			"size": 60
+		},
+		"LICENSE": {
+			"checkedAt": 1720272863137,
+			"integrity": "sha512-sSZwWv50/V8LvOOycBo3ZvVml2zjfWDJyOeVwSWOfsidDTOfYQDxkZeYn5ZHYrtjwEzQ83d7V5QU92poVo7VEQ==",
+			"mode": 420,
+			"size": 1099
+		},
+		"dist/acorn.js": {
+			"checkedAt": 1720272863138,
+			"integrity": "sha512-7CxDxrSgd1YcFKX+kYv+0WnBIo852OI/t9Z+ZdebmzrxgpAV7E6VS9U5Ooa/a30RpIl08bFcI4ZXoCjz8WXduw==",
+			"mode": 420,
+			"size": 233935
+		},
+		"dist/bin.js": {
+			"checkedAt": 1720272863138,
+			"integrity": "sha512-J3ficAApkvR2yI3n31Aned1pRstXU8yk6IDIoq1nxCysdvkTaPJ+hephHFBqoFMePEgGqve+4bqNuXiuzwONRw==",
+			"mode": 420,
+			"size": 3261
+		},
+		"package.json": {
+			"checkedAt": 1720272863138,
+			"integrity": "sha512-f8d2RzxAU+uH6pq3VSY4CTZV86L9CqGepfPuOnxPPhVi0Daq7fSjiYe7zwebxZkK0lITCPoY+080R3Juxe6vxA==",
+			"mode": 420,
+			"size": 1061
+		},
+		"CHANGELOG.md": {
+			"checkedAt": 1720272863138,
+			"integrity": "sha512-iL62bL9VcrR+jKxsK9JN9K/zzf5lNgWyhZWvi/iwc10G8ChZH5hB8zd75/5Z8cF9LbVX0B1n+Ttmwedne30TIA==",
+			"mode": 420,
+			"size": 22155
+		},
+		"README.md": {
+			"checkedAt": 1720272863138,
+			"integrity": "sha512-UMAttWl2oI+Ioy/gdDBBjwJcwVAZN/770drh0lN4DlTiDlbWejHgOcvV4kSc1GdAiWhdqNZgLxuKHhUT66FdpQ==",
+			"mode": 420,
+			"size": 10799
+		},
+		"dist/acorn.mjs": {
+			"checkedAt": 1720272863139,
+			"integrity": "sha512-ekDJh1q8l3zjeMTS4iRaYwOUuAxmEYxRPl6oA2mMYHRu9deXCAC/Hjt1t9gPPo3QNe4E5NcDOo4PnaKyVzmnUw==",
+			"mode": 420,
+			"size": 222512
+		},
+		"dist/acorn.d.mts": {
+			"checkedAt": 1720272863139,
+			"integrity": "sha512-RRQc8aAtkdZH4rbFoac3r/hdmhRQmDRuNkDrlik+6Pvs9Uni0RTtIUCjjGL8rIfBTTuxvTKFsS71ygEXIy2qAQ==",
+			"mode": 420,
+			"size": 21301
+		},
+		"dist/acorn.d.ts": {
+			"checkedAt": 1720272863139,
+			"integrity": "sha512-RRQc8aAtkdZH4rbFoac3r/hdmhRQmDRuNkDrlik+6Pvs9Uni0RTtIUCjjGL8rIfBTTuxvTKFsS71ygEXIy2qAQ==",
+			"mode": 420,
+			"size": 21301
+		}
+	}
+}

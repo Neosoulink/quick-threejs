@@ -1,0 +1,31 @@
+{
+	"name": "eslint-plugin-turbo",
+	"version": "2.0.4",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720272863964,
+			"integrity": "sha512-5eGNat9dugBvX/w1SDHUIXRDhMiBUUTwOnIh7aRgaCgztG0pMOcgD3dNKw4WFKfTphxke+oZzBofOsOuLaO6Yw==",
+			"mode": 420,
+			"size": 1055
+		},
+		"dist/index.js": {
+			"checkedAt": 1720272863965,
+			"integrity": "sha512-YTOqiNkLS9ZgoUCew8AWr9K2a/zNC1P0oTKXZ7YmPcosLDIIBZd25Ev2ZI9KJSKU2w48OLKu6kAsdNfwulU/Nw==",
+			"mode": 420,
+			"size": 434809
+		},
+		"README.md": {
+			"checkedAt": 1720272863966,
+			"integrity": "sha512-sseejN8d4UoIN0u7WRJu12O2roecExfESIUdfuErOseMBx3qqon9BhU23z2Hs7h14q6Gu8zP4IlGZIIiWM/HUw==",
+			"mode": 420,
+			"size": 772
+		},
+		"package.json": {
+			"checkedAt": 1720272863966,
+			"integrity": "sha512-R++/DiEADpnkHNOHKpa4fOWKhUaKa1Dpz6W+dX3SlYDvB0uMtDcUhlk3i2zfoS1N45RBONuJitXjiwa7lyKzmw==",
+			"mode": 420,
+			"size": 1299
+		}
+	}
+}

@@ -1,0 +1,145 @@
+{
+	"name": "@commitlint/read",
+	"version": "19.2.1",
+	"requiresBuild": false,
+	"files": {
+		"lib/get-edit-commit.js": {
+			"checkedAt": 1720377467068,
+			"integrity": "sha512-K9cc7OJibeju5nj5Fc3qwk5rGJgdHXP87z4pVVkYmMgCyUk69zw7F+2xnunrTtMm1NZ464LWVPOYiPI6Wb43PQ==",
+			"mode": 420,
+			"size": 574
+		},
+		"lib/get-edit-file-path.js": {
+			"checkedAt": 1720377467068,
+			"integrity": "sha512-ErP+w/tPFlVeoQdIcol6Mijs4tYnkwNgBFeDKzotyReJByqX7xmcExNnNItkZZGPkhN1nKEAWxDSrNpEJmPF7w==",
+			"mode": 420,
+			"size": 714
+		},
+		"lib/get-history-commits.js": {
+			"checkedAt": 1720377467068,
+			"integrity": "sha512-D4Gn0/msAvYzLyEH8BAJCfbJzZIaWZFckX6pAiRJ6InUpGEhkMm9hgC5mBueQ81TJfrnWmMuf6DLFMSmArbW+w==",
+			"mode": 420,
+			"size": 321
+		},
+		"lib/read.js": {
+			"checkedAt": 1720377467068,
+			"integrity": "sha512-hwI+y63H3Ew5GDvTE3s5Uzc5kSwp6zFAJBSaYNiS6sc7EJWXgDUQkHvlmuEtEvJiYRFNtiJioQN7m+c1a7d6Sw==",
+			"mode": 420,
+			"size": 1046
+		},
+		"lib/stream-to-promise.js": {
+			"checkedAt": 1720377467068,
+			"integrity": "sha512-Ckvw615D9ce0zkJLKihvET4BZquNahV2iR0+PFYaj2YriZrIxdmzqRhPAa9lSWN+fC6TQjzZ0NO9ReCembBfLw==",
+			"mode": 420,
+			"size": 299
+		},
+		"package.json": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-JbeaNKqtAbFTsFngdZ/+r5J8/Ivo77lKGkDfxaF+RlpWWRxQJwmhr2HkX7BHtkmdBQGMge/61+NIzFh+KI/Y3Q==",
+			"mode": 420,
+			"size": 1246
+		},
+		"lib/get-edit-commit.d.ts.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-Zc4SJASmseLHV9iwW0E1lwuGB8UQxgeu9t4n+XlX4zuRvgTTvPiLcR2vD0C6xLIxqgfq7GOEkjmsJw8Xeni7vA==",
+			"mode": 420,
+			"size": 238
+		},
+		"lib/get-edit-commit.js.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-yiNxZ66j2tCYRggQKTPDrCeYYpfx4hHGEeLFokIN/bsj2RtpYVWkxKJ71TTWHTwXPAaN1aK298wIICMDx7JkZw==",
+			"mode": 420,
+			"size": 647
+		},
+		"lib/get-edit-file-path.d.ts.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-xv4a3hQv2DWBfCKCIClkZoOuiq2oawCF0JseWRRuqi6ZcujkbTbhIYmyUexMroGgo2rEfZxVp5/qFTjiY6LL4w==",
+			"mode": 420,
+			"size": 235
+		},
+		"lib/get-edit-file-path.js.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-qvrBST0ZMZIaq8Zl27usjM25AuFLsHmNd2e9cTHo9dbsU/IgK/UZsh8FwGE9lMRONZ1nljoRCnBH+lhfkK3goQ==",
+			"mode": 420,
+			"size": 869
+		},
+		"lib/get-history-commits.d.ts.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-HxuP0Ua8n2v3bMiWu2SjTs3m7I7PGtfyPOCu7P6RRvsC11HtaJJwXvB6VLGmX27YcNbezm8bvSLhSaq9U5KYwg==",
+			"mode": 420,
+			"size": 302
+		},
+		"lib/get-history-commits.js.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-/cWjmSlHA50qjyuN9rodtIkILmfeaeWB1EsO//tqNBjr60Jf+7Knu8MYBXBJd4njtrWIF+zyUjmiuRP02rW01g==",
+			"mode": 420,
+			"size": 381
+		},
+		"lib/read.d.ts.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-HpQ1pXlSf+vR0w4mGu14DkIXYuRvY/Bd35wpPrIeO53nDXd6lydP/cHTwLTlw3kVM0KugkmqBl+rgLD0tOjPUA==",
+			"mode": 420,
+			"size": 396
+		},
+		"lib/read.js.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-MekY6fl7RhIlP8Bgq3HobGAdtmd5AbrhjOQBMO47DEgtU4/FLfuImheEEYSiB8raG9T4k+tYhGSEABn+qAg7BQ==",
+			"mode": 420,
+			"size": 1135
+		},
+		"lib/stream-to-promise.d.ts.map": {
+			"checkedAt": 1720377467069,
+			"integrity": "sha512-TXkNhvePZsbN8m/rhd1uTk9A+yfBkRGRXdD4VqpkIFV6MZMRntPiF94jI5oDCUD+pqjagMQj7PSKiy5altnwfA==",
+			"mode": 420,
+			"size": 242
+		},
+		"lib/stream-to-promise.js.map": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-wfslJnHYQfUzRjyRAJP+k+3lqxWt4rylIQqo8XbneuTXcg715UWZq1cxU2PufovSChw4+A3lHG78AolMGkiJKA==",
+			"mode": 420,
+			"size": 487
+		},
+		"license.md": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-Gd6hReKhspV9eKzmpFXEIz85f6nIx7nUtlC5469iDtUEcTqNh0tuBdyn00Y5XgSAtAXHDYfsnzbJBGtUcAPd/w==",
+			"mode": 420,
+			"size": 1087
+		},
+		"README.md": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-Bo9E25ZLVKYXA0Vv/Qj/1M/t9S+3M0IHNJ6AHCFzH64BOo1jErYMlqWgtUoukDaA1RABV2GLk+jK2nmLBGhVLA==",
+			"mode": 420,
+			"size": 325
+		},
+		"lib/get-edit-commit.d.ts": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-yHBE3VadBUxARnwt7mP7ShBJDbIICB2D1MaD8wG/5WX70ScBZa5+ct/yPr+Mwueo2F2pNFrGaVjc+gisEdKpsw==",
+			"mode": 420,
+			"size": 142
+		},
+		"lib/get-edit-file-path.d.ts": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-HftPjQOjfaQobnWA5/lSDA4fnjq9xwlYE5ON850IFYBlhrnfnAqXRvMbhIs70hkgBjs1A7nGIyAwJnC/EX9tww==",
+			"mode": 420,
+			"size": 144
+		},
+		"lib/get-history-commits.d.ts": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-XdFeltJQbf5cd6S3MwSJH8FBu/99Yc6iUFp7kL1cOnJuif8PkxVZb/AoHOISuBfzoz2e5Hk7gy6ykIEo2VuOWg==",
+			"mode": 420,
+			"size": 221
+		},
+		"lib/read.d.ts": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-uOJmzm1oroa8zq2BZ+PwawCLI3QZvM6pInYRJoWffGtrwAC2oG6fnZAu10U/X46evn27gyqHHo9B0zblnO5Zew==",
+			"mode": 420,
+			"size": 308
+		},
+		"lib/stream-to-promise.d.ts": {
+			"checkedAt": 1720377467070,
+			"integrity": "sha512-hcWZOi0PF6PsWJNtDZ2MO9NhPDFmq4CGrHxncx68HRt6lDy9FeikMSuFp3uHYiEWyiaNgqvwRQRy1k14tZ6E6g==",
+			"mode": 420,
+			"size": 216
+		}
+	}
+}

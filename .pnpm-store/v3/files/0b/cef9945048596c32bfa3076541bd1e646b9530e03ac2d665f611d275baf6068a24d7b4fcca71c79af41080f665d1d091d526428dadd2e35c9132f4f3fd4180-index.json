@@ -1,0 +1,73 @@
+{
+	"name": "@babel/helper-create-regexp-features-plugin",
+	"version": "7.24.6",
+	"requiresBuild": false,
+	"files": {
+		"LICENSE": {
+			"checkedAt": 1720272861382,
+			"integrity": "sha512-KYRMN3MVTuiy5XkFDHd5PnQmHaQnt3z16nsBDePxZ9YNmq7IFlslpBBlR3UI+zvlbEemzowOYeKil9a0ZkOYxQ==",
+			"mode": 420,
+			"size": 1106
+		},
+		"README.md": {
+			"checkedAt": 1720272861829,
+			"integrity": "sha512-bwhopvIJgeiGLJfjfh6stQAW+6jIlPkUVFt6LncEhdxiRYugHnc+ulhMfCwOMrkkWQTkC9C/qOwoNXdVwBolxg==",
+			"mode": 420,
+			"size": 422
+		},
+		"lib/features.js": {
+			"checkedAt": 1720272861829,
+			"integrity": "sha512-sZqF2wbYhhePlH2oDnBHRgXi1bgNQOxcMcdBYD3Zh/3oeIkU2L8QbMLoHCH8ECp3+can3tLX+Tt2ZK3Md1+y8A==",
+			"mode": 420,
+			"size": 882
+		},
+		"lib/features.js.map": {
+			"checkedAt": 1720272861830,
+			"integrity": "sha512-hAZYrsP4zFcUguTEUtZvvUJLZAxhb8CsECCC67FeittuQ609LvSMMDg4i97riskhtCV9wZMOJogNs8plpms8Fw==",
+			"mode": 420,
+			"size": 2106
+		},
+		"lib/index.js": {
+			"checkedAt": 1720272861830,
+			"integrity": "sha512-lOXHWfxJva0KGZe0bem2MWR9wQNw6JmGuLRjJ55XUI5GVa8AlTJXLfZ0yeCksa8spkmOgG6zz+lKli6Vz/CE+w==",
+			"mode": 420,
+			"size": 4182
+		},
+		"lib/index.js.map": {
+			"checkedAt": 1720272861832,
+			"integrity": "sha512-0bUZayOpbkVZBUdyNR8EWA5QrMIBU+U4G/kRT8dJ6pzX974qNoxDt/wjleafTVieLVB7oFS3ZS4khuWKi9EOtQ==",
+			"mode": 420,
+			"size": 9850
+		},
+		"lib/util.js": {
+			"checkedAt": 1720272861832,
+			"integrity": "sha512-OQ9xMQTtkOsSPqjJWGDOhudc54tlrqf2ZQwSn0FnXOQh5Z6Cs8hwO2tvgkkKA69rMhk0rnKBzpDnF8LHHvuZ6A==",
+			"mode": 420,
+			"size": 2188
+		},
+		"lib/util.js.map": {
+			"checkedAt": 1720272861832,
+			"integrity": "sha512-S1QhAOSwXkgMDDG0XSnGuC8PZKp7j6VICFGb+IoT5yCiUT3mqY+0rJk9W5MRZCo1ciqnWpv7TQ6g8sn4TLu8DQ==",
+			"mode": 420,
+			"size": 5382
+		},
+		"package.json": {
+			"checkedAt": 1720272861832,
+			"integrity": "sha512-+/fcyok8EtMq5qjiy/JYJWNl9iwDl3i0FzLR1sAiTX6lthr4hneGpWmd1oog1huLorTmf7OjtYvteUmhfYxQDQ==",
+			"mode": 420,
+			"size": 867
+		},
+		"tsconfig.json": {
+			"checkedAt": 1720272861833,
+			"integrity": "sha512-+mW1XNpCDWnbzjg8ehqGgNcq4a8IdO1KwB4AvgFEdqgjXKYDBy7PinZnbCtZDHPS1qxXMMGCIySiot7ZT9V3qQ==",
+			"mode": 420,
+			"size": 494
+		},
+		"tsconfig.tsbuildinfo": {
+			"checkedAt": 1720272861833,
+			"integrity": "sha512-c07B8g71g4B/dpF5qxzDtqzOgLtW7p17mwxhcOoCSL36p+5JzrlnOKav3HSmX0ntpjTWO8vpmxgW2RC9Q6rrug==",
+			"mode": 420,
+			"size": 66062
+		}
+	}
+}

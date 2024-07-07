@@ -1,0 +1,49 @@
+{
+	"name": "husky",
+	"version": "9.0.11",
+	"requiresBuild": false,
+	"files": {
+		"husky": {
+			"checkedAt": 1720377467073,
+			"integrity": "sha512-ymykCpOEapcycF/1XoQ+/k/8PRlLM+ccpKC593ogOhPdA0oygIBYwLwQn5Jef955NxDxVqv0cTQ1k4JnDfypoA==",
+			"mode": 420,
+			"size": 423
+		},
+		"LICENSE": {
+			"checkedAt": 1720377467073,
+			"integrity": "sha512-M6SQz9kIlmzIoxVACTC2OP7I6O/7YL9hmQfGws5HUHasDAgQviO4U9ZKmus8S3cHF8hpBRr5oTYddpa+uKeoxg==",
+			"mode": 420,
+			"size": 1065
+		},
+		"package.json": {
+			"checkedAt": 1720377467073,
+			"integrity": "sha512-bTYWjyJq/vu4A+rVQ6JQerGDqNr+M33eLf9lhVPpgTBKx9BbYJHCg1zR0tCwMQEo0BofSVGwgpqA6JAHy3lb7Q==",
+			"mode": 420,
+			"size": 422
+		},
+		"README.md": {
+			"checkedAt": 1720377467074,
+			"integrity": "sha512-vNo4tf/VRFouQl3SDkxrYQMsDZzjiV2GXiLe0sbBsmpyR4MNuVMCyMjRTet1BNgHFlfp4twd1mGWPOTK/sMVbQ==",
+			"mode": 420,
+			"size": 33
+		},
+		"bin.mjs": {
+			"checkedAt": 1720377467074,
+			"integrity": "sha512-LbgyGrshOtvodEN/LPrP8OOILwXl3rkHQoWbm3jEihpbIeRSH40hNzWXid3spjAfX+uZlnbr1Ka+qxyFVU1JWg==",
+			"mode": 493,
+			"size": 667
+		},
+		"index.mjs": {
+			"checkedAt": 1720377467074,
+			"integrity": "sha512-A0RUsTHoZYr0JLIALBeJysYcYZMF+QKkpHHcuLXs8a+v0ElGaM96QZcWHGuRKmEkrS2ZdVNHpZWl8rHqY40B9w==",
+			"mode": 420,
+			"size": 953
+		},
+		"index.d.mts": {
+			"checkedAt": 1720377467074,
+			"integrity": "sha512-ajmdleXewajT5BvorAOjMFxoHUbRZiLc0shbgpo6OPhx+ZriCdbvvOvKKDw0OFxqYN2w1sZQ2oJm+onRdymgGQ==",
+			"mode": 420,
+			"size": 47
+		}
+	}
+}
