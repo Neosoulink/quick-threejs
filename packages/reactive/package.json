@@ -38,7 +38,7 @@
 		"build": "tsc",
 		"dev": "vite --host",
 		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint",
+		"lint": "eslint --max-warnings=0",
 		"prepare": "pnpm run lint && pnpm run build",
 		"test": "jest --passWithNoTests"
 	},
