@@ -50,6 +50,7 @@ jobs:
         with:
           commit: "chore(version): upgrade packages"
           title: "chore(version): upgrade packages"
+          createGithubReleases: true
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
