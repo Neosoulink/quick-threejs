@@ -14,6 +14,6 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/three": "^0.165.0"
+		"@types/three": "^0.166.0"
 	}
 }
