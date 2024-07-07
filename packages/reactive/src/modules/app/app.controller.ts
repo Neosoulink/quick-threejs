@@ -11,9 +11,7 @@ export class AppController extends ProxyEventHandlersModel {
 	public readonly lifecycle$$ = new Subject<AppLifecycleState>();
 	public readonly lifecycle$ = this.lifecycle$$.pipe();
 
-	constructor(
-		@inject(AppComponent) private readonly component: AppComponent
-	) {
+	constructor(@inject(AppComponent) private readonly component: AppComponent) {
 		super();
 
 		for (const eventType of PROXY_EVENT_LISTENERS) {

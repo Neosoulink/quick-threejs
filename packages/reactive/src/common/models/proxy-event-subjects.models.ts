@@ -2,7 +2,9 @@ import { Subject } from "rxjs";
 
 import { ProxyEventSubjectsImplementation } from "../types/object.type";
 
-export class ProxyEventSubjectsModel implements ProxyEventSubjectsImplementation {
+export class ProxyEventSubjectsModel
+	implements ProxyEventSubjectsImplementation
+{
 	contextmenu$$!: Subject<Event>;
 	resize$$!: Subject<Event>;
 	mousedown$$!: Subject<Event>;

@@ -17,7 +17,7 @@ export class CameraComponent {
 	public enabled = true;
 
 	constructor(
-		@inject(SizesComponent) private readonly sizesComponent: SizesComponent,
+		@inject(SizesComponent) private readonly sizesComponent: SizesComponent
 	) {}
 
 	public set aspectRatio(ratio: number) {
@@ -45,7 +45,10 @@ export class CameraComponent {
 	public setDefaultCamera(cameraType?: DefaultCameraType) {
 		this.removeCamera();
 
-		if (cameraType === DefaultCameraType.PERSPECTIVE || cameraType === undefined) {
+		if (
+			cameraType === DefaultCameraType.PERSPECTIVE ||
+			cameraType === undefined
+		) {
 			this.instance = new PerspectiveCamera(
 				70,
 				this.sizesComponent.width / this.sizesComponent.height,

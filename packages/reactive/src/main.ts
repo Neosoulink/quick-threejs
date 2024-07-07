@@ -18,3 +18,5 @@ if (process.env.NODE_ENV === "development") {
 		}
 	});
 }
+
+export * from "./modules/register/register.module";

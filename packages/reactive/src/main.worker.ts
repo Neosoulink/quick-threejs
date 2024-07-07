@@ -31,4 +31,4 @@ if (process.env.NODE_ENV === "development") {
 	});
 }
 
-export { launchApp };
+export * from "./modules/app/app.module-worker";
