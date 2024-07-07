@@ -1,9 +1,5 @@
 name: Releases
 
-env:
-  NODE_VERSION: 20
-  PNPM_VERSION: 9
-
 on:
   workflow_run:
     workflows: [Lint]
@@ -33,23 +29,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Setup Node.js v${{ env.NODE_VERSION }}
+      - name: "Install PNPM v${{ vars.PNPM_VERSION }}"
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+          run_install: false
+
+      - name: Setup Node.js v${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ vars.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
+          cache: "pnpm"
 
-      - name: Install & Audit PNPM
-        uses: ./.github/actions/pnpm
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - name: "Install Dependencies"
+        shell: bash
+        run: pnpm install --frozen-lockfile
 
       - name: Create Release Pull Request & Release
         uses: changesets/action@v1
         with:
           commit: "chore(version): upgrade packages"
           title: "chore(version): upgrade packages"
-          publish: pnpm run release && git fetch origin && git checkout dev && git rebase origin/master && git push origin dev --force
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
