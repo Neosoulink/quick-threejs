@@ -5,5 +5,5 @@ const pkg = require("./package.json");
 module.exports = defineConfig({
 	define: {
 		__APP_VERSION__: JSON.stringify(pkg.version)
-	},
+	}
 });
