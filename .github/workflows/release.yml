@@ -2,7 +2,6 @@ name: Releases
 
 env:
   NODE_VERSION: 20
-  PNPM_CACHE_FOLDER: .pnpm-store
   PNPM_VERSION: 9
 
 on:
@@ -43,7 +42,6 @@ jobs:
       - name: Install & Audit PNPM
         uses: ./.github/actions/pnpm
         with:
-          cache: ${{ env.PNPM_CACHE_FOLDER }}
           version: ${{ env.PNPM_VERSION }}
 
       - name: Create Release Pull Request & Release

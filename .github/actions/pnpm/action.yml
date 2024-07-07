@@ -1,12 +1,7 @@
-# From https://github.com/remirror/template/blob/4f8c5f5629a081217672a8cce1df085510f43913/.github/actions/pnpm/action.yml
 name: "PNPM installation"
-description: "Install and audit dependencies for PNPM"
+description: "Install & Cache With PNPM"
 
 inputs:
-  cache:
-    description: "PNPM caches folder's location"
-    required: true
-    default: ".pnpm-store"
   version:
     description: "The version to use"
     required: false
@@ -15,7 +10,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup PNPM cache at `${{ inputs.cache }}`
+    - name: "Install PNPM v${{ inputs.version }}"
+      uses: pnpm/action-setup@v3
+      with:
+        version: ${{ inputs.version }}
+        run_install: false
+
+    - name: "Get PNPM Store Directory"
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: "Setup PNPM Config"
+      shell: bash
+      run: pnpm config set store-dir ${{ inputs.cache }}
+
+    - name: "Setup PNPM cache at '${{ env.STORE_PATH }}'"
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache }}
@@ -23,16 +33,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
 
-    - name: Install PNPM v${{ inputs.version }}
-      uses: pnpm/action-setup@v3
-      with:
-        version: ${{ inputs.version }}
-        run_install: false
-
-    - name: Setup PNPM Config
-      run: pnpm config set store-dir ${{ inputs.cache }}
+    - name: "Install Dependencies"
       shell: bash
-
-    - name: Install Dependencies
       run: pnpm install --frozen-lockfile
-      shell: bash
