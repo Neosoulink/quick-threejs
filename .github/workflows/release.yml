@@ -4,6 +4,7 @@ env:
   NODE_VERSION: 20
   PNPM_CACHE_FOLDER: .pnpm-store
   PNPM_VERSION: 9
+  CI_RELEASE: "true"
 
 on:
   workflow_run:
