@@ -49,7 +49,7 @@ jobs:
         with:
           commit: "chore(version): upgrade packages"
           title: "chore(version): upgrade packages"
-          publish: pnpm run release
+          publish: pnpm run release && git fetch origin && git checkout dev && git rebase origin/master && git push origin dev --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
