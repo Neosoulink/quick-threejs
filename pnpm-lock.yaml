@@ -159,15 +159,15 @@ importers:
   samples/basic:
     dependencies:
       '@quick-threejs/legacy':
-        specifier: ^0.1.7
+        specifier: latest
         version: 0.1.7
       three:
         specifier: ^0.166.1
         version: 0.166.1
     devDependencies:
       '@quick-threejs/config':
-        specifier: workspace:*
-        version: link:../../shared/config
+        specifier: latest
+        version: 0.1.6
       '@types/three':
         specifier: ^0.166.0
         version: 0.166.0
@@ -181,7 +181,7 @@ importers:
   samples/with-reactive:
     dependencies:
       '@quick-threejs/reactive':
-        specifier: ^0.1.8
+        specifier: latest
         version: 0.1.8
       three:
         specifier: ^0.166.1
@@ -1302,6 +1302,9 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@quick-threejs/config@0.1.6':
+    resolution: {integrity: sha512-L5bgInNyCT3Je+tbwlWfCbVXfEofwY1/1GdBTR+AAMKBG1vDj+pFgpD3LQ6K+O4nPOlgjxYNS6Rp1bqt9rQw6A==}
 
   '@quick-threejs/legacy@0.1.7':
     resolution: {integrity: sha512-4cCRhHHOKyO8EPg+aa/lLZT11ZTxv5PWOFFFZ50+lytoBoFPnTZbckNlv4UiaVa41pMaoQR/s3oHVnfPomLMZA==}
@@ -5486,6 +5489,8 @@ snapshots:
       fastq: 1.17.1
 
   '@pkgr/core@0.1.1': {}
+
+  '@quick-threejs/config@0.1.6': {}
 
   '@quick-threejs/legacy@0.1.7':
     dependencies:
