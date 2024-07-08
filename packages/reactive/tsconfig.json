@@ -1,12 +1,12 @@
 {
 	"extends": "@quick-threejs/config/typescript.json",
 	"compilerOptions": {
-		"baseUrl": ".",
-
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 
+		"baseUrl": "./src",
 		"outDir": "./dist"
 	},
-	"include": ["src", "*.config.mjs", "*.config.ts"]
+	"include": ["src"],
+	"exclude": ["*.config.mjs", "*.config.ts"]
 }

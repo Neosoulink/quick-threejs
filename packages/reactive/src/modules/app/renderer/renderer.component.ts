@@ -1,4 +1,10 @@
-import { Camera, SRGBColorSpace, WebGLRenderer } from "three";
+import {
+	Camera,
+	CineonToneMapping,
+	PCFSoftShadowMap,
+	SRGBColorSpace,
+	WebGLRenderer
+} from "three";
 import { inject, singleton } from "tsyringe";
 
 import { WorldComponent } from "../world/world.component";
@@ -35,8 +41,11 @@ export class RendererComponent {
 		this.instance.autoClear = false;
 		this.instance.setPixelRatio(RendererComponent.RENDERER_PIXEL_RATIO);
 		this.instance.setClearColor(0x000000, 0);
-		this.instance.shadowMap.enabled = false;
+		this.instance.shadowMap.enabled = true;
+		this.instance.shadowMap.type = PCFSoftShadowMap;
 		this.instance.outputColorSpace = SRGBColorSpace;
+		this.instance.toneMapping = CineonToneMapping;
+		this.instance.toneMappingExposure = 1.75;
 	}
 
 	public setSize(width: number, height: number) {
