@@ -1,9 +1,25 @@
 import { launchApp } from "@quick-threejs/reactive/worker";
-import { Color, Mesh, MeshNormalMaterial, TorusKnotGeometry } from "three";
+import {
+	AmbientLight,
+	Color,
+	DirectionalLight,
+	Mesh,
+	MeshToonMaterial,
+	TorusKnotGeometry
+} from "three";
 
 launchApp({
 	onReady: (app) => {
-		const torus = new Mesh(new TorusKnotGeometry(), new MeshNormalMaterial());
+		const ambientLight = new AmbientLight(0xffffff, 0.1);
+		const directionalLight = new DirectionalLight(0xffffff, 0.8);
+		directionalLight.position.set(0, 0, 1);
+
+		const torus = new Mesh(
+			new TorusKnotGeometry(0.8, 0.35, 100, 16),
+			new MeshToonMaterial({
+				color: 0x454545
+			})
+		);
 
 		self.onmessage = (event: MessageEvent) => {
 			if (event.data?.type === "torus-x-gui-event") {
@@ -12,8 +28,7 @@ launchApp({
 		};
 
 		app.world.scene().background = new Color("#211d20");
-
-		app.world.scene().add(torus);
+		app.world.scene().add(ambientLight, directionalLight, torus);
 
 		app.resize$?.().subscribe((event) => {
 			console.log(event.type);

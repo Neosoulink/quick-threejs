@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { QuickThreejs } from "@quick-threejs/legacy";
-import { UPDATED } from "@quick-threejs/legacy/src/static/event.static";
+import { UPDATED } from "@quick-threejs/legacy/dist/static/event.static";
 
 export interface ExperienceProps {
 	/**

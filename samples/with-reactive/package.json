@@ -14,8 +14,7 @@
 		"vite": "^5.3.1"
 	},
 	"dependencies": {
-		"@quick-threejs/reactive": "workspace:*",
-		"lil-gui": "^0.19.1",
+		"@quick-threejs/reactive": "latest",
 		"three": "^0.166.1"
 	}
 }
