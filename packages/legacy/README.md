@@ -35,4 +35,4 @@ For more details about the about the available properties, see:
 - [Initialization property](./src/index.ts?plain=1#L14)
 - [`@quick-threejs/legacy` class](./src/index.ts?plain=1#L97)
 
-> See the [Example folder](./example/).
+**See the complete [Example folder](../../samples/basic/).**

@@ -23,11 +23,12 @@
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"scripts": {
-		"test": "jest --passWithNoTests",
 		"build": "tsc",
+		"dev": "tsc --watch",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint --max-warnings=0",
-		"prepare": "npm run build"
+		"prepare": "npm run build",
+		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
 		"three": "^0.166.1"
