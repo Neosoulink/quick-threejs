@@ -1,11 +1,13 @@
 {
 	"extends": "@quick-threejs/config/typescript.json",
 	"compilerOptions": {
+		"baseUrl": "./src",
 		"outDir": "./dist",
 
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "*.config.mjs"]
+	"include": ["src"],
+	"exclude": ["*.config.mjs", "*.config.ts"]
 }
