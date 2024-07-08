@@ -1,5 +1,11 @@
 # with-reactive
 
+## 0.0.2
+
+### Patch Changes
+
+- 153edba: Improve samples & documetations
+
 ## 0.0.1
 
 ### Patch Changes
