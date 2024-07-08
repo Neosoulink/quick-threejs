@@ -11,7 +11,7 @@
 
 I have to apologize for not documenting this library well.
 
-At the current time, this library is mainly for personal use.
+In the beginning, this library was mainly for personal use.
 
 If find this library interesting or useful and need to improve the library, please raise an [issue](https://github.com/Neosoulink/quick-threejs/issues).
 I'll be glad to have your feedback ❤.
