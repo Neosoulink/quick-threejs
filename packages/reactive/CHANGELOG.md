@@ -1,5 +1,11 @@
 # @quick-threejs/reactive
 
+## 0.1.8
+
+### Patch Changes
+
+- 2dd41f7: Compiled outputs correction & documentatiom improvements
+
 ## 0.1.7
 
 ### Patch Changes
