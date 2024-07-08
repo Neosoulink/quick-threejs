@@ -1,5 +1,12 @@
 # basic-sample
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [2dd41f7]
+  - @quick-threejs/legacy@0.1.7
+
 ## 0.1.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @quick-threejs/legacy
 
+## 0.1.7
+
+### Patch Changes
+
+- 2dd41f7: Compiled outputs correction & documentatiom improvements
+
 ## 0.1.6
 
 ### Patch Changes
