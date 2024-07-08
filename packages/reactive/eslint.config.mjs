@@ -31,5 +31,8 @@ export default [
 				...globals.browser
 			}
 		}
+	},
+	{
+		ignores: ["*.config.mjs", "*.config.ts"]
 	}
 ];

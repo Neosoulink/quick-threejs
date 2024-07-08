@@ -48,6 +48,8 @@ launchApp({
 			}
 		};
 
+		app.world.scene().background = new Color("#211d20");
+
 		app.world.scene().add(torus);
 
 		app.resize$?.().subscribe((event) => {
@@ -59,12 +61,17 @@ launchApp({
 		});
 
 		app.timer.step$().subscribe(() => {
-			torus.rotateY(0.1);
-			torus.rotateX(0.01);
+			torus.rotateY(0.05);
+			torus.rotateX(0.001);
 		});
 	}
 });
 ```
+
+After the configuration of the main part and the worker part, you should have the following screen:
+![Screenshot 2024-07-08 at 1 55 27 AM](https://github.com/Neosoulink/quick-threejs/assets/44310540/098ef016-ea15-471e-b049-7d7b4505bcaf)
+
+**See the complete [Example folder](../../samples/with-reactive/).**
 
 ## Resources
 
