@@ -1,19 +1,21 @@
 {
-	"name": "basic-sample",
+	"name": "with-legacy",
 	"private": true,
 	"version": "0.1.7",
 	"type": "module",
 	"scripts": {
-		"sample:dev": "vite --host",
-		"sample:build": "tsc && vite build",
-		"sample:preview": "vite preview"
-	},
-	"dependencies": {
-		"@quick-threejs/legacy": "workspace:*",
-		"three": "^0.166.1"
+		"dev": "vite --host",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "workspace:*",
-		"@types/three": "^0.166.0"
+		"@quick-threejs/config": "latest",
+		"@types/three": "^0.166.0",
+		"typescript": "^5.2.2",
+		"vite": "^5.3.1"
+	},
+	"dependencies": {
+		"@quick-threejs/legacy": "latest",
+		"three": "^0.166.1"
 	}
 }

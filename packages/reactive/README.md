@@ -40,7 +40,16 @@ import { launchApp } from "@quick-threejs/reactive/worker";
 
 launchApp({
 	onReady: (app) => {
-		const torus = new Mesh(new TorusKnotGeometry(), new MeshNormalMaterial());
+		const ambientLight = new AmbientLight(0xffffff, 0.1);
+		const directionalLight = new DirectionalLight(0xffffff, 0.8);
+		directionalLight.position.set(0, 0, 1);
+
+		const torus = new Mesh(
+			new TorusKnotGeometry(0.8, 0.35, 100, 16),
+			new MeshToonMaterial({
+				color: 0x454545
+			})
+		);
 
 		self.onmessage = (event: MessageEvent) => {
 			if (event.data?.type === "torus-x-gui-event") {
@@ -49,8 +58,7 @@ launchApp({
 		};
 
 		app.world.scene().background = new Color("#211d20");
-
-		app.world.scene().add(torus);
+		app.world.scene().add(ambientLight, directionalLight, torus);
 
 		app.resize$?.().subscribe((event) => {
 			console.log(event.type);
@@ -69,7 +77,7 @@ launchApp({
 ```
 
 After the configuration of the main part and the worker part, you should have the following screen:
-![Screenshot 2024-07-08 at 1 55 27 AM](https://github.com/Neosoulink/quick-threejs/assets/44310540/098ef016-ea15-471e-b049-7d7b4505bcaf)
+![Screenshot 2024-07-08 at 2 55 59 AM](https://github.com/Neosoulink/quick-threejs/assets/44310540/ccf3f871-8ff9-45af-8fd3-bdff0ac98bfa)
 
 **See the complete [Example folder](../../samples/with-reactive/).**
 
