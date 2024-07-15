@@ -20,7 +20,7 @@
 		"@quick-threejs/config": "workspace:*",
 		"globals": "^15.8.0",
 		"husky": "^9.0.11",
-		"prettier": "^3.2.5",
+		"prettier": "^3.3.3",
 		"turbo": "latest"
 	},
 	"dependencies": {
