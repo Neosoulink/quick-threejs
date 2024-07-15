@@ -22,8 +22,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       '@eslint/js':
-        specifier: ^9.6.0
-        version: 9.6.0
+        specifier: ^9.7.0
+        version: 9.7.0
       '@quick-threejs/config':
         specifier: workspace:*
         version: link:shared/config
@@ -182,7 +182,7 @@ importers:
     dependencies:
       '@quick-threejs/reactive':
         specifier: latest
-        version: 0.1.8
+        version: 0.1.9
       three:
         specifier: ^0.166.1
         version: 0.166.1
@@ -1165,6 +1165,10 @@ packages:
     resolution: {integrity: sha512-D9B0/3vNg44ZeWbYMpBoXqNP4j6eQD5vNwIlGAuFRRzK/WtT/jvDQW3Bi9kkf3PMDMlM7Yi+73VLUsn5bJcl8A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@eslint/js@9.7.0':
+    resolution: {integrity: sha512-ChuWDQenef8OSFnvuxv0TCVxEwmu3+hPNKvM9B34qpM0rDRbjL8t5QkQeHHeAfsKQjuH9wS82WeCi1J/owatng==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@eslint/object-schema@2.1.4':
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -1309,8 +1313,8 @@ packages:
   '@quick-threejs/legacy@0.1.7':
     resolution: {integrity: sha512-4cCRhHHOKyO8EPg+aa/lLZT11ZTxv5PWOFFFZ50+lytoBoFPnTZbckNlv4UiaVa41pMaoQR/s3oHVnfPomLMZA==}
 
-  '@quick-threejs/reactive@0.1.8':
-    resolution: {integrity: sha512-e4fa8Nn9lJmjl2OsyOyjGmSaLZ+xSl6l163rAyDtDM47HnsJt3cDu3gnDtJWUiWMgBB2soY6DnyDDxk3ie9I4Q==}
+  '@quick-threejs/reactive@0.1.9':
+    resolution: {integrity: sha512-2NYRpm1cANjoM/dcmj59JXk3J4AGwhHYBoCH3/irIVye7lnLoeswFEV96Rg+kZpbL4e6bHQwxSPvcfGmeaKzJw==}
 
   '@quick-threejs/utils@0.1.6':
     resolution: {integrity: sha512-sHns2pemVYGVwFUFc1vl58ptygDQ2oo22A+wZk1g2YZo/RDsmkphtsQft4oUkGnMFdSfvlMx3U6RlBznFDBeTg==}
@@ -5247,6 +5251,8 @@ snapshots:
 
   '@eslint/js@9.6.0': {}
 
+  '@eslint/js@9.7.0': {}
+
   '@eslint/object-schema@2.1.4': {}
 
   '@humanwhocodes/module-importer@1.0.1': {}
@@ -5496,7 +5502,7 @@ snapshots:
     dependencies:
       three: 0.166.1
 
-  '@quick-threejs/reactive@0.1.8':
+  '@quick-threejs/reactive@0.1.9':
     dependencies:
       '@quick-threejs/utils': 0.1.6
       threads: 1.7.0
