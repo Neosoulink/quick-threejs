@@ -11,9 +11,8 @@
 		"eslint": "^9.6.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-turbo": "^2.0.4",
-		"eslint-plugin-only-warn": "^1.1.0",
 		"path": "^0.12.7",
-		"prettier": "^3.3.1",
+		"prettier": "^3.3.3",
 		"typescript": "^5.3.3",
 		"vite": "^5.2.12"
 	}

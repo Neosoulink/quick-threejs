@@ -22,8 +22,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       '@eslint/js':
-        specifier: ^9.6.0
-        version: 9.6.0
+        specifier: ^9.7.0
+        version: 9.7.0
       '@quick-threejs/config':
         specifier: workspace:*
         version: link:shared/config
@@ -34,8 +34,8 @@ importers:
         specifier: ^9.0.11
         version: 9.0.11
       prettier:
-        specifier: ^3.2.5
-        version: 3.3.2
+        specifier: ^3.3.3
+        version: 3.3.3
       turbo:
         specifier: latest
         version: 2.0.6
@@ -80,8 +80,8 @@ importers:
         specifier: ^0.12.7
         version: 0.12.7
       prettier:
-        specifier: ^3.1.0
-        version: 3.3.2
+        specifier: ^3.3.3
+        version: 3.3.3
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -182,7 +182,7 @@ importers:
     dependencies:
       '@quick-threejs/reactive':
         specifier: latest
-        version: 0.1.8
+        version: 0.1.9
       three:
         specifier: ^0.166.1
         version: 0.166.1
@@ -207,7 +207,7 @@ importers:
         version: 7.15.0(eslint@9.6.0)(typescript@5.5.3)
       '@vercel/style-guide':
         specifier: ^6.0.0
-        version: 6.0.0(eslint@9.6.0)(jest@29.7.0(@types/node@20.14.10))(prettier@3.3.2)(typescript@5.5.3)
+        version: 6.0.0(eslint@9.6.0)(jest@29.7.0(@types/node@20.14.10))(prettier@3.3.3)(typescript@5.5.3)
       eslint:
         specifier: ^9.6.0
         version: 9.6.0
@@ -217,15 +217,12 @@ importers:
       eslint-config-turbo:
         specifier: ^2.0.4
         version: 2.0.6(eslint@9.6.0)
-      eslint-plugin-only-warn:
-        specifier: ^1.1.0
-        version: 1.1.0
       path:
         specifier: ^0.12.7
         version: 0.12.7
       prettier:
-        specifier: ^3.3.1
-        version: 3.3.2
+        specifier: ^3.3.3
+        version: 3.3.3
       typescript:
         specifier: ^5.3.3
         version: 5.5.3
@@ -1165,6 +1162,10 @@ packages:
     resolution: {integrity: sha512-D9B0/3vNg44ZeWbYMpBoXqNP4j6eQD5vNwIlGAuFRRzK/WtT/jvDQW3Bi9kkf3PMDMlM7Yi+73VLUsn5bJcl8A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@eslint/js@9.7.0':
+    resolution: {integrity: sha512-ChuWDQenef8OSFnvuxv0TCVxEwmu3+hPNKvM9B34qpM0rDRbjL8t5QkQeHHeAfsKQjuH9wS82WeCi1J/owatng==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@eslint/object-schema@2.1.4':
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -1309,8 +1310,8 @@ packages:
   '@quick-threejs/legacy@0.1.7':
     resolution: {integrity: sha512-4cCRhHHOKyO8EPg+aa/lLZT11ZTxv5PWOFFFZ50+lytoBoFPnTZbckNlv4UiaVa41pMaoQR/s3oHVnfPomLMZA==}
 
-  '@quick-threejs/reactive@0.1.8':
-    resolution: {integrity: sha512-e4fa8Nn9lJmjl2OsyOyjGmSaLZ+xSl6l163rAyDtDM47HnsJt3cDu3gnDtJWUiWMgBB2soY6DnyDDxk3ie9I4Q==}
+  '@quick-threejs/reactive@0.1.9':
+    resolution: {integrity: sha512-2NYRpm1cANjoM/dcmj59JXk3J4AGwhHYBoCH3/irIVye7lnLoeswFEV96Rg+kZpbL4e6bHQwxSPvcfGmeaKzJw==}
 
   '@quick-threejs/utils@0.1.6':
     resolution: {integrity: sha512-sHns2pemVYGVwFUFc1vl58ptygDQ2oo22A+wZk1g2YZo/RDsmkphtsQft4oUkGnMFdSfvlMx3U6RlBznFDBeTg==}
@@ -2195,10 +2196,6 @@ packages:
     engines: {node: '>=4.0'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-
-  eslint-plugin-only-warn@1.1.0:
-    resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
-    engines: {node: '>=6'}
 
   eslint-plugin-playwright@1.6.2:
     resolution: {integrity: sha512-mraN4Em3b5jLt01q7qWPyLg0Q5v3KAWfJSlEWwldyUXoa7DSPrBR4k6B6LROLqipsG8ndkwWMdjl1Ffdh15tag==}
@@ -3373,8 +3370,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.3.2:
-    resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
+  prettier@3.3.3:
+    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5247,6 +5244,8 @@ snapshots:
 
   '@eslint/js@9.6.0': {}
 
+  '@eslint/js@9.7.0': {}
+
   '@eslint/object-schema@2.1.4': {}
 
   '@humanwhocodes/module-importer@1.0.1': {}
@@ -5496,7 +5495,7 @@ snapshots:
     dependencies:
       three: 0.166.1
 
-  '@quick-threejs/reactive@0.1.8':
+  '@quick-threejs/reactive@0.1.9':
     dependencies:
       '@quick-threejs/utils': 0.1.6
       threads: 1.7.0
@@ -5786,7 +5785,7 @@ snapshots:
       '@typescript-eslint/types': 7.15.0
       eslint-visitor-keys: 3.4.3
 
-  '@vercel/style-guide@6.0.0(eslint@9.6.0)(jest@29.7.0(@types/node@20.14.10))(prettier@3.3.2)(typescript@5.5.3)':
+  '@vercel/style-guide@6.0.0(eslint@9.6.0)(jest@29.7.0(@types/node@20.14.10))(prettier@3.3.3)(typescript@5.5.3)':
     dependencies:
       '@babel/core': 7.24.7
       '@babel/eslint-parser': 7.24.7(@babel/core@7.24.7)(eslint@9.6.0)
@@ -5807,10 +5806,10 @@ snapshots:
       eslint-plugin-tsdoc: 0.2.17
       eslint-plugin-unicorn: 51.0.1(eslint@9.6.0)
       eslint-plugin-vitest: 0.3.26(@typescript-eslint/eslint-plugin@7.15.0(@typescript-eslint/parser@7.15.0(eslint@9.6.0)(typescript@5.5.3))(eslint@9.6.0)(typescript@5.5.3))(eslint@9.6.0)(typescript@5.5.3)
-      prettier-plugin-packagejson: 2.5.0(prettier@3.3.2)
+      prettier-plugin-packagejson: 2.5.0(prettier@3.3.3)
     optionalDependencies:
       eslint: 9.6.0
-      prettier: 3.3.2
+      prettier: 3.3.3
       typescript: 5.5.3
     transitivePeerDependencies:
       - eslint-import-resolver-node
@@ -6592,8 +6591,6 @@ snapshots:
       object.fromentries: 2.0.8
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
-
-  eslint-plugin-only-warn@1.1.0: {}
 
   eslint-plugin-playwright@1.6.2(eslint-plugin-jest@27.9.0(@typescript-eslint/eslint-plugin@7.15.0(@typescript-eslint/parser@7.15.0(eslint@9.6.0)(typescript@5.5.3))(eslint@9.6.0)(typescript@5.5.3))(eslint@9.6.0)(jest@29.7.0(@types/node@20.14.10))(typescript@5.5.3))(eslint@9.6.0):
     dependencies:
@@ -7931,16 +7928,16 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-packagejson@2.5.0(prettier@3.3.2):
+  prettier-plugin-packagejson@2.5.0(prettier@3.3.3):
     dependencies:
       sort-package-json: 2.10.0
       synckit: 0.9.0
     optionalDependencies:
-      prettier: 3.3.2
+      prettier: 3.3.3
 
   prettier@2.8.8: {}
 
-  prettier@3.3.2: {}
+  prettier@3.3.3: {}
 
   pretty-format@29.7.0:
     dependencies:

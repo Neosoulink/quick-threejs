@@ -11,11 +11,7 @@ module.exports = {
 		"plugin:@typescript-eslint/recommended"
 	],
 	parser: "@typescript-eslint/parser",
-	plugins: ["only-warn", "@typescript-eslint"],
-	globals: {
-		React: true,
-		JSX: true
-	},
+	plugins: ["@typescript-eslint"],
 	env: {
 		node: true
 	},
@@ -41,11 +37,11 @@ module.exports = {
 	},
 	ignorePatterns: [
 		"**/__tests__/*",
+		"*.*.js",
+		"*.d.ts",
+		"*.config.ts",
 		"node_modules/",
 		"dist/",
-		"lib/",
-		"vite.config.ts",
-		".*.js",
-		"*.d.ts"
+		"lib/"
 	]
 };
