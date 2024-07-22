@@ -11,7 +11,7 @@ module.exports = {
 		"plugin:@typescript-eslint/recommended"
 	],
 	parser: "@typescript-eslint/parser",
-	plugins: ["@typescript-eslint"],
+	plugins: ["@typescript-eslint/eslint-plugin"],
 	env: {
 		node: true
 	},
@@ -33,7 +33,8 @@ module.exports = {
 		eqeqeq: "error",
 		"@typescript-eslint/no-this-alias": "off",
 		"@typescript-eslint/no-explicit-any": "off",
-		"@typescript-eslint/ban-ts-comment": "off"
+		"@typescript-eslint/ban-ts-comment": "off",
+		"@typescript-eslint/no-var-requires": "off"
 	},
 	ignorePatterns: [
 		"**/__tests__/*",
