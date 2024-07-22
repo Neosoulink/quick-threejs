@@ -1,5 +1,14 @@
 # @quick-threejs/config
 
+## 0.1.8
+
+### Patch Changes
+
+- 7926349: #### chore: correct `@typescript-eslint` plugin ussage
+
+  - use `@typescript-eslint` without `/eslint-plugin`
+    - disabled `@typescript-eslint/no-var-requires`
+
 ## 0.1.7
 
 ### Patch Changes
