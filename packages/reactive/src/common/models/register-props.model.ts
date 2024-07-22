@@ -1,4 +1,4 @@
-import type { RegisterModule } from "../../modules/register/register.module";
+import type { RegisterModule } from "../../core/register/register.module";
 import type { DefaultCameraType } from "../enums/camera.enum";
 
 /** @description Quick-three register properties. */
