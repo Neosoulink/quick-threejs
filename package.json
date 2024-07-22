@@ -1,7 +1,17 @@
 {
-	"name": "quick-threejs",
+	"name": "@quick-threejs/reactive",
 	"description": "Three,js quick starters",
 	"private": true,
+	"author": {
+		"email": "nathaninbusiness2.0@gmail.com",
+		"name": "Neosoulink",
+		"url": "https://github.com/Neosoulink"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Neosoulink/quick-threejs.git"
+	},
 	"scripts": {
 		"dev": "turbo dev",
 		"build": "turbo build",
