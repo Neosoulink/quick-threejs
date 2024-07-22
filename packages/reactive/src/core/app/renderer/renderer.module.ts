@@ -1,4 +1,5 @@
 import { inject, singleton } from "tsyringe";
+import { Vector2Like } from "three";
 
 import { RendererComponent } from "./renderer.component";
 import { RendererController } from "./renderer.controller";
@@ -13,8 +14,10 @@ export class RendererModule implements Module {
 	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle): void {
+		this.controller.enable$.subscribe((status) => {
+			this.component.enabled = !!status;
+		});
 		this.controller.step$.subscribe(() => this.component.render());
-
 		this.controller.resize$.subscribe((size: any) =>
 			this.component.setSize(size.x, size.y)
 		);
@@ -23,6 +26,27 @@ export class RendererModule implements Module {
 	}
 
 	public dispose() {
-		throw new Error("Method not implemented.");
+		this.controller.enable$$.unsubscribe();
+	}
+
+	public enabled(value?: boolean) {
+		if (typeof value === "boolean") this.controller.enable$$.next(value);
+		return this.component.enabled;
+	}
+
+	public instance() {
+		return this.component.instance;
+	}
+
+	public setSize(value: Vector2Like) {
+		return this.component.setSize(value.x, value.y);
+	}
+
+	public render() {
+		return this.component.render();
+	}
+
+	public enabled$() {
+		return this.controller.enable$;
 	}
 }
