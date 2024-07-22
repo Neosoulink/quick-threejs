@@ -1,5 +1,3 @@
-import type { AppModule } from "../../modules/app/app.module";
-
 /**
  * @description Module representation.
  *
@@ -19,12 +17,4 @@ export interface Module {
 	 * Used to terminate the Module execution and free memory.
 	 */
 	dispose(): void;
-}
-
-/** @description `launchApp` initialization properties. */
-export interface LaunchAppProps {
-	/**
-	 * @description Handler triggered when the app is ready.
-	 */
-	onReady?: (app: AppModule) => unknown;
 }

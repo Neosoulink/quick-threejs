@@ -23,4 +23,33 @@ export class DebugModule implements Module {
 	public dispose() {
 		this.component.dispose();
 	}
+
+	public axesHelper() {
+		return this.component.axesHelper;
+	}
+
+	public cameraControls() {
+		return this.component.cameraControls;
+	}
+
+	public cameraHelper() {
+		return this.component.cameraHelper;
+	}
+
+	public enabled(value?: boolean) {
+		if (value) this.component.enabled = value;
+		return this.component.enabled;
+	}
+
+	public gridHelper() {
+		return this.component.gridHelper;
+	}
+
+	public miniCameraControls() {
+		return this.component.miniCameraControls;
+	}
+
+	public enabled$() {
+		return this.controller.enable$;
+	}
 }

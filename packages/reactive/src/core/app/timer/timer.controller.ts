@@ -10,10 +10,10 @@ import { AppLifecycleState } from "../../../common/enums/lifecycle.enum";
 export class TimerController {
 	public readonly step$$ = new Subject<StepPayload>();
 	public readonly enable$$ = new Subject<boolean>();
-	public readonly animationCallback: FrameRequestCallback;
-
 	public readonly step$ = this.step$$.pipe();
 	public readonly enable$ = this.enable$$.pipe();
+
+	public readonly animationCallback: FrameRequestCallback;
 
 	constructor(
 		@inject(TimerComponent) private readonly component: TimerComponent,
