@@ -28,7 +28,7 @@ jobs:
           PR_HEAD_BRANCH=$(jq -r .pull_request.head.ref < "${GITHUB_EVENT_PATH}")
           echo "PR Base Branch: $PR_BASE_BRANCH"
           echo "PR Head Branch: $PR_HEAD_BRANCH"
-          if [ "$PR_BASE_BRANCH" == "master" ] && [ "$PR_HEAD_BRANCH" != "dev" ]; then
+          if [ "$PR_BASE_BRANCH" == "master" ] && [ "$PR_HEAD_BRANCH" != "dev" ] && [ "$PR_HEAD_BRANCH" != "changeset-release/master" ]; then
             echo "Error: The branch '$PR_HEAD_BRANCH' should not point to the 'master' branch."
             echo "Error: Please change the base branch to 'dev'."
             exit 1
