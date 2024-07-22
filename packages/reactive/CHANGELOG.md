@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.11
+
+### Patch Changes
+
+- dab1876: #### refactor: improves resources importation
+
+  - Export resources from sub folders
+
 ## 0.1.10
 
 ### Patch Changes
