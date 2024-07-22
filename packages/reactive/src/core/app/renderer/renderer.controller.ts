@@ -1,5 +1,5 @@
 import { inject, singleton } from "tsyringe";
-import { filter, Observable } from "rxjs";
+import { filter, Observable, Subject } from "rxjs";
 
 import { SizesController } from "../sizes/sizes.controller";
 import { TimerController } from "../timer/timer.controller";
@@ -8,6 +8,9 @@ import { RendererComponent } from "./renderer.component";
 
 @singleton()
 export class RendererController {
+	public readonly enable$$ = new Subject<boolean>();
+
+	public readonly enable$ = this.enable$$.pipe();
 	public readonly step$: Observable<StepPayload>;
 	public readonly resize$: Observable<Event>;
 

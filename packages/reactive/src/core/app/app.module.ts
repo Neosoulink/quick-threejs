@@ -20,6 +20,7 @@ import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
 } from "../../common/interfaces/core.interface";
+import { excludeProperties } from "@quick-threejs/utils";
 
 @singleton()
 export class AppModule
@@ -29,12 +30,12 @@ export class AppModule
 	constructor(
 		@inject(AppController) private readonly controller: AppController,
 		@inject(AppComponent) private readonly component: AppComponent,
-		@inject(TimerModule) public readonly timer: TimerModule,
-		@inject(SizesModule) public readonly sizes: SizesModule,
-		@inject(CameraModule) public readonly camera: CameraModule,
-		@inject(WorldModule) public readonly world: WorldModule,
-		@inject(RendererModule) public readonly renderer: RendererModule,
-		@inject(DebugModule) public readonly debug: DebugModule
+		@inject(TimerModule) private readonly timerModule: TimerModule,
+		@inject(SizesModule) private readonly sizesModule: SizesModule,
+		@inject(CameraModule) private readonly cameraModule: CameraModule,
+		@inject(WorldModule) private readonly worldModule: WorldModule,
+		@inject(RendererModule) private readonly rendererModule: RendererModule,
+		@inject(DebugModule) private readonly debugModule: DebugModule
 	) {
 		super();
 		this._initProxyEvents();
@@ -79,12 +80,12 @@ export class AppModule
 
 		this.component.canvas = canvas;
 
-		this.sizes.init(canvas);
-		this.timer.init(props.startTimer);
-		this.camera.init(props.withMiniCamera);
-		this.world.init();
-		this.renderer.init(canvas);
-		this.debug.init(props);
+		this.sizesModule.init(canvas);
+		this.timerModule.init(props.startTimer);
+		this.cameraModule.init(props.withMiniCamera);
+		this.worldModule.init();
+		this.rendererModule.init(canvas);
+		this.debugModule.init(props);
 
 		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
 	}
@@ -94,14 +95,41 @@ export class AppModule
 	}
 
 	public dispose() {
-		this.timer.dispose();
-		this.camera.dispose();
-		this.renderer.dispose();
-		this.sizes.dispose();
-		this.world.dispose();
-		self.removeEventListener("message", this._onMessage.bind(this));
+		this.sizesModule.dispose();
+		this.timerModule.dispose();
+		this.cameraModule.dispose();
+		this.worldModule.dispose();
+		this.rendererModule.dispose();
+		this.debugModule.dispose();
+
 		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
+
+		self.removeEventListener("message", this._onMessage.bind(this));
+	}
+
+	public sizes() {
+		return excludeProperties(this.sizesModule, ["init", "dispose"]);
+	}
+
+	public timer() {
+		return excludeProperties(this.timerModule, ["init", "dispose"]);
+	}
+
+	public camera() {
+		return excludeProperties(this.cameraModule, ["init", "dispose"]);
+	}
+
+	public world() {
+		return excludeProperties(this.worldModule, ["init", "dispose"]);
+	}
+
+	public renderer() {
+		return excludeProperties(this.rendererModule, ["init", "dispose"]);
+	}
+
+	public debug() {
+		return excludeProperties(this.debugModule, ["init", "dispose"]);
 	}
 
 	public lifecycle$() {

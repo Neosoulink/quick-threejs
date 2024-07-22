@@ -1,16 +1,13 @@
 import { expose, registerSerializer } from "threads/worker";
-import { ExposedWorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import { ExposedWorkerThreadModule, Methods } from "@quick-threejs/utils";
 import type { WorkerFunction } from "threads/dist/types/worker";
 
 import { AppModule, appModule } from "./app.module";
 import { object3DSerializer } from "../../common/serializers/object3d.serializer";
 import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-import type { LaunchAppProps } from "../../common/interfaces/module.interface";
-import type {
-	Methods,
-	ProxyEventListenerKeys
-} from "../../common/types/object.type";
+import { LaunchAppProps } from "../../common/models/launch-app-props.model";
+import type { ProxyEventListenerKeys } from "../../common/types/object.type";
 
 registerSerializer(object3DSerializer);
 
@@ -37,8 +34,14 @@ PROXY_EVENT_LISTENERS.forEach((key) => {
 expose({
 	...proxyEventHandlers,
 	...proxyObservables,
-	init: () => {},
+	init: appModule.init.bind(appModule),
 	dispose: appModule.dispose.bind(appModule),
+	sizes: appModule.sizes.bind(appModule),
+	timer: appModule.timer.bind(appModule),
+	camera: appModule.camera.bind(appModule),
+	world: appModule.world.bind(appModule),
+	renderer: appModule.renderer.bind(appModule),
+	debug: appModule.debug.bind(appModule),
 	isInitialized: appModule.isInitialized.bind(appModule),
 	lifecycle$: appModule.lifecycle$.bind(appModule)
 } satisfies ExposedAppModule);
