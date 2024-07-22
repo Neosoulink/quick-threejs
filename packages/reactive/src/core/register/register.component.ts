@@ -20,7 +20,7 @@ export class RegisterComponent {
 		this.worker = app.worker;
 		this.thread = app.thread;
 		this.gui = new GUI();
-		this.stats = new Stats();
+		this.stats = Stats && new Stats();
 		this.stats.showPanel(0);
 
 		if (!window) return;
