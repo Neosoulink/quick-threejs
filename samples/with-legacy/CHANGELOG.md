@@ -1,5 +1,18 @@
 # basic-sample
 
+## 0.1.9
+
+### Patch Changes
+
+- 5ff3c50: # Changes
+
+  ## chore(deps): use dependencies from workspace
+
+  - `samples/with-legacy`
+    - Use `workspace:*` dependencies versions
+  - `samples/with-reactive`
+    - Use `workspace:*` dependencies versions
+
 ## 0.1.8
 
 ### Patch Changes
