@@ -1,5 +1,18 @@
 # @quick-threejs/reactive
 
+## 0.1.12
+
+### Patch Changes
+
+- b675af0: # Changes
+
+  ## refactor(reactive): export missing base resources
+
+  - `setDefaultCamera` cameraComponent is now `initDefaultCamera`
+  - `lil-gui` is now a peer-dependency
+  - `TimerModule` now export `step# @quick-threejs/reactive
+  - `WorldModule` now export `enable# @quick-threejs/reactive
+
 ## 0.1.11
 
 ### Patch Changes

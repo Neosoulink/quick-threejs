@@ -1,5 +1,21 @@
 # with-reactive
 
+## 0.0.3
+
+### Patch Changes
+
+- 5ff3c50: # Changes
+
+  ## chore(deps): use dependencies from workspace
+
+  - `samples/with-legacy`
+    - Use `workspace:*` dependencies versions
+  - `samples/with-reactive`
+    - Use `workspace:*` dependencies versions
+
+- Updated dependencies [b675af0]
+  - @quick-threejs/reactive@0.1.12
+
 ## 0.0.2
 
 ### Patch Changes
