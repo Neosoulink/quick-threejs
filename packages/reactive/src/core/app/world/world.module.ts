@@ -32,4 +32,8 @@ export class WorldModule implements Module {
 		if (typeof value === "boolean") this.controller.enable$$.next(value);
 		return this.component.enabled;
 	}
+
+	public get enable$() {
+		return this.controller.enable$;
+	}
 }

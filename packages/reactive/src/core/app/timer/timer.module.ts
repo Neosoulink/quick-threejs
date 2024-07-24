@@ -51,4 +51,8 @@ export class TimerModule implements Module {
 	public enabled$() {
 		return this.controller.enable$;
 	}
+
+	public step$() {
+		return this.controller.step$;
+	}
 }

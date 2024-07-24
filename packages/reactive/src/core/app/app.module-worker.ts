@@ -13,8 +13,9 @@ registerSerializer(object3DSerializer);
 
 export const launchApp = (props?: LaunchAppProps) => {
 	appModule.lifecycle$().subscribe((state) => {
-		if (state === AppLifecycleState.INITIALIZED && props?.onReady)
+		if (state === AppLifecycleState.INITIALIZED && props?.onReady) {
 			props.onReady(appModule);
+		}
 	});
 
 	return appModule;
@@ -36,12 +37,6 @@ expose({
 	...proxyObservables,
 	init: appModule.init.bind(appModule),
 	dispose: appModule.dispose.bind(appModule),
-	sizes: appModule.sizes.bind(appModule),
-	timer: appModule.timer.bind(appModule),
-	camera: appModule.camera.bind(appModule),
-	world: appModule.world.bind(appModule),
-	renderer: appModule.renderer.bind(appModule),
-	debug: appModule.debug.bind(appModule),
 	isInitialized: appModule.isInitialized.bind(appModule),
 	lifecycle$: appModule.lifecycle$.bind(appModule)
 } satisfies ExposedAppModule);
