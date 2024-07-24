@@ -9,13 +9,13 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@quick-threejs/config": "latest",
+		"@quick-threejs/config": "workspace:*",
 		"@types/three": "^0.166.0",
 		"typescript": "^5.2.2",
 		"vite": "^5.3.1"
 	},
 	"dependencies": {
-		"@quick-threejs/legacy": "latest",
+		"@quick-threejs/legacy": "workspace:*",
 		"three": "^0.166.1"
 	}
 }

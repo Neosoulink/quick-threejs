@@ -100,6 +100,9 @@ importers:
       '@quick-threejs/utils':
         specifier: workspace:*
         version: link:../../shared/utils
+      lil-gui:
+        specifier: ^0.19.1
+        version: 0.19.2
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -140,9 +143,6 @@ importers:
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@20.14.11)(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.5.3))
-      lil-gui:
-        specifier: ^0.19.1
-        version: 0.19.2
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -156,18 +156,18 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.14.11)(typescript@5.5.3)
 
-  samples/basic:
+  samples/with-legacy:
     dependencies:
       '@quick-threejs/legacy':
-        specifier: latest
-        version: 0.1.7
+        specifier: workspace:*
+        version: link:../../packages/legacy
       three:
         specifier: ^0.166.1
         version: 0.166.1
     devDependencies:
       '@quick-threejs/config':
-        specifier: latest
-        version: 0.1.8
+        specifier: workspace:*
+        version: link:../../shared/config
       '@types/three':
         specifier: ^0.166.0
         version: 0.166.0
@@ -181,8 +181,8 @@ importers:
   samples/with-reactive:
     dependencies:
       '@quick-threejs/reactive':
-        specifier: latest
-        version: 0.1.11(stats.js@0.17.0)(tsyringe@4.8.0)
+        specifier: workspace:*
+        version: link:../../packages/reactive
       three:
         specifier: ^0.166.1
         version: 0.166.1
@@ -1299,24 +1299,6 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@quick-threejs/config@0.1.8':
-    resolution: {integrity: sha512-dSInIxLPDfr6z+TfJ8OQ6nGkwcUrjMZ9EXs0SvydJaHqOFmwQfgXZY1im4zf9CPDxhWXADyWhHmZhpiou6FqMA==}
-
-  '@quick-threejs/legacy@0.1.7':
-    resolution: {integrity: sha512-4cCRhHHOKyO8EPg+aa/lLZT11ZTxv5PWOFFFZ50+lytoBoFPnTZbckNlv4UiaVa41pMaoQR/s3oHVnfPomLMZA==}
-
-  '@quick-threejs/reactive@0.1.11':
-    resolution: {integrity: sha512-l+DX0sQ8ytmTxtJ0tvaGnl0WLp2cQClHXCQk3q3k8aBbd7v9x87KiCRr2WATssU7pUVCp0F6mPZCwOdzZuiNNg==}
-    peerDependencies:
-      stats.js: ^0.17.0
-      tsyringe: ^4.8.0
-    peerDependenciesMeta:
-      stats.js:
-        optional: true
-
-  '@quick-threejs/utils@0.1.7':
-    resolution: {integrity: sha512-5vo3Kh5RVPux8xUPgKJhaZx4QiGz52Dwwz+2yamt3N6ZbLb4NdqmCqQO611/httH/1SDRfzq7c+4J8g9t2Qrqw==}
 
   '@rollup/rollup-android-arm-eabi@4.19.0':
     resolution: {integrity: sha512-JlPfZ/C7yn5S5p0yKk7uhHTTnFlvTgLetl2VxqE518QgyM7C9bSfFTYvB/Q/ftkq0RIPY4ySxTz+/wKJ/dXC0w==}
@@ -5507,31 +5489,6 @@ snapshots:
       fastq: 1.17.1
 
   '@pkgr/core@0.1.1': {}
-
-  '@quick-threejs/config@0.1.8': {}
-
-  '@quick-threejs/legacy@0.1.7':
-    dependencies:
-      three: 0.166.1
-
-  '@quick-threejs/reactive@0.1.11(stats.js@0.17.0)(tsyringe@4.8.0)':
-    dependencies:
-      '@quick-threejs/utils': 0.1.7
-      threads: 1.7.0
-      three: 0.166.1
-      tsyringe: 4.8.0
-    optionalDependencies:
-      stats.js: 0.17.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@quick-threejs/utils@0.1.7':
-    dependencies:
-      rxjs: 7.8.1
-      threads: 1.7.0
-      three: 0.166.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@rollup/rollup-android-arm-eabi@4.19.0':
     optional: true
