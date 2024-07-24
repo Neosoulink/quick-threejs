@@ -42,7 +42,7 @@ export class CameraComponent {
 		this.instance?.rotation.copy(rotation);
 	}
 
-	public setDefaultCamera(cameraType?: DefaultCameraType) {
+	public initDefaultCamera(cameraType?: DefaultCameraType) {
 		this.removeCamera();
 
 		if (

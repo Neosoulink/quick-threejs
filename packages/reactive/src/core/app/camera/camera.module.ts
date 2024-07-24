@@ -21,7 +21,7 @@ export class CameraModule implements Module {
 	) {}
 
 	public init(withMiniCamera?: boolean) {
-		this.component.setDefaultCamera();
+		this.component.initDefaultCamera();
 		if (withMiniCamera) this.component.setMiniCamera();
 
 		this.controller.enable$.subscribe((status) => {

@@ -1,4 +1,4 @@
-import type { AppModule } from "main";
+import type { AppModule } from "../../main";
 
 /** @description `launchApp` initialization properties. */
 export class LaunchAppProps {

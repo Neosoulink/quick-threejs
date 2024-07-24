@@ -60,4 +60,8 @@ export class SizesModule implements Module {
 	public enabled$() {
 		return this.controller.enable$;
 	}
+
+	public resize$() {
+		return this.controller.resize$;
+	}
 }
