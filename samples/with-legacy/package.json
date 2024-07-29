@@ -16,6 +16,6 @@
 	},
 	"dependencies": {
 		"@quick-threejs/legacy": "workspace:*",
-		"three": "^0.166.1"
+		"three": "^0.167.0"
 	}
 }

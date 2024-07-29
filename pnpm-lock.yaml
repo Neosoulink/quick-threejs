@@ -46,8 +46,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       three:
-        specifier: ^0.166.1
-        version: 0.166.1
+        specifier: ^0.167.0
+        version: 0.167.0
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.24.8
@@ -104,8 +104,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.166.1
-        version: 0.166.1
+        specifier: ^0.167.0
+        version: 0.167.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -153,8 +153,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/legacy
       three:
-        specifier: ^0.166.1
-        version: 0.166.1
+        specifier: ^0.167.0
+        version: 0.167.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -175,8 +175,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/reactive
       three:
-        specifier: ^0.166.1
-        version: 0.166.1
+        specifier: ^0.167.0
+        version: 0.167.0
     devDependencies:
       '@types/three':
         specifier: ^0.166.0
@@ -230,8 +230,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.166.1
-        version: 0.166.1
+        specifier: ^0.167.0
+        version: 0.167.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -3716,8 +3716,8 @@ packages:
   threads@1.7.0:
     resolution: {integrity: sha512-Mx5NBSHX3sQYR6iI9VYbgHKBLisyB+xROCBGjjWm1O9wb9vfLxdaGtmT/KCjUqMsSNW6nERzCW3T6H43LqjDZQ==}
 
-  three@0.166.1:
-    resolution: {integrity: sha512-LtuafkKHHzm61AQA1be2MAYIw1IjmhOUxhBa0prrLpEMWbV7ijvxCRHjSgHPGp2493wLBzwKV46tA9nivLEgKg==}
+  three@0.167.0:
+    resolution: {integrity: sha512-9Y1a66fpjqF3rhq7ivKTaKtjQLZ97Hj/lZ00DmZWaKHaQFH4uzYT1znwRDWQOcgMmCcOloQzo61gDmqO8l9xmA==}
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
@@ -8302,7 +8302,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  three@0.166.1: {}
+  three@0.167.0: {}
 
   through@2.3.8: {}
 
