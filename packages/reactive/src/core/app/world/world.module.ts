@@ -1,10 +1,10 @@
 import { inject, singleton } from "tsyringe";
+import { Scene } from "three";
 
 import { WorldComponent } from "./world.component";
 import { WorldController } from "./world.controller";
 
 import { Module } from "../../../common/interfaces/module.interface";
-import { Scene } from "three";
 
 @singleton()
 export class WorldModule implements Module {

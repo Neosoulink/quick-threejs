@@ -5,7 +5,7 @@ export enum RegisterLifecycleState {
 
 export enum AppLifecycleState {
 	INITIALIZED,
-	UPDATE_STARTED,
-	UPDATE_ENDED,
+	STEP_STARTED,
+	STEP_ENDED,
 	DISPOSED
 }

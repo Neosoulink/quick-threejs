@@ -81,10 +81,10 @@ export class AppModule
 		this.component.canvas = canvas;
 
 		this.sizes.init(canvas);
-		this.timer.init(props.startTimer);
 		this.camera.init(props.withMiniCamera);
 		this.world.init();
 		this.renderer.init(canvas);
+		this.timer.init(props.startTimer);
 		this.debug.init(props);
 
 		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
@@ -104,10 +104,10 @@ export class AppModule
 
 	public dispose() {
 		this.sizes.dispose();
-		this.timer.dispose();
 		this.camera.dispose();
 		this.world.dispose();
 		this.renderer.dispose();
+		this.timer.dispose();
 		this.debug.dispose();
 
 		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
