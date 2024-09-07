@@ -97,11 +97,10 @@ export class RegisterModule
 		this.component.thread
 			?.lifecycle$()
 			.subscribe((state: AppLifecycleState) => {
-				if (state === AppLifecycleState.UPDATE_STARTED)
+				if (state === AppLifecycleState.STEP_STARTED)
 					this.component.stats?.begin();
 
-				if (state === AppLifecycleState.UPDATE_ENDED)
-					this.component.stats?.end();
+				if (state === AppLifecycleState.STEP_ENDED) this.component.stats?.end();
 			});
 	}
 
