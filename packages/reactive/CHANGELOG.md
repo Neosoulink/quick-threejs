@@ -4,6 +4,22 @@
 
 ### Patch Changes
 
+- 7ef2ec8: # Logs
+
+  ## refactor(reactive): use `setAnimationLoop`
+
+  - `Timer` now use `renderer..setAnimationLoop` instead of `requestAnimationFrame`
+    - `Timer` is now initialized after the `Renderer`
+  - The timer animation callback method is now called `step`
+    - Update the live cycles states with a **STEP\_** prefix instead of **UPDATE\_**
+
+- Updated dependencies [4874023]
+  - @quick-threejs/utils@0.1.8
+
+## 0.1.12
+
+### Patch Changes
+
 - b675af0: # Changes
 
   ## refactor(reactive): export missing base resources

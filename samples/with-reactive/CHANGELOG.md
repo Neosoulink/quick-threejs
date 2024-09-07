@@ -1,5 +1,20 @@
 # with-reactive
 
+## 0.0.4
+
+### Patch Changes
+
+- 4b0912b: # chore(deps): remove unnecessary dependencies
+
+  ## Logs
+
+  - Remove `lil-gui` as peer-dependency
+    - Use Three.js internal `lil-gui`
+  - Use `three/examples/jsm/Addons` path
+
+- Updated dependencies [7ef2ec8]
+  - @quick-threejs/reactive@0.1.12
+
 ## 0.0.3
 
 ### Patch Changes

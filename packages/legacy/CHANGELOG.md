@@ -1,5 +1,17 @@
 # @quick-threejs/legacy
 
+## 0.1.8
+
+### Patch Changes
+
+- 4b0912b: # chore(deps): remove unnecessary dependencies
+
+  ## Logs
+
+  - Remove `lil-gui` as peer-dependency
+    - Use Three.js internal `lil-gui`
+  - Use `three/examples/jsm/Addons` path
+
 ## 0.1.7
 
 ### Patch Changes
