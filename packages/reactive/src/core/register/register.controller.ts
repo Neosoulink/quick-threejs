@@ -23,7 +23,7 @@ export class RegisterController extends ProxyEventHandlersModel {
 		super();
 	}
 
-	init(canvas: HTMLCanvasElement) {
+	public init(canvas: HTMLCanvasElement) {
 		this.canvas = canvas;
 
 		for (const key of PROXY_EVENT_LISTENERS) {
@@ -63,32 +63,41 @@ export class RegisterController extends ProxyEventHandlersModel {
 		};
 	}
 
+	public getScreenSizes() {
+		return {
+			width: this.canvas.width,
+			height: this.canvas.height,
+			windowWidth: window?.innerWidth ?? 0,
+			windowHeight: window?.innerHeight ?? 0
+		};
+	}
+
 	public uiEventHandler(e: UIEvent) {
 		const rect = this.canvas.getBoundingClientRect();
 
 		return {
+			...this.getScreenSizes(),
 			type: e.type,
-			x: window?.innerWidth ?? 0,
-			y: window?.innerHeight ?? 0,
 			top: rect.top,
-			left: rect.left,
-			width: this.canvas.width,
-			height: this.canvas.height
+			left: rect.left
 		};
 	}
 
 	public mouseEventHandler(e: PointerEvent) {
-		return copyProperties(e, [
-			"ctrlKey",
-			"metaKey",
-			"shiftKey",
-			"button",
-			"pointerType",
-			"clientX",
-			"clientY",
-			"pageX",
-			"pageY"
-		]);
+		return {
+			...this.getScreenSizes(),
+			...copyProperties(e, [
+				"ctrlKey",
+				"metaKey",
+				"shiftKey",
+				"button",
+				"pointerType",
+				"clientX",
+				"clientY",
+				"pageX",
+				"pageY"
+			])
+		};
 	}
 
 	public touchEventHandler(e: TouchEvent) {
@@ -106,19 +115,26 @@ export class RegisterController extends ProxyEventHandlersModel {
 			});
 		}
 
-		return data;
+		return { ...this.getScreenSizes(), ...data };
 	}
 
 	public wheelEventHandler(e: WheelEvent) {
 		e.preventDefault();
 
-		return copyProperties(e, ["deltaX", "deltaY"]);
+		return {
+			...this.getScreenSizes(),
+			...copyProperties(e, ["deltaX", "deltaY"])
+		};
 	}
 
 	public keyEventHandler(e: KeyboardEvent) {
 		if (!KEYBOARD_EVENT_CODES.includes(e.code)) return undefined;
 
 		e.preventDefault();
-		return copyProperties(e, ["ctrlKey", "metaKey", "shiftKey", "keyCode"]);
+
+		return {
+			...this.getScreenSizes(),
+			...copyProperties(e, ["ctrlKey", "metaKey", "shiftKey", "keyCode"])
+		};
 	}
 }

@@ -13,17 +13,14 @@ export class TimerController {
 	public readonly step$ = this.step$$.pipe();
 	public readonly enable$ = this.enable$$.pipe();
 
-	public readonly animationCallback: FrameRequestCallback;
-
 	constructor(
 		@inject(TimerComponent) private readonly component: TimerComponent,
 		@inject(AppController) private readonly appController: AppController
-	) {
-		this.animationCallback = this.animate.bind(this);
-	}
+	) {}
 
-	public animate() {
-		this.appController.lifecycle$$.next(AppLifecycleState.UPDATE_STARTED);
+	public step() {
+		this.appController.lifecycle$$.next(AppLifecycleState.STEP_STARTED);
+
 		if (this.component.enabled) {
 			this.component.delta =
 				this.component.clock.getDelta() ?? this.component.frame;
@@ -37,8 +34,6 @@ export class TimerController {
 			});
 		}
 
-		const animationFrameId = requestAnimationFrame(this.animationCallback);
-		if (!this.component.enabled) cancelAnimationFrame(animationFrameId);
-		this.appController.lifecycle$$.next(AppLifecycleState.UPDATE_ENDED);
+		this.appController.lifecycle$$.next(AppLifecycleState.STEP_ENDED);
 	}
 }
