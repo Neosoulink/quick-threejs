@@ -6,7 +6,7 @@ import { isObject } from "./type";
 export const toSerializedJSON = (obj: Object3D) => {
 	const serializedObject = obj.toJSON();
 
-	return {
+	return JSON.stringify({
 		...serializedObject,
 		object: {
 			...serializedObject.object,
@@ -17,43 +17,40 @@ export const toSerializedJSON = (obj: Object3D) => {
 				(prop) => obj.rotation[prop]
 			) as SerializedRotation,
 			children:
-				serializedObject?.object?.children?.map(
-					(child: Object3D, id: number) => ({
-						...child,
-						position: ["x", "y", "z"].map(
-							(prop) => obj.children[id]?.position[prop]
-						),
-						rotation: ["x", "y", "z", "order"].map(
-							(prop) => obj.children[id]?.rotation[prop]
-						)
-					})
-				) ?? []
+				serializedObject?.object?.children?.map((child, i) => ({
+					...JSON.parse(child),
+					position: ["x", "y", "z"].map(
+						(prop) => obj.children[i]?.position[prop]
+					),
+					rotation: ["x", "y", "z", "order"].map(
+						(prop) => obj.children[i]?.rotation[prop]
+					)
+				})) ?? []
 		},
 		isSerialized: true
-	};
+	});
 };
 
-export const deserializeJSON = (
-	obj: {
-		metadata?: any;
-		object?: any;
-		isSerialized: boolean;
-	},
-	loader = new ObjectLoader()
-) => {
-	if (obj.metadata && obj.object && obj.isSerialized) {
-		const parsedObject = loader.parse(obj);
+export const deserializeJSON = (obj: string, loader = new ObjectLoader()) => {
+	const safeObj = JSON.parse(obj);
 
-		parsedObject.position.set(...(obj.object.position as SerializedPosition));
-		parsedObject.rotation.set(...(obj.object.rotation as SerializedRotation));
+	if (safeObj?.metadata && safeObj.object && safeObj.isSerialized) {
+		const parsedObject = loader.parse(safeObj);
+
+		parsedObject.position.set(
+			...(safeObj.object.position as SerializedPosition)
+		);
+		parsedObject.rotation.set(
+			...(safeObj.object.rotation as SerializedRotation)
+		);
 		parsedObject.children.map((child, id) => {
 			child.position.set(
-				...(obj.object.children[id].position as SerializedPosition)
+				...(safeObj.object.children[id].position as SerializedPosition)
 			);
 		});
 		parsedObject.children.map((child, id) => {
 			child.rotation.set(
-				...(obj.object.children[id].rotation as SerializedRotation)
+				...(safeObj.object.children[id].rotation as SerializedRotation)
 			);
 		});
 
