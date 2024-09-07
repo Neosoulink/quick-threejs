@@ -1,5 +1,15 @@
 # @quick-threejs/reactive
 
+## 0.1.13
+
+### Patch Changes
+
+- 57527ed: # patch
+
+  ## feat(reactive): share screen sizings to events
+
+  - All the register events now share the `canvas` & `window` `height` and `width`
+
 ## 0.1.12
 
 ### Patch Changes
