@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.9
+
+### Patch Changes
+
+- 809fcb7: #
+
+  ## refactor(utils): improves `types` exportation
+
 ## 0.1.8
 
 ### Patch Changes
