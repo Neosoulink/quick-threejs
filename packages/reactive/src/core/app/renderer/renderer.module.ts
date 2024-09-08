@@ -18,8 +18,8 @@ export class RendererModule implements Module {
 			this.component.enabled = !!status;
 		});
 		this.controller.step$.subscribe(() => this.component.render());
-		this.controller.resize$.subscribe((size: any) =>
-			this.component.setSize(size.x, size.y)
+		this.controller.resize$.subscribe((size) =>
+			this.component.setSize(size.windowWidth, size.windowHeight)
 		);
 
 		this.component.init(canvas);

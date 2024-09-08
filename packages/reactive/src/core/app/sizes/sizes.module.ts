@@ -16,10 +16,10 @@ export class SizesModule implements Module {
 		this.controller.enable$.subscribe((status) => {
 			this.component.enabled = !!status;
 		});
-		this.controller.resize$.subscribe((size: any) => {
-			this.component.width = size.x;
-			this.component.height = size.y;
-			this.component.aspect = size.x / size.y;
+		this.controller.resize$.subscribe((size) => {
+			this.component.width = size.windowWidth;
+			this.component.height = size.windowHeight;
+			this.component.aspect = size.windowWidth / size.windowHeight;
 		});
 
 		this.component.init(canvas);

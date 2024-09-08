@@ -75,23 +75,8 @@ export class RegisterModule
 		this.controller.init(this.component.canvas);
 		if (!this.component.thread || !this.component.worker) return;
 
-		const rect = this.component.canvas.getBoundingClientRect();
 		this.component.thread?.resize?.({
-			type: "resize",
-			x: this.registerProps.fullScreen
-				? window.innerWidth
-				: this.component.canvas.width,
-			y: this.registerProps.fullScreen
-				? window.innerHeight
-				: this.component.canvas.height,
-			top: rect.top,
-			left: rect.left,
-			width: this.registerProps.fullScreen
-				? window.innerWidth
-				: this.component.canvas.width,
-			height: this.registerProps.fullScreen
-				? window.innerHeight
-				: this.component.canvas.height
+			...this.controller.uiEventHandler({ type: "resize" } as UIEvent)
 		});
 
 		this.component.thread
