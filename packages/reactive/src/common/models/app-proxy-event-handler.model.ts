@@ -1,33 +1,35 @@
 import { Observable } from "rxjs";
 
-export class AppProxyEventHandlersModel {
-	public contextmenu$?: () => Observable<Event>;
-	public resize$?: () => Observable<Event>;
-	public mousedown$?: () => Observable<Event>;
-	public mousemove$?: () => Observable<Event>;
-	public mouseup$?: () => Observable<Event>;
-	public pointerdown$?: () => Observable<Event>;
-	public pointermove$?: () => Observable<Event>;
-	public pointercancel$?: () => Observable<Event>;
-	public pointerup$?: () => Observable<Event>;
-	public touchstart$?: () => Observable<Event>;
-	public touchmove$?: () => Observable<Event>;
-	public touchend$?: () => Observable<Event>;
-	public wheel$?: () => Observable<Event>;
-	public keydown$?: () => Observable<Event>;
+import { ProxyEvent } from "main";
 
-	public contextmenu!: (event: Event) => void;
-	public resize!: (event: Event) => void;
-	public mousedown!: (event: Event) => void;
-	public mousemove!: (event: Event) => void;
-	public mouseup!: (event: Event) => void;
-	public pointerdown!: (event: Event) => void;
-	public pointermove!: (event: Event) => void;
-	public pointercancel!: (event: Event) => void;
-	public pointerup!: (event: Event) => void;
-	public touchstart!: (event: Event) => void;
-	public touchmove!: (event: Event) => void;
-	public touchend!: (event: Event) => void;
-	public wheel!: (event: Event) => void;
-	public keydown!: (event: Event) => void;
+export class AppProxyEventHandlersModel {
+	contextmenu$?: () => Observable<MouseEvent & ProxyEvent>;
+	resize$?: () => Observable<UIEvent & ProxyEvent>;
+	mousedown$?: () => Observable<PointerEvent & ProxyEvent>;
+	mousemove$?: () => Observable<PointerEvent & ProxyEvent>;
+	mouseup$?: () => Observable<PointerEvent & ProxyEvent>;
+	pointerdown$?: () => Observable<PointerEvent & ProxyEvent>;
+	pointermove$?: () => Observable<PointerEvent & ProxyEvent>;
+	pointercancel$?: () => Observable<PointerEvent & ProxyEvent>;
+	pointerup$?: () => Observable<PointerEvent & ProxyEvent>;
+	touchstart$?: () => Observable<TouchEvent & ProxyEvent>;
+	touchmove$?: () => Observable<TouchEvent & ProxyEvent>;
+	touchend$?: () => Observable<TouchEvent & ProxyEvent>;
+	wheel$?: () => Observable<WheelEvent & ProxyEvent>;
+	keydown$?: () => Observable<KeyboardEvent & ProxyEvent>;
+
+	public contextmenu!: (e: MouseEvent & ProxyEvent) => void;
+	public resize!: (e: UIEvent & ProxyEvent) => void;
+	public mousedown!: (e: PointerEvent & ProxyEvent) => void;
+	public mousemove!: (e: PointerEvent & ProxyEvent) => void;
+	public mouseup!: (e: PointerEvent & ProxyEvent) => void;
+	public pointerdown!: (e: PointerEvent & ProxyEvent) => void;
+	public pointermove!: (e: PointerEvent & ProxyEvent) => void;
+	public pointercancel!: (e: PointerEvent & ProxyEvent) => void;
+	public pointerup!: (e: PointerEvent & ProxyEvent) => void;
+	public touchstart!: (e: TouchEvent & ProxyEvent) => void;
+	public touchmove!: (e: TouchEvent & ProxyEvent) => void;
+	public touchend!: (e: TouchEvent & ProxyEvent) => void;
+	public wheel!: (e: WheelEvent & ProxyEvent) => void;
+	public keydown!: (e: KeyboardEvent & ProxyEvent) => void;
 }

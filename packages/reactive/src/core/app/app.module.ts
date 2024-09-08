@@ -20,6 +20,7 @@ import type {
 	CoreModuleMessageEvent,
 	CoreModuleMessageEventData
 } from "../../common/interfaces/core.interface";
+import { Observable } from "rxjs";
 
 @singleton()
 export class AppModule
@@ -45,11 +46,8 @@ export class AppModule
 
 	private _initProxyEvents() {
 		PROXY_EVENT_LISTENERS.forEach((key) => {
-			this[key] = (event: Event) => {
-				this.controller?.[key]?.(event);
-			};
-
-			this[`${key}$`] = () => this.controller?.[`${key}$`];
+			this[`${key}$`] = () => this.controller?.[`${key}$`] as Observable<any>;
+			this[key] = (event: any) => this.controller?.[key]?.(event);
 		});
 	}
 

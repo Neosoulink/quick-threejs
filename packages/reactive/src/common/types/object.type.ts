@@ -6,13 +6,13 @@ import type { PROXY_EVENT_LISTENERS } from "../constants/event.constants";
 export type ProxyEventListenerKeys = (typeof PROXY_EVENT_LISTENERS)[number];
 
 export type ProxyEventHandlersImplementation = {
-	[x in ProxyEventListenerKeys]: (event: Event) => void;
+	[x in ProxyEventListenerKeys]: (event: any) => void;
 };
 
 export type ProxyEventSubjectsImplementation = {
-	[x in `${ProxyEventListenerKeys}$$`]: Subject<Event>;
+	[x in `${ProxyEventListenerKeys}$$`]: Subject<any>;
 };
 
 export type ProxyEventObservablesImplementation = {
-	[x in `${ProxyEventListenerKeys}$`]: Observable<Event>;
+	[x in `${ProxyEventListenerKeys}$`]: Observable<any>;
 };

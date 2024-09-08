@@ -1,3 +1,4 @@
+import { ProxyEvent } from "main";
 import { ProxyEventHandlersImplementation } from "../types/object.type";
 import { ProxyEventObservablesModel } from "./proxy-event-observables.model";
 
@@ -5,18 +6,18 @@ export class ProxyEventHandlersModel
 	extends ProxyEventObservablesModel
 	implements ProxyEventHandlersImplementation
 {
-	public contextmenu!: (event: Event) => void;
-	public resize!: (event: Event) => void;
-	public mousedown!: (event: Event) => void;
-	public mousemove!: (event: Event) => void;
-	public mouseup!: (event: Event) => void;
-	public pointerdown!: (event: Event) => void;
-	public pointermove!: (event: Event) => void;
-	public pointercancel!: (event: Event) => void;
-	public pointerup!: (event: Event) => void;
-	public touchstart!: (event: Event) => void;
-	public touchmove!: (event: Event) => void;
-	public touchend!: (event: Event) => void;
-	public wheel!: (event: Event) => void;
-	public keydown!: (event: Event) => void;
+	public contextmenu!: (e: MouseEvent & ProxyEvent) => void;
+	public resize!: (e: UIEvent & ProxyEvent) => void;
+	public mousedown!: (e: PointerEvent & ProxyEvent) => void;
+	public mousemove!: (e: PointerEvent & ProxyEvent) => void;
+	public mouseup!: (e: PointerEvent & ProxyEvent) => void;
+	public pointerdown!: (e: PointerEvent & ProxyEvent) => void;
+	public pointermove!: (e: PointerEvent & ProxyEvent) => void;
+	public pointercancel!: (e: PointerEvent & ProxyEvent) => void;
+	public pointerup!: (e: PointerEvent & ProxyEvent) => void;
+	public touchstart!: (e: TouchEvent & ProxyEvent) => void;
+	public touchmove!: (e: TouchEvent & ProxyEvent) => void;
+	public touchend!: (e: TouchEvent & ProxyEvent) => void;
+	public wheel!: (e: WheelEvent & ProxyEvent) => void;
+	public keydown!: (e: KeyboardEvent & ProxyEvent) => void;
 }

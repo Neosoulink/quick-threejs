@@ -1,5 +1,5 @@
 import { inject, singleton } from "tsyringe";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 import { AppComponent } from "./app.component";
 import { ProxyEventHandlersModel } from "../../common/models/proxy-event-handler.model";
@@ -15,10 +15,9 @@ export class AppController extends ProxyEventHandlersModel {
 		super();
 
 		for (const eventType of PROXY_EVENT_LISTENERS) {
-			this[`${eventType}$$`] = new Subject<Event>();
-			this[`${eventType}$`] = this[`${eventType}$$`].pipe();
-
-			this[eventType] = (event: Event) => {
+			this[`${eventType}$$`] = new Subject<any>();
+			this[`${eventType}$`] = this[`${eventType}$$`].pipe() as Observable<any>;
+			this[eventType] = (event: any) => {
 				this.component.proxyReceiver.handleEvent({
 					...event,
 					type: event.type || eventType
