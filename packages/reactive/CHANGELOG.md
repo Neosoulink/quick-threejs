@@ -1,5 +1,19 @@
 # @quick-threejs/reactive
 
+## 0.1.14
+
+### Patch Changes
+
+- 1f8ab82: #
+
+  ## fix(reactive): define events & streams types
+
+  - Correct resize observable values types
+  - Use widowÏ height and width to set the default renderer aspect
+
+- Updated dependencies [809fcb7]
+  - @quick-threejs/utils@0.1.9
+
 ## 0.1.13
 
 ### Patch Changes
