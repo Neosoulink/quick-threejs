@@ -59,7 +59,7 @@
 		"events": "^3.3.0",
 		"jest": "^29.5.0",
 		"reflect-metadata": "^0.2.2",
-		"ts-jest": "^29.2.3",
+		"ts-jest": "^29.2.5",
 		"ts-node": "^10.9.2",
 		"tsyringe": "^4.8.0"
 	},
