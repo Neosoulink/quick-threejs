@@ -46,7 +46,7 @@
 		"@quick-threejs/utils": "workspace:*",
 		"rxjs": "^7.8.1",
 		"threads": "^1.7.0",
-		"three": "^0.167.1"
+		"three": "^0.168.0"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
@@ -54,7 +54,7 @@
 		"@types/jest": "^29.5.3",
 		"@types/node": "^22.5.4",
 		"@types/stats.js": "^0.17.0",
-		"@types/three": "^0.167.1",
+		"@types/three": "^0.168.0",
 		"babel-jest": "^29.5.0",
 		"events": "^3.3.0",
 		"jest": "^29.5.0",
