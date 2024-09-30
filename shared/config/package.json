@@ -8,7 +8,7 @@
 		"@typescript-eslint/eslint-plugin": "^7.13.1",
 		"@typescript-eslint/parser": "^7.17.0",
 		"@vercel/style-guide": "^6.0.0",
-		"eslint": "^9.10.0",
+		"eslint": "^9.11.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-turbo": "^2.0.9",
 		"path": "^0.12.7",
