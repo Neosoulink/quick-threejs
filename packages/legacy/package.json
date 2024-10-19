@@ -31,18 +31,18 @@
 		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
-		"three": "^0.168.0"
+		"three": "^0.169.0"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.25.4",
+		"@babel/preset-env": "^7.25.8",
 		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
-		"@types/jest": "^29.5.3",
-		"@types/stats.js": "^0.17.0",
-		"@types/three": "^0.168.0",
-		"babel-jest": "^29.5.0",
+		"@types/jest": "^29.5.13",
+		"@types/stats.js": "^0.17.3",
+		"@types/three": "^0.169.0",
+		"babel-jest": "^29.7.0",
 		"events": "^3.3.0",
-		"jest": "^29.5.0",
+		"jest": "^29.7.0",
 		"path": "^0.12.7",
 		"prettier": "^3.3.3",
 		"ts-jest": "^29.2.5",

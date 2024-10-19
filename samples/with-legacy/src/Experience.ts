@@ -81,7 +81,7 @@ export class Experience {
 
 			this.app.destruct();
 
-			this.onDestruct && this.onDestruct();
+			if (this.onDestruct) this.onDestruct();
 		}
 	}
 
