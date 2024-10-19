@@ -1,5 +1,16 @@
 # @quick-threejs/reactive
 
+## 0.1.15
+
+### Patch Changes
+
+- 2908080: # Logs
+
+  - fix: bundles & importation errors corrections
+
+- Updated dependencies [2908080]
+  - @quick-threejs/utils@0.1.10
+
 ## 0.1.14
 
 ### Patch Changes
