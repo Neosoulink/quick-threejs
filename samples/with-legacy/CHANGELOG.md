@@ -1,5 +1,16 @@
 # basic-sample
 
+## 0.1.11
+
+### Patch Changes
+
+- 2908080: # Logs
+
+  - fix: bundles & importation errors corrections
+
+- Updated dependencies [2908080]
+  - @quick-threejs/legacy@0.1.9
+
 ## 0.1.10
 
 ### Patch Changes

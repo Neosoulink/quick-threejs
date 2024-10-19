@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.10
+
+### Patch Changes
+
+- 2908080: # Logs
+
+  - fix: bundles & importation errors corrections
+
 ## 0.1.9
 
 ### Patch Changes
