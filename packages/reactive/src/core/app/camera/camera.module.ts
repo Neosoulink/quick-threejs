@@ -57,7 +57,7 @@ export class CameraModule implements Module {
 	}
 
 	public instance(value?: Camera) {
-		if (value) this.component.instance;
+		if (value) this.component.instance = value;
 		return this.component.instance;
 	}
 
