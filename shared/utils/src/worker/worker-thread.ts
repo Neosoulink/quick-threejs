@@ -70,7 +70,7 @@ export class WorkerThread<
 
 	terminate() {
 		this.worker?.terminate();
-		this.thread && Thread.terminate(this.thread);
+		if (this.thread) Thread.terminate(this.thread);
 		this.worker = undefined;
 		this.thread = undefined;
 		this.idle = true;

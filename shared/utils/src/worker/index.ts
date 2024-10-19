@@ -28,7 +28,7 @@ export class WorkerPool {
 
 		if (this._taskQueue.length > 0) {
 			const nextTask = this._taskQueue.shift();
-			nextTask && this.run(nextTask);
+			if (nextTask) this.run(nextTask);
 		}
 	}
 
