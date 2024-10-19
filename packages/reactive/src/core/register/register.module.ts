@@ -146,7 +146,7 @@ export class RegisterModule
 		const loaderWorkerThread =
 			await this.component.workerPool.run<ExposedLoaderModule>({
 				payload: {
-					path: new URL("../loader/loader.module-worker.ts", import.meta.url),
+					path: "../loader/loader.module-worker.ts",
 					subject: {
 						resources: props.resources
 					}

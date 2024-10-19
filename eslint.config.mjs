@@ -1,7 +1,10 @@
+// @ts-check
+
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import tsEslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,20 +14,16 @@ const compat = new FlatCompat({
 	allConfig: js.configs.all
 });
 
-export default [
+export default tsEslint.config(
+	...tsEslint.configs.recommended,
+	...compat.extends("./node_modules/@quick-threejs/config/eslint"),
 	{
 		ignores: ["packages/**/*", "shared/**/*"]
 	},
-	...compat.extends("./node_modules/@quick-threejs/config/eslint.js"),
 	{
 		languageOptions: {
 			ecmaVersion: 5,
-			sourceType: "script",
-
-			parserOptions: {
-				project: true,
-				tsconfigRootDir: "./"
-			}
+			sourceType: "script"
 		}
 	}
-];
+);

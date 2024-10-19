@@ -1,6 +1,7 @@
 export const getAvailableCoresNumber = (): number => {
 	try {
 		if (typeof window === "undefined") {
+			// eslint-disable-next-line @typescript-eslint/no-require-imports
 			const os = require("os");
 			return os.cpus().length;
 		} else if (navigator?.hardwareConcurrency) {

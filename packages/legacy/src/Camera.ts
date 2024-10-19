@@ -23,7 +23,7 @@ export default class Camera extends EventEmitter {
 		super();
 
 		this._setCamera(defaultCamera);
-		miniCamera && this._setMiniCamera();
+		if (miniCamera) this._setMiniCamera();
 		this.emit(events.CONSTRUCTED);
 	}
 
@@ -56,7 +56,7 @@ export default class Camera extends EventEmitter {
 		this.app.debug?.setCameraOrbitControl();
 		this.app.debug?.setCameraHelper();
 
-		this.instance && this.app.scene.add(this.instance);
+		if (this.instance) this.app.scene.add(this.instance);
 	}
 
 	private _setMiniCamera() {

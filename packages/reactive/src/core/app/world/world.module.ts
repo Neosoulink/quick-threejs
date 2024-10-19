@@ -11,9 +11,7 @@ export class WorldModule implements Module {
 	constructor(
 		@inject(WorldComponent) private readonly component: WorldComponent,
 		@inject(WorldController) private readonly controller: WorldController
-	) {
-		this.controller;
-	}
+	) {}
 
 	public init() {
 		this.controller.enable$.subscribe((status) => {

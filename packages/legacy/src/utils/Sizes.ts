@@ -44,7 +44,7 @@ export default class Sizes extends EventEmitter {
 	}
 
 	destruct() {
-		this._onResize && window.removeEventListener("resize", this._onResize);
+		if (this.listenResize) window.removeEventListener("resize", this._onResize);
 		this.removeAllListeners();
 	}
 }
