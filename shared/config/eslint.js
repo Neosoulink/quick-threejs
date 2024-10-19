@@ -36,7 +36,8 @@ module.exports = {
 		"@typescript-eslint/ban-ts-comment": "off",
 		"@typescript-eslint/no-var-requires": "off",
 		"@typescript-eslint/no-unused-vars": "off",
-		"@typescript-eslint/no-duplicate-enum-values": "off"
+		"@typescript-eslint/no-duplicate-enum-values": "off",
+		"@typescript-eslint/no-empty-object-type": "off"
 	},
 	ignorePatterns: [
 		"**/__tests__/*",
