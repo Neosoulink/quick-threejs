@@ -1,5 +1,16 @@
 # with-reactive
 
+## 0.0.8
+
+### Patch Changes
+
+- 73f97cb: # Logs
+
+  - fix(configs): improve configs accessibility
+
+- Updated dependencies [73f97cb]
+  - @quick-threejs/reactive@0.1.16
+
 ## 0.0.7
 
 ### Patch Changes
