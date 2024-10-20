@@ -4,13 +4,6 @@
 	"files": [
 		"./**"
 	],
-	"exports": {
-		".": "./index.js",
-		"./eslint": "./eslint.js",
-		"./prettier": "./prettier.js",
-		"./typescript": "./typescript.json",
-		"./vite": "./vite.mjs"
-	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^8.10.0",
 		"@typescript-eslint/parser": "^8.10.0",
