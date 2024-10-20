@@ -1,5 +1,5 @@
 {
-	"extends": "@quick-threejs/config/typescript.json",
+	"extends": "@quick-threejs/config/typescript",
 	"compilerOptions": {
 		"baseUrl": "./src",
 		"outDir": "./dist",
