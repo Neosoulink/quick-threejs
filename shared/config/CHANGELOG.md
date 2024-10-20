@@ -1,5 +1,13 @@
 # @quick-threejs/config
 
+## 0.1.11
+
+### Patch Changes
+
+- 9baddc4: # Logs
+
+  - fix(configs): drop main root exporter
+
 ## 0.1.10
 
 ### Patch Changes
