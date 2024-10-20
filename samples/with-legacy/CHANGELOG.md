@@ -1,5 +1,16 @@
 # basic-sample
 
+## 0.1.12
+
+### Patch Changes
+
+- 73f97cb: # Logs
+
+  - fix(configs): improve configs accessibility
+
+- Updated dependencies [73f97cb]
+  - @quick-threejs/legacy@0.1.10
+
 ## 0.1.11
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.11
+
+### Patch Changes
+
+- 73f97cb: # Logs
+
+  - fix(configs): improve configs accessibility
+
 ## 0.1.10
 
 ### Patch Changes
