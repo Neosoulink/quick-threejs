@@ -178,8 +178,8 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
       vite:
-        specifier: ^5.4.9
-        version: 5.4.9(@types/node@22.9.0)
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.9.0)
 
   samples/with-reactive:
     dependencies:
@@ -197,8 +197,8 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
       vite:
-        specifier: ^5.4.9
-        version: 5.4.9(@types/node@22.9.0)
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.9.0)
 
   shared/config:
     devDependencies:
@@ -230,8 +230,8 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
       vite:
-        specifier: ^5.4.9
-        version: 5.4.9(@types/node@22.9.0)
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.9.0)
 
   shared/utils:
     dependencies:
@@ -261,8 +261,8 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
       vite:
-        specifier: ^5.4.9
-        version: 5.4.9(@types/node@22.9.0)
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.9.0)
 
 packages:
 
@@ -4047,8 +4047,8 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-  vite@5.4.9:
-    resolution: {integrity: sha512-20OVpJHh0PAM0oSOELa5GaZNWeDjcAvQjGXy2Uyr+Tp+/D2/Hdz6NLgpJLsarPTA2QJ6v8mX2P1ZfbsSKvdMkg==}
+  vite@5.4.11:
+    resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -8724,7 +8724,7 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite@5.4.9(@types/node@22.9.0):
+  vite@5.4.11(@types/node@22.9.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
