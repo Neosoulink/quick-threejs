@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 1.0.1
+
+### Patch Changes
+
+- a412ec7: # Logs
+
+  - fix(reactive): correct version to `0.1.16`
+
 ## 1.0.0
 
 ### Major Changes
