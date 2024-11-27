@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import type { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import type { WorkerThreadModule } from "@quick-threejs/utils";
 
 import { AppController } from "./app.controller";
 import { AppComponent } from "./app.component";

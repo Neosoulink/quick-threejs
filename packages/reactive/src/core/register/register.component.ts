@@ -1,6 +1,6 @@
 import { singleton } from "tsyringe";
 import { createWorkerPool } from "@quick-threejs/utils";
-import { WorkerThreadResolution } from "@quick-threejs/utils/dist/types/worker.type";
+import { WorkerThreadResolution } from "@quick-threejs/utils";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import Stats from "stats.js";
 

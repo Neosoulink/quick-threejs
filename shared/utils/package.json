@@ -14,11 +14,11 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/node": "^22.7.7",
+		"@types/node": "^22.9.0",
 		"@types/three": "^0.169.0",
 		"tsyringe": "^4.8.0",
 		"typescript": "^5.6.3",
-		"vite": "^5.4.9"
+		"vite": "^5.4.11"
 	},
 	"dependencies": {
 		"rxjs": "^7.8.1",

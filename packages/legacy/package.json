@@ -34,10 +34,10 @@
 		"three": "^0.169.0"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.25.8",
+		"@babel/preset-env": "^7.26.0",
 		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
-		"@types/jest": "^29.5.13",
+		"@types/jest": "^29.5.14",
 		"@types/stats.js": "^0.17.3",
 		"@types/three": "^0.169.0",
 		"babel-jest": "^29.7.0",
