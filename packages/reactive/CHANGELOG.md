@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 1.0.0
+
+### Major Changes
+
+- 6740fae: # Logs
+
+  - chore(reactive): use [tsup](https://tsup.egoist.dev/) as build manager
+
 ## 0.1.16
 
 ### Patch Changes
