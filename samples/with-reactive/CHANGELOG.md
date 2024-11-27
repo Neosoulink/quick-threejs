@@ -5,7 +5,7 @@
 ### Patch Changes
 
 - Updated dependencies [6740fae]
-  - @quick-threejs/reactive@1.0.0
+  - @quick-threejs/reactive@0.1.17
 
 ## 0.0.8
 
