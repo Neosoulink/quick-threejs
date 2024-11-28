@@ -2,7 +2,7 @@ import { spawn, Worker } from "threads";
 import { WorkerFunction, WorkerModule } from "threads/dist/types/worker";
 import { ThreadsWorkerOptions } from "threads/dist/types/master";
 
-import { Observable } from "rxjs";
+import type { Observable } from "rxjs";
 
 /**
  * @description Represent the worker threaded module. Extends {@link WorkerModule}

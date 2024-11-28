@@ -6,12 +6,25 @@
 		"type": "git",
 		"url": "git+https://github.com/Neosoulink/quick-threejs.git"
 	},
+	"author": "Neosoulink",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Neosoulink/quick-threejs/issues"
+	},
+	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"keywords": [
 		"threejs",
 		"js",
 		"ts"
 	],
-	"type": "module",
+	"scripts": {
+		"dev": "vite build --watch",
+		"build": "tsc && vite build",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"lint": "eslint --max-warnings=0",
+		"prepare": "pnpm run lint && pnpm run build",
+		"test": "jest --passWithNoTests"
+	},
 	"main": "./dist/main.js",
 	"module": "./dist/main.mjs",
 	"types": "dist",
@@ -21,37 +34,17 @@
 	"exports": {
 		".": {
 			"types": "./dist/main.d.ts",
-			"import": "./dist/main.js",
-			"require": "./dist/main.cjs"
+			"import": "./dist/main.mjs",
+			"require": "./dist/main.js"
 		},
 		"./worker": {
 			"types": "./dist/main.worker.d.ts",
-			"import": "./dist/worker.js",
-			"require": "./dist/worker.cjs"
+			"import": "./dist/worker.mjs",
+			"require": "./dist/worker.js"
 		}
-	},
-	"author": "Neosoulink",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/Neosoulink/quick-threejs/issues"
-	},
-	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
-	"scripts": {
-		"dev": "vite build --watch",
-		"build": "tsc && vite build",
-		"format": "prettier --write \"src/**/*.ts\"",
-		"lint": "eslint --max-warnings=0",
-		"prepare": "pnpm run lint && pnpm run build",
-		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
-		"rxjs": "^7.8.1",
-		"threads": "^1.7.0",
-		"three": "^0.169.0",
-		"stats.js": "^0.17.0"
-	},
-	"peerDependencies": {
 		"rxjs": "^7.8.1",
 		"threads": "^1.7.0",
 		"three": "^0.169.0",
