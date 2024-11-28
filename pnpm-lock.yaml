@@ -260,6 +260,9 @@ importers:
       '@types/three':
         specifier: ^0.169.0
         version: 0.169.0
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
       tsyringe:
         specifier: ^4.8.0
         version: 4.8.0
