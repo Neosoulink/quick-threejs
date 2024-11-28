@@ -1,6 +1,6 @@
 import { inject, singleton } from "tsyringe";
 import { AxesHelper, Camera, CameraHelper, GridHelper } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { CameraComponent } from "../camera/camera.component";
 import { AppComponent } from "../app.component";
