@@ -1,5 +1,12 @@
 # with-reactive
 
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies [efbad2d]
+  - @quick-threejs/reactive@0.1.24
+
 ## 0.0.15
 
 ### Patch Changes
