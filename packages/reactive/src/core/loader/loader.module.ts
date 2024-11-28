@@ -19,10 +19,11 @@ export class LoaderModule implements Module, WorkerThreadModule {
 		@inject(LoaderController) private readonly controller: LoaderController,
 		@inject(LoaderComponent) private readonly component: LoaderComponent
 	) {
-		self.onmessage = (event: MessageEvent<{ resources?: Resource[] }>) => {
-			const resources = event?.data?.resources;
-			if (resources) this.init(resources);
-		};
+		if (typeof self !== "undefined")
+			self.onmessage = (event: MessageEvent<{ resources?: Resource[] }>) => {
+				const resources = event?.data?.resources;
+				if (resources) this.init(resources);
+			};
 	}
 
 	private _handleLoadedResource(resource: Resource, file: LoadedResourceItem) {

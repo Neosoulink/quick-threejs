@@ -1,15 +1,12 @@
-import { expose, registerSerializer } from "threads/worker";
+import { expose } from "threads/worker";
 import { ExposedWorkerThreadModule, Methods } from "@quick-threejs/utils";
 import type { WorkerFunction } from "threads/dist/types/worker";
 
 import { AppModule, appModule } from "./app.module";
-import { object3DSerializer } from "../../common/serializers/object3d.serializer";
 import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import { LaunchAppProps } from "../../common/models/launch-app-props.model";
 import type { ProxyEventListenerKeys } from "../../common/types/object.type";
-
-registerSerializer(object3DSerializer);
 
 export const launchApp = (props?: LaunchAppProps) => {
 	appModule.lifecycle$().subscribe((state) => {
