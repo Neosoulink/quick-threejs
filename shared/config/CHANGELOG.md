@@ -1,5 +1,20 @@
 # @quick-threejs/config
 
+## 0.1.13
+
+### Patch Changes
+
+- c7b4279: # Logs
+
+  ## refactor: use `vite` as lib bundler
+
+  - Improve `@quick-three/configs` usability
+    - Add an entry file exposing all the resources
+    - Drop `tsup` config
+    - Add `Vite` config
+  - Build `@quick-three/utils` & `@quick-three/reactive` with `Vite` and drop `tsup`
+    - Remove thread s`Object3D` serializer.
+
 ## 0.1.12
 
 ### Patch Changes
