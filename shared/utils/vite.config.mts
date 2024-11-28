@@ -12,12 +12,11 @@ export default defineConfig({
 			fileName: "main"
 		},
 		rollupOptions: {
-			external: ["three", "rxjs", "threads"],
+			external: ["three", "threads"],
 			output: {
 				globals: {
 					three: "THREE",
-					rxjs: "rxjs",
-					threads: "threads"
+					threads: "THREADS"
 				}
 			}
 		}
