@@ -1,5 +1,12 @@
 # with-reactive-react-router
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [efbad2d]
+  - @quick-threejs/reactive@0.1.24
+
 ## 0.0.2
 
 ### Patch Changes

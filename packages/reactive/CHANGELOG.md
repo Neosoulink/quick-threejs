@@ -1,5 +1,16 @@
 # @quick-threejs/reactive
 
+## 0.1.24
+
+### Patch Changes
+
+- efbad2d: # Logs
+
+  ## refactor: use `common-js` as default export
+
+- Updated dependencies [efbad2d]
+  - @quick-threejs/utils@0.1.14
+
 ## 0.1.23
 
 ### Patch Changes
