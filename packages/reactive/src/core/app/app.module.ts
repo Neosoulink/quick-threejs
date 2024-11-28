@@ -41,7 +41,7 @@ export class AppModule
 		super();
 		this._initProxyEvents();
 
-		if (typeof self !== "undefined")
+		if (typeof self?.addEventListener === "function")
 			self.addEventListener("message", this._onMessage.bind(this));
 	}
 

@@ -7,21 +7,32 @@ export default defineConfig({
 	...configs.vite,
 	build: {
 		lib: {
-			entry: resolve(__dirname, "src/main.ts"),
-			name: "QuickThreeUtils",
-			fileName: "main"
+			entry: {
+				main: resolve(__dirname, "src/main.ts"),
+				worker: resolve(__dirname, "src/main.worker.ts")
+			},
+			name: "QuickThreeReactive"
 		},
 		rollupOptions: {
-			external: ["three", "rxjs", "threads"],
+			external: [
+				"@quick-threejs/utils",
+				"rxjs",
+				"threads",
+				"three",
+				"stats.js"
+			],
 			output: {
 				globals: {
-					three: "THREE",
+					"@quick-threejs/utils": "QuickThreeUtils",
 					rxjs: "rxjs",
-					threads: "threads"
+					threads: "Threads",
+					three: "THREE",
+					"stats.js": "Stats"
 				}
 			}
 		}
 	},
+
 	resolve: {
 		alias: {
 			"@/": resolve(__dirname, "src/")
