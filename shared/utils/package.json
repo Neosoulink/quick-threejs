@@ -9,10 +9,10 @@
 	"module": "./dist/main.js",
 	"types": "./dist/main.d.ts",
 	"scripts": {
-		"prepare": "tsc",
+		"prepare": "pnpm run build",
+		"lint": "eslint && tsc --noEmit",
 		"dev": "vite build --watch",
-		"build": "tsc && vite build",
-		"lint": "eslint"
+		"build": "pnpm run lint && vite build"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
