@@ -1,5 +1,5 @@
 import { expose } from "threads/worker";
-import { ExposedWorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import { ExposedWorkerThreadModule } from "@quick-threejs/utils";
 
 import { loaderModule, LoaderModule } from "./loader.module";
 

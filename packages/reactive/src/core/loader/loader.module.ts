@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { container, inject, Lifecycle, scoped } from "tsyringe";
 import { CanvasTexture } from "three";
 import { DRACOLoader } from "three/examples/jsm/Addons";
-import { WorkerThreadModule } from "@quick-threejs/utils/dist/types/worker.type";
+import { WorkerThreadModule } from "@quick-threejs/utils";
 
 import { LoaderController } from "./loader.controller";
 import { LoaderComponent } from "./loader.component";
