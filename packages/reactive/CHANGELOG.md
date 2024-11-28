@@ -1,5 +1,19 @@
 # @quick-threejs/reactive
 
+## 0.1.18
+
+### Patch Changes
+
+- 0c42a30: # Logs
+
+  ## Build utils with `tsup`
+
+  - Build `@quick-three/utils` with `tsup`
+  - Add a shred `tsup` config at `@quick-three/configs/tsup.js`
+
+- Updated dependencies [0c42a30]
+  - @quick-threejs/utils@0.1.12
+
 ## 1.0.1
 
 ### Patch Changes
