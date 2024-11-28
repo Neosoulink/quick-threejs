@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.21
+
+### Patch Changes
+
+- 57c90f8: # logs
+
+  ## refactor(reactive): use addon js importation
+
 ## 0.1.20
 
 ### Patch Changes
