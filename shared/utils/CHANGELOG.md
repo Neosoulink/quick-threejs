@@ -1,5 +1,16 @@
 # @quick-threejs/utils
 
+## 0.1.12
+
+### Patch Changes
+
+- 0c42a30: # Logs
+
+  ## Build utils with `tsup`
+
+  - Build `@quick-three/utils` with `tsup`
+  - Add a shred `tsup` config at `@quick-three/configs/tsup.js`
+
 ## 0.1.11
 
 ### Patch Changes
