@@ -1,0 +1,37 @@
+{
+	"name": "with-reactive-react-router",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "react-router build",
+		"dev": "react-router dev --host",
+		"start": "react-router-serve ./build/server/index.js",
+		"typecheck": "react-router typegen && tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@quick-threejs/reactive": "workspace:*",
+		"@react-router/node": "^7.0.1",
+		"@react-router/serve": "^7.0.1",
+		"isbot": "^5.1.17",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-router": "^7.0.1",
+		"three": "^0.169.0",
+		"stats.js": "^0.17.0"
+	},
+	"devDependencies": {
+		"@quick-threejs/config": "workspace:*",
+		"@react-router/dev": "^7.0.1",
+		"@types/node": "^20",
+		"@types/react": "^18.3.12",
+		"@types/react-dom": "^18.3.1",
+		"@types/three": "^0.169.0",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.49",
+		"tailwindcss": "^3.4.15",
+		"typescript": "^5.6.3",
+		"vite": "^5.4.11",
+		"vite-tsconfig-paths": "^5.1.2"
+	}
+}
