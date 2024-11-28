@@ -34,10 +34,11 @@
 		"globals": "^15.12.0",
 		"husky": "^9.1.6",
 		"prettier": "^3.3.3",
-		"tsup": "^8.3.5",
 		"turbo": "latest",
 		"typescript": "^5.6.3",
-		"typescript-eslint": "^8.10.0"
+		"typescript-eslint": "^8.10.0",
+		"vite": "^6.0.1",
+		"vite-plugin-dts": "^4.3.0"
 	},
 	"dependencies": {
 		"@changesets/cli": "^2.27.9"

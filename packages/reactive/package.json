@@ -11,22 +11,23 @@
 		"js",
 		"ts"
 	],
+	"type": "module",
 	"main": "./dist/main.js",
 	"module": "./dist/main.mjs",
-	"types": "dist/**/*",
+	"types": "dist",
 	"files": [
-		"dist/**/*"
+		"dist"
 	],
 	"exports": {
 		".": {
 			"types": "./dist/main.d.ts",
-			"node": "./dist/main.js",
-			"default": "./dist/main.mjs"
+			"import": "./dist/main.js",
+			"require": "./dist/main.cjs"
 		},
 		"./worker": {
 			"types": "./dist/main.worker.d.ts",
-			"node": "./dist/main.worker.js",
-			"default": "./dist/main.worker.mjs"
+			"import": "./dist/worker.js",
+			"require": "./dist/worker.cjs"
 		}
 	},
 	"author": "Neosoulink",
@@ -36,8 +37,8 @@
 	},
 	"homepage": "https://github.com/Neosoulink/quick-threejs#readme",
 	"scripts": {
-		"build": "tsup",
-		"dev": "pnpm build --watch",
+		"dev": "vite build --watch",
+		"build": "tsc && vite build",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint --max-warnings=0",
 		"prepare": "pnpm run lint && pnpm run build",
@@ -47,6 +48,10 @@
 		"@quick-threejs/utils": "workspace:*",
 		"rxjs": "^7.8.1",
 		"threads": "^1.7.0",
+		"three": "^0.169.0",
+		"stats.js": "^0.17.0"
+	},
+	"peerDependencies": {
 		"three": "^0.169.0",
 		"stats.js": "^0.17.0"
 	},

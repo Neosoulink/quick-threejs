@@ -11,19 +11,21 @@ export const toSerializedJSON = (obj: Object3D) => {
 		object: {
 			...serializedObject.object,
 			position: ["x", "y", "z"].map(
-				(prop) => obj.position[prop]
+				(prop) => obj.position[prop as keyof typeof obj.position]
 			) as SerializedPosition,
 			rotation: ["x", "y", "z", "order"].map(
-				(prop) => obj.rotation[prop]
+				(prop) => obj.rotation[prop as keyof typeof obj.rotation]
 			) as SerializedRotation,
 			children:
 				serializedObject?.object?.children?.map((child, i) => ({
 					...JSON.parse(child),
 					position: ["x", "y", "z"].map(
-						(prop) => obj.children[i]?.position[prop]
+						(prop) =>
+							obj.children[i]?.position[prop as keyof typeof obj.position]
 					),
 					rotation: ["x", "y", "z", "order"].map(
-						(prop) => obj.children[i]?.rotation[prop]
+						(prop) =>
+							obj.children[i]?.rotation[prop as keyof typeof obj.rotation]
 					)
 				})) ?? []
 		},
@@ -93,7 +95,7 @@ export const copyProperties = <T extends object, U extends keyof T = keyof T>(
 	} as Pick<T, U> & { type?: string };
 
 	for (const name of properties)
-		if (src[name as any] !== undefined) dst[name] = src[name as any];
+		if (src[name] !== undefined) dst[name] = src[name];
 
 	return dst;
 };
@@ -110,7 +112,7 @@ export const excludeProperties = <
 	} as Omit<T, U> & { type?: string };
 
 	for (const [name, value] of Object.entries(src))
-		if (!properties.includes(name as any)) dst[name] = value;
+		if (!properties.includes(name as any)) (dst as any)[name] = value;
 
 	return dst;
 };

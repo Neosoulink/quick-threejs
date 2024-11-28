@@ -7,10 +7,7 @@ node_modules
 
 # Local env files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+!.env.example
 
 # Testing
 coverage
@@ -28,6 +25,7 @@ build
 dist
 dist-ssr
 lib
+.react-router
 
 # Debug
 logs
@@ -37,7 +35,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 
 # Misc
 .vscode/*
@@ -50,3 +47,4 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+*.tsbuildinfo

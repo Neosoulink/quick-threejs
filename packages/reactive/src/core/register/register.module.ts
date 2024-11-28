@@ -1,7 +1,6 @@
 import "reflect-metadata";
 
 import { inject, singleton } from "tsyringe";
-import { registerSerializer } from "threads";
 import { excludeProperties } from "@quick-threejs/utils";
 
 import { RegisterComponent } from "./register.component";
@@ -9,7 +8,6 @@ import { RegisterController } from "./register.controller";
 import { LoaderModule } from "../loader/loader.module";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedAppModule } from "../app/app.module-worker";
-import { object3DSerializer } from "../../common/serializers/object3d.serializer";
 import { RegisterPropsModel } from "../../common/models/register-props.model";
 import {
 	RegisterLifecycleState,
@@ -123,8 +121,6 @@ export class RegisterModule
 	}
 
 	public async init() {
-		registerSerializer(object3DSerializer);
-
 		await this._initCanvas();
 		await this._initWorkerThread();
 		await this._initComponent();

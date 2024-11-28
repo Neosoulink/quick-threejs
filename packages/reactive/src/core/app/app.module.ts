@@ -41,7 +41,8 @@ export class AppModule
 		super();
 		this._initProxyEvents();
 
-		self.addEventListener("message", this._onMessage.bind(this));
+		if (typeof self !== "undefined")
+			self.addEventListener("message", this._onMessage.bind(this));
 	}
 
 	private _initProxyEvents() {
@@ -111,7 +112,8 @@ export class AppModule
 		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 
-		self.removeEventListener("message", this._onMessage.bind(this));
+		if (typeof self !== "undefined")
+			self.removeEventListener("message", this._onMessage.bind(this));
 	}
 
 	public lifecycle$() {

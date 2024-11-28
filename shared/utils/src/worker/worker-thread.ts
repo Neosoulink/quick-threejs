@@ -1,5 +1,4 @@
 import { spawn, Thread, Worker } from "threads";
-import { Observable } from "threads/observable";
 
 import {
 	AwaitedSpawnedThread,
@@ -46,7 +45,7 @@ export class WorkerThread<
 			});
 			const threadLifecycle = this.thread?.lifecycle$?.();
 
-			if (!(threadLifecycle instanceof Observable))
+			if (!threadLifecycle?.pipe)
 				throw new Error(
 					"Worker Module Incompatible. Missing #lifecycle observable."
 				);
