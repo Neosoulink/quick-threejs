@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.20
+
+### Patch Changes
+
+- eb4ee1b: # Logs
+
+  ## refactor(reactive): drop `threejs` `Addon` imports
+
 ## 0.1.19
 
 ### Patch Changes
