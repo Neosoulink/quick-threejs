@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { EventEmitter } from "events";
-import { type GLTF, GLTFLoader, DRACOLoader } from "three/examples/jsm/Addons";
+import { type GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 import { QuickThreejs } from "..";
 
