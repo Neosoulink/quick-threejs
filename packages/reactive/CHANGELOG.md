@@ -1,5 +1,16 @@
 # @quick-threejs/reactive
 
+## 0.1.23
+
+### Patch Changes
+
+- e151f97: # Logs
+
+  ## fix(reactive): correct `vite.config`
+
+  - Mark dependencies as `external` resources
+  - Set `threads` & `rxjs` as peer-dependencies
+
 ## 0.1.22
 
 ### Patch Changes
