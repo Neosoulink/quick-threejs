@@ -1,5 +1,5 @@
 import { CubeTextureLoader, Texture, VideoTexture } from "three";
-import { GLTF } from "three/examples/jsm/Addons";
+import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
 export type LoadedResourceItem =
 	| GLTF

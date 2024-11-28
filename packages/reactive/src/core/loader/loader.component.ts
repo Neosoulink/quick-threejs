@@ -6,7 +6,8 @@ import {
 	LoadingManager,
 	VideoTexture
 } from "three";
-import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 import {
 	LoadedResourceItem,

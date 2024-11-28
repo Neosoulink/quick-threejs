@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/Addons";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
 import Stats from "stats.js";
 
