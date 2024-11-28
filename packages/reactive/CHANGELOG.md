@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.19
+
+### Patch Changes
+
+- 5641c96: # Logs
+
+  ## chore(deps): set `stats.js` as dependency
+
 ## 0.1.18
 
 ### Patch Changes
