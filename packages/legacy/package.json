@@ -31,7 +31,7 @@
 		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
-		"three": "^0.169.0"
+		"three": "^0.171.0"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.26.0",
