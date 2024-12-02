@@ -47,7 +47,7 @@
 		"@quick-threejs/utils": "workspace:*",
 		"rxjs": "^7.8.1",
 		"threads": "^1.7.0",
-		"three": "^0.169.0",
+		"three": "^0.171.0",
 		"stats.js": "^0.17.0"
 	},
 	"devDependencies": {

@@ -67,8 +67,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.26.0
@@ -125,8 +125,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -174,8 +174,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/legacy
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -196,8 +196,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/reactive
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@types/three':
         specifier: ^0.169.0
@@ -236,8 +236,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -315,8 +315,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       three:
-        specifier: ^0.169.0
-        version: 0.169.0
+        specifier: ^0.171.0
+        version: 0.171.0
     devDependencies:
       '@quick-threejs/config':
         specifier: workspace:*
@@ -4863,8 +4863,8 @@ packages:
   threads@1.7.0:
     resolution: {integrity: sha512-Mx5NBSHX3sQYR6iI9VYbgHKBLisyB+xROCBGjjWm1O9wb9vfLxdaGtmT/KCjUqMsSNW6nERzCW3T6H43LqjDZQ==}
 
-  three@0.169.0:
-    resolution: {integrity: sha512-Ed906MA3dR4TS5riErd4QBsRGPcx+HBDX2O5yYE5GqJeFQTPU+M56Va/f/Oph9X7uZo3W3o4l2ZhBZ6f6qUv0w==}
+  three@0.171.0:
+    resolution: {integrity: sha512-Y/lAXPaKZPcEdkKjh0JOAHVv8OOnv/NDJqm0wjfCzyQmfKxV7zvkwsnBgPBKTzJHToSOhRGQAGbPJObT59B/PQ==}
 
   through2@2.0.5:
     resolution: {integrity: sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==}
@@ -10699,7 +10699,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  three@0.169.0: {}
+  three@0.171.0: {}
 
   through2@2.0.5:
     dependencies:
