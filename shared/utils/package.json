@@ -20,9 +20,9 @@
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
 		"@types/node": "^22.9.0",
-		"@types/three": "^0.169.0",
-		"reflect-metadata": "^0.2.2",
-		"rxjs": "^7.8.1",
-		"tsyringe": "^4.8.0"
+		"@types/three": "^0.169.0"
+	},
+	"peerDependencies": {
+		"three": "^0.171.0"
 	}
 }

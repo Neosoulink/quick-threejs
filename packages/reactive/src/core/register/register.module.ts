@@ -92,26 +92,27 @@ export class RegisterModule
 		offscreenCanvas.width = this.component.canvas.clientWidth;
 		offscreenCanvas.height = this.component.canvas.clientHeight;
 
-		const app = await this.component.workerPool.run<ExposedAppModule>({
-			payload: {
-				path: this.registerProps.location,
-				subject: {
-					...excludeProperties(this.registerProps, [
-						"canvas",
-						"location",
-						"onReady"
-					]),
-					canvas: offscreenCanvas
-				} satisfies CoreModuleMessageEventData,
-				transferSubject: [offscreenCanvas]
-			}
-		});
+		const [workerThread, queued] =
+			await this.component.workerPool.run<ExposedAppModule>({
+				payload: {
+					path: this.registerProps.location,
+					subject: {
+						...excludeProperties(this.registerProps, [
+							"canvas",
+							"location",
+							"onReady"
+						]),
+						canvas: offscreenCanvas
+					} satisfies CoreModuleMessageEventData,
+					transferSubject: [offscreenCanvas]
+				}
+			});
 
-		if (!app.thread || !app.worker)
-			throw new Error("Unable to retrieve app worker info.");
+		if (!workerThread || queued)
+			throw new Error("Unable to retrieve the worker-thread info.");
 
-		this.component.worker = app.worker;
-		this.component.thread = app.thread;
+		this.component.worker = workerThread.worker;
+		this.component.thread = workerThread.thread;
 	}
 
 	private async _initProxyEvents() {
@@ -139,7 +140,7 @@ export class RegisterModule
 		onProgress?: (resource: ProgressedResource) => unknown;
 		onProgressComplete?: (resource: ProgressedResource) => unknown;
 	}) {
-		const loaderWorkerThread =
+		const [workerThread, queued] =
 			await this.component.workerPool.run<ExposedLoaderModule>({
 				payload: {
 					path: "../loader/loader.module-worker.ts",
@@ -149,39 +150,42 @@ export class RegisterModule
 				}
 			});
 
-		loaderWorkerThread.thread
+		if (!workerThread || queued)
+			throw new Error("Unable to retrieve worker thread info.");
+
+		workerThread.thread
 			?.progress$()
 			.subscribe((resource: ProgressedResource) => {
 				props.onProgress?.(resource);
 			});
 
-		loaderWorkerThread.thread
+		workerThread.thread
 			?.progressCompleted$()
 			.subscribe((resource: ProgressedResource) => {
 				props.onProgressComplete?.(resource);
 				if (props.disposeOnComplete || props.disposeOnComplete === undefined)
-					loaderWorkerThread.thread?.dispose();
+					workerThread.thread?.dispose();
 			});
 
 		if (props.immediateLoad || props.immediateLoad === undefined)
-			await loaderWorkerThread.thread?.load();
+			await workerThread.thread?.load();
 
 		return {
-			...loaderWorkerThread,
-			load: (await loaderWorkerThread.thread?.load) as LoaderModule["load"],
-			items: (await loaderWorkerThread.thread?.items()) as ReturnType<
+			...workerThread,
+			load: (await workerThread.thread?.load) as LoaderModule["load"],
+			items: (await workerThread.thread?.items()) as ReturnType<
 				LoaderModule["items"]
 			>,
-			loaders: (await loaderWorkerThread.thread?.items()) as ReturnType<
+			loaders: (await workerThread.thread?.items()) as ReturnType<
 				LoaderModule["loaders"]
 			>,
-			toLoad: (await loaderWorkerThread.thread?.toLoad()) as ReturnType<
+			toLoad: (await workerThread.thread?.toLoad()) as ReturnType<
 				LoaderModule["toLoad"]
 			>,
-			loaded: (await loaderWorkerThread.thread?.loaded()) as ReturnType<
+			loaded: (await workerThread.thread?.loaded()) as ReturnType<
 				LoaderModule["loaded"]
 			>,
-			resources: (await loaderWorkerThread.thread?.resources()) as ReturnType<
+			resources: (await workerThread.thread?.resources()) as ReturnType<
 				LoaderModule["resources"]
 			>
 		};
@@ -207,9 +211,8 @@ export class RegisterModule
 		return this.component.gui;
 	}
 
-	public dispose(): void {
-		this.component.workerPool.terminateAll();
-		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
+	public async dispose() {
+		await this.component.workerPool.terminateAll();
 	}
 
 	public lifecycle$() {

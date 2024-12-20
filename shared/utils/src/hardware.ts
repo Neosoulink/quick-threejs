@@ -1,7 +1,8 @@
-export const getAvailableCoresNumber = (): number => {
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+export const getAvailableCoresCount = (): number => {
 	try {
-		if (typeof window === "undefined") {
-			// eslint-disable-next-line @typescript-eslint/no-require-imports
+		if (!window) {
 			const os = require("os");
 			return os.cpus().length;
 		} else if (navigator?.hardwareConcurrency) {
@@ -15,6 +16,5 @@ export const getAvailableCoresNumber = (): number => {
 	}
 };
 
-export const getSafeAvailableCoresNumber = (): number => {
-	return getAvailableCoresNumber() - 1;
-};
+export const getSafeAvailableCoresCount = (): number =>
+	getAvailableCoresCount() - 1;

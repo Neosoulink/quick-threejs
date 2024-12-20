@@ -8,7 +8,7 @@ import { ExposedAppModule } from "../app/app.module-worker";
 
 @singleton()
 export class RegisterComponent {
-	public readonly workerPool = createWorkerPool();
+	public readonly workerPool = createWorkerPool(undefined, true);
 
 	public canvas!: HTMLCanvasElement;
 	public worker!: WorkerThreadResolution<ExposedAppModule>["worker"];

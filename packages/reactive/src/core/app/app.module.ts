@@ -1,7 +1,10 @@
 import "reflect-metadata";
 
 import { container, inject, singleton } from "tsyringe";
-import type { WorkerThreadModule } from "@quick-threejs/utils";
+import {
+	TERMINATE_THREAD_FROM_WORKER_TOKEN,
+	type WorkerThreadModule
+} from "@quick-threejs/utils";
 
 import { AppController } from "./app.controller";
 import { AppComponent } from "./app.component";
@@ -114,6 +117,8 @@ export class AppModule
 
 		if (typeof self !== "undefined")
 			self.removeEventListener("message", this._onMessage.bind(this));
+
+		self.postMessage({ token: TERMINATE_THREAD_FROM_WORKER_TOKEN });
 	}
 
 	public lifecycle$() {
