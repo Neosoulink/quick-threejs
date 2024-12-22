@@ -1,9 +1,7 @@
-import type { AppModule } from "../../main";
+import type { ContainerizedApp, Module } from "../../main";
 
 /** @description `launchApp` initialization properties. */
-export class LaunchAppProps {
-	/**
-	 * @description Handler triggered when the app is ready.
-	 */
-	onReady?: (app: AppModule) => unknown;
+export class LaunchAppProps<M extends Module> {
+	/** @description Handler triggered when the app is ready. */
+	onReady?: (workerApp: ContainerizedApp<M>) => unknown;
 }

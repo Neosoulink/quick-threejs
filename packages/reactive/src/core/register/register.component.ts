@@ -10,9 +10,9 @@ import { ExposedAppModule } from "../app/app.module-worker";
 export class RegisterComponent {
 	public readonly workerPool = createWorkerPool(undefined, true);
 
-	public canvas!: HTMLCanvasElement;
-	public worker!: WorkerThreadResolution<ExposedAppModule>["worker"];
-	public thread!: WorkerThreadResolution<ExposedAppModule>["thread"];
+	public canvas?: HTMLCanvasElement;
+	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
+	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
 	public gui?: GUI;
 	public stats?: Stats;
 

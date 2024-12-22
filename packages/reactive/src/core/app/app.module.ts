@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { container, inject, singleton } from "tsyringe";
+import { inject, scoped, Lifecycle } from "tsyringe";
 import {
 	TERMINATE_THREAD_FROM_WORKER_TOKEN,
 	type WorkerThreadModule
@@ -25,7 +25,7 @@ import type {
 } from "../../common/interfaces/core.interface";
 import { Observable } from "rxjs";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class AppModule
 	extends AppProxyEventHandlersModel
 	implements Module, WorkerThreadModule
@@ -115,15 +115,13 @@ export class AppModule
 		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
 		this.controller.lifecycle$$.complete();
 
-		if (typeof self !== "undefined")
+		if (typeof self !== "undefined") {
 			self.removeEventListener("message", this._onMessage.bind(this));
-
-		self.postMessage({ token: TERMINATE_THREAD_FROM_WORKER_TOKEN });
+			self.postMessage({ token: TERMINATE_THREAD_FROM_WORKER_TOKEN });
+		}
 	}
 
 	public lifecycle$() {
 		return this.controller.lifecycle$;
 	}
 }
-
-export const appModule = container.resolve(AppModule);

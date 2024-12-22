@@ -1,0 +1,1 @@
+export const CONTAINER_TOKEN = "CONTAINER";

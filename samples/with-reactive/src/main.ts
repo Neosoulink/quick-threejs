@@ -8,13 +8,13 @@ register({
 	axesSizes: 5,
 	gridSizes: 10,
 	withMiniCamera: true,
-	onReady: (app) => {
-		app
+	onReady: async (app) => {
+		app.module
 			.gui()
 			?.add({ torusX: 0 }, "torusX")
 			.step(0.01)
 			.onChange((value: any) => {
-				app.worker()?.postMessage({ type: "torus-x-gui-event", value });
+				app.module.worker()?.postMessage({ type: "torus-x-gui-event", value });
 			});
 	}
 });

@@ -1,46 +1,48 @@
 import "reflect-metadata";
 
-import { inject, singleton } from "tsyringe";
+import { type DependencyContainer, inject, Lifecycle, scoped } from "tsyringe";
 import { excludeProperties } from "@quick-threejs/utils";
 
+import { PROXY_EVENT_LISTENERS } from "../../common/constants";
+import type {
+	ProgressedResource,
+	Resource,
+	Module,
+	CoreModuleMessageEventData
+} from "../../common/interfaces";
+import { RegisterLifecycleState, AppLifecycleState } from "../../common/enums";
+import {
+	RegisterPropsModel,
+	RegisterProxyEventHandlersModel
+} from "../../common/models";
+import { CONTAINER_TOKEN } from "../../common/tokens";
 import { RegisterComponent } from "./register.component";
 import { RegisterController } from "./register.controller";
 import { LoaderModule } from "../loader/loader.module";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
 import { ExposedAppModule } from "../app/app.module-worker";
-import { RegisterPropsModel } from "../../common/models/register-props.model";
-import {
-	RegisterLifecycleState,
-	AppLifecycleState
-} from "../../common/enums/lifecycle.enum";
-import { RegisterProxyEventHandlersModel } from "../../common/models/register-proxy-event-handler.model";
-import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-import type {
-	ProgressedResource,
-	Resource
-} from "../../common/interfaces/resource.interface";
-import type { Module } from "../../common/interfaces/module.interface";
-import type { CoreModuleMessageEventData } from "../../common/interfaces/core.interface";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class RegisterModule
 	extends RegisterProxyEventHandlersModel
 	implements Module
 {
+	public initialized = false;
+
 	constructor(
+		@inject(CONTAINER_TOKEN) private readonly container: DependencyContainer,
 		@inject(RegisterComponent) private readonly component: RegisterComponent,
 		@inject(RegisterController) private readonly controller: RegisterController,
 		@inject(RegisterPropsModel)
-		private readonly registerProps: RegisterPropsModel
+		public readonly registerProps: RegisterPropsModel
 	) {
 		super();
-		this.init();
+
+		if (this.registerProps.initOnConstruct) this.init();
 	}
 
 	private async _initCanvas() {
 		try {
-			this.component.canvas = document.createElement("canvas");
-
 			if (this.registerProps.canvas instanceof HTMLCanvasElement)
 				this.component.canvas = this.registerProps.canvas;
 
@@ -53,11 +55,15 @@ export class RegisterModule
 					this.component.canvas = canvas_;
 			}
 
-			if (!this.component.canvas.parentElement)
+			if (!this.component.canvas) {
+				this.component.canvas = document.createElement("canvas");
+
+				this.component.canvas.dataset["reactive"] = "true";
 				document.body.appendChild(this.component.canvas);
-		} catch (err: any) {
+			}
+		} catch (err) {
 			console.error(
-				`🛑 Unable to initialize the canvas:\n${err?.message ?? "Something went wrong"}`
+				`🛑 Unable to initialize the canvas:\n${err instanceof Error ? err.message : "Something went wrong"}`
 			);
 		}
 	}
@@ -70,6 +76,9 @@ export class RegisterModule
 	}
 
 	private async _initController() {
+		if (!this.component.canvas)
+			throw new Error("Canvas element is not initialized.");
+
 		this.controller.init(this.component.canvas);
 		if (!this.component.thread || !this.component.worker) return;
 
@@ -88,6 +97,9 @@ export class RegisterModule
 	}
 
 	private async _initWorkerThread() {
+		if (!this.component.canvas)
+			throw new Error("Canvas element is not initialized.");
+
 		const offscreenCanvas = this.component.canvas.transferControlToOffscreen();
 		offscreenCanvas.width = this.component.canvas.clientWidth;
 		offscreenCanvas.height = this.component.canvas.clientHeight;
@@ -129,7 +141,7 @@ export class RegisterModule
 		await this._initProxyEvents();
 
 		this.controller.lifecycle$$.next(RegisterLifecycleState.INITIALIZED);
-		this.registerProps.onReady?.(this);
+		this.registerProps.onReady?.({ module: this, container: this.container });
 	}
 
 	public async loadResources(props: {
@@ -213,6 +225,13 @@ export class RegisterModule
 
 	public async dispose() {
 		await this.component.workerPool.terminateAll();
+		if (this.component.stats) this.component.stats.dom.remove();
+		if (this.component.gui) this.component.gui.destroy();
+
+		if (this.component.canvas?.dataset["reactive"] === "true") {
+			this.component.canvas.remove();
+			this.component.canvas = undefined;
+		}
 	}
 
 	public lifecycle$() {
