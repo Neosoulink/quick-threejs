@@ -1,48 +1,48 @@
 import "reflect-metadata";
 
-import { inject, singleton } from "tsyringe";
+import { type DependencyContainer, inject, Lifecycle, scoped } from "tsyringe";
 import { excludeProperties } from "@quick-threejs/utils";
 
-import { RegisterComponent } from "./register.component";
-import { RegisterController } from "./register.controller";
+import {
+	type CoreModuleMessageEventData,
+	type Module,
+	type ProgressedResource,
+	type Resource,
+	CONTAINER_TOKEN,
+	PROXY_EVENT_LISTENERS,
+	RegisterPropsModel,
+	RegisterProxyEventHandlersModel
+} from "../../common";
+import { ExposedAppModule } from "../app/app.module-worker";
 import { LoaderModule } from "../loader/loader.module";
 import { ExposedLoaderModule } from "../loader/loader.module-worker";
-import { ExposedAppModule } from "../app/app.module-worker";
-import { RegisterPropsModel } from "../../common/models/register-props.model";
-import {
-	RegisterLifecycleState,
-	AppLifecycleState
-} from "../../common/enums/lifecycle.enum";
-import { RegisterProxyEventHandlersModel } from "../../common/models/register-proxy-event-handler.model";
-import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-import type {
-	ProgressedResource,
-	Resource
-} from "../../common/interfaces/resource.interface";
-import type { Module } from "../../common/interfaces/module.interface";
-import type { CoreModuleMessageEventData } from "../../common/interfaces/core.interface";
+import { RegisterService } from "./register.service";
+import { RegisterController } from "./register.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class RegisterModule
 	extends RegisterProxyEventHandlersModel
 	implements Module
 {
+	public initialized = false;
+
 	constructor(
-		@inject(RegisterComponent) private readonly component: RegisterComponent,
-		@inject(RegisterController) private readonly controller: RegisterController,
+		@inject(CONTAINER_TOKEN) private readonly _container: DependencyContainer,
+		@inject(RegisterService) private readonly _service: RegisterService,
+		@inject(RegisterController)
+		private readonly _controller: RegisterController,
 		@inject(RegisterPropsModel)
-		private readonly registerProps: RegisterPropsModel
+		public readonly registerProps: RegisterPropsModel
 	) {
 		super();
-		this.init();
+
+		if (this.registerProps.initOnConstruct) this.init();
 	}
 
 	private async _initCanvas() {
 		try {
-			this.component.canvas = document.createElement("canvas");
-
 			if (this.registerProps.canvas instanceof HTMLCanvasElement)
-				this.component.canvas = this.registerProps.canvas;
+				this._service.canvas = this.registerProps.canvas;
 
 			if (typeof this.registerProps.canvas === "string") {
 				const canvas_ = document.querySelector(
@@ -50,73 +50,75 @@ export class RegisterModule
 				);
 
 				if (canvas_ instanceof HTMLCanvasElement)
-					this.component.canvas = canvas_;
+					this._service.canvas = canvas_;
 			}
 
-			if (!this.component.canvas.parentElement)
-				document.body.appendChild(this.component.canvas);
-		} catch (err: any) {
+			if (!this._service.canvas) {
+				this._service.canvas = document.createElement("canvas");
+
+				this._service.canvas.dataset["reactive"] = "true";
+				document.body.appendChild(this._service.canvas);
+			}
+		} catch (err) {
 			console.error(
-				`🛑 Unable to initialize the canvas:\n${err?.message ?? "Something went wrong"}`
+				`🛑 Unable to initialize the canvas:\n${err instanceof Error ? err.message : "Something went wrong"}`
 			);
 		}
 	}
 
 	private async _initComponent() {
-		this.component.init({
-			worker: this.component.worker,
-			thread: this.component.thread
+		this._service.init({
+			worker: this._service.worker,
+			thread: this._service.thread
 		});
 	}
 
 	private async _initController() {
-		this.controller.init(this.component.canvas);
-		if (!this.component.thread || !this.component.worker) return;
+		if (!this._service.canvas)
+			throw new Error("Canvas element is not initialized.");
 
-		this.component.thread?.resize?.({
-			...this.controller.uiEventHandler({ type: "resize" } as UIEvent)
+		this._controller.init(this._service.canvas);
+		if (!this._service.thread || !this._service.worker) return;
+
+		this._service.thread?.resize?.({
+			...this._controller.uiEventHandler({ type: "resize" } as UIEvent)
 		});
-
-		this.component.thread
-			?.lifecycle$()
-			.subscribe((state: AppLifecycleState) => {
-				if (state === AppLifecycleState.STEP_STARTED)
-					this.component.stats?.begin();
-
-				if (state === AppLifecycleState.STEP_ENDED) this.component.stats?.end();
-			});
 	}
 
 	private async _initWorkerThread() {
-		const offscreenCanvas = this.component.canvas.transferControlToOffscreen();
-		offscreenCanvas.width = this.component.canvas.clientWidth;
-		offscreenCanvas.height = this.component.canvas.clientHeight;
+		if (!this._service.canvas)
+			throw new Error("Canvas element is not initialized.");
 
-		const app = await this.component.workerPool.run<ExposedAppModule>({
-			payload: {
-				path: this.registerProps.location,
-				subject: {
-					...excludeProperties(this.registerProps, [
-						"canvas",
-						"location",
-						"onReady"
-					]),
-					canvas: offscreenCanvas
-				} satisfies CoreModuleMessageEventData,
-				transferSubject: [offscreenCanvas]
-			}
-		});
+		const offscreenCanvas = this._service.canvas.transferControlToOffscreen();
+		offscreenCanvas.width = this._service.canvas.clientWidth;
+		offscreenCanvas.height = this._service.canvas.clientHeight;
 
-		if (!app.thread || !app.worker)
-			throw new Error("Unable to retrieve app worker info.");
+		const [workerThread, queued] =
+			await this._service.workerPool.run<ExposedAppModule>({
+				payload: {
+					path: this.registerProps.location,
+					subject: {
+						...excludeProperties(this.registerProps, [
+							"canvas",
+							"location",
+							"onReady"
+						]),
+						canvas: offscreenCanvas
+					} satisfies CoreModuleMessageEventData,
+					transferSubject: [offscreenCanvas]
+				}
+			});
 
-		this.component.worker = app.worker;
-		this.component.thread = app.thread;
+		if (!workerThread || queued)
+			throw new Error("Unable to retrieve the worker-thread info.");
+
+		this._service.worker = workerThread.worker;
+		this._service.thread = workerThread.thread;
 	}
 
-	private async _initProxyEvents() {
+	private async _initObservableProxyEvents() {
 		PROXY_EVENT_LISTENERS.forEach(
-			(key) => (this[`${key}$`] = () => this.controller?.[`${key}$`])
+			(key) => (this[`${key}$`] = () => this._controller?.[`${key}$`])
 		);
 	}
 
@@ -125,10 +127,9 @@ export class RegisterModule
 		await this._initWorkerThread();
 		await this._initComponent();
 		await this._initController();
-		await this._initProxyEvents();
+		await this._initObservableProxyEvents();
 
-		this.controller.lifecycle$$.next(RegisterLifecycleState.INITIALIZED);
-		this.registerProps.onReady?.(this);
+		this.registerProps.onReady?.({ module: this, container: this._container });
 	}
 
 	public async loadResources(props: {
@@ -139,8 +140,8 @@ export class RegisterModule
 		onProgress?: (resource: ProgressedResource) => unknown;
 		onProgressComplete?: (resource: ProgressedResource) => unknown;
 	}) {
-		const loaderWorkerThread =
-			await this.component.workerPool.run<ExposedLoaderModule>({
+		const [workerThread, queued] =
+			await this._service.workerPool.run<ExposedLoaderModule>({
 				payload: {
 					path: "../loader/loader.module-worker.ts",
 					subject: {
@@ -149,70 +150,69 @@ export class RegisterModule
 				}
 			});
 
-		loaderWorkerThread.thread
+		if (!workerThread || queued)
+			throw new Error("Unable to retrieve worker thread info.");
+
+		workerThread.thread
 			?.progress$()
 			.subscribe((resource: ProgressedResource) => {
 				props.onProgress?.(resource);
 			});
 
-		loaderWorkerThread.thread
+		workerThread.thread
 			?.progressCompleted$()
 			.subscribe((resource: ProgressedResource) => {
 				props.onProgressComplete?.(resource);
 				if (props.disposeOnComplete || props.disposeOnComplete === undefined)
-					loaderWorkerThread.thread?.dispose();
+					workerThread.thread?.dispose();
 			});
 
 		if (props.immediateLoad || props.immediateLoad === undefined)
-			await loaderWorkerThread.thread?.load();
+			await workerThread.thread?.load();
 
 		return {
-			...loaderWorkerThread,
-			load: (await loaderWorkerThread.thread?.load) as LoaderModule["load"],
-			items: (await loaderWorkerThread.thread?.items()) as ReturnType<
+			...workerThread,
+			load: (await workerThread.thread?.load) as LoaderModule["load"],
+			items: (await workerThread.thread?.items()) as ReturnType<
 				LoaderModule["items"]
 			>,
-			loaders: (await loaderWorkerThread.thread?.items()) as ReturnType<
+			loaders: (await workerThread.thread?.items()) as ReturnType<
 				LoaderModule["loaders"]
 			>,
-			toLoad: (await loaderWorkerThread.thread?.toLoad()) as ReturnType<
+			toLoad: (await workerThread.thread?.toLoad()) as ReturnType<
 				LoaderModule["toLoad"]
 			>,
-			loaded: (await loaderWorkerThread.thread?.loaded()) as ReturnType<
+			loaded: (await workerThread.thread?.loaded()) as ReturnType<
 				LoaderModule["loaded"]
 			>,
-			resources: (await loaderWorkerThread.thread?.resources()) as ReturnType<
+			resources: (await workerThread.thread?.resources()) as ReturnType<
 				LoaderModule["resources"]
 			>
 		};
 	}
 
 	public workerPool() {
-		return this.component.workerPool;
+		return this._service.workerPool;
 	}
 
 	public canvas() {
-		return this.component.canvas;
+		return this._service.canvas;
 	}
 
 	public worker() {
-		return this.component.worker;
+		return this._service.worker;
 	}
 
 	public thread() {
-		return this.component.thread;
+		return this._service.thread;
 	}
 
-	public gui() {
-		return this.component.gui;
-	}
+	public async dispose() {
+		await this._service.workerPool.terminateAll();
 
-	public dispose(): void {
-		this.component.workerPool.terminateAll();
-		this.controller.lifecycle$$.next(RegisterLifecycleState.DISPOSED);
-	}
-
-	public lifecycle$() {
-		return this.controller.lifecycle$;
+		if (this._service.canvas?.dataset["reactive"] === "true") {
+			this._service.canvas.remove();
+			this._service.canvas = undefined;
+		}
 	}
 }

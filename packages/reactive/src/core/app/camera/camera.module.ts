@@ -7,76 +7,68 @@ import {
 	Vector3
 } from "three";
 
-import { CameraComponent } from "./camera.component";
+import { CameraService } from "./camera.service";
 import { CameraController } from "./camera.controller";
-import { SizesComponent } from "../sizes/sizes.component";
+import { SizesService } from "../sizes/sizes.service";
 import type { Module } from "../../../common/interfaces/module.interface";
 
 @singleton()
 export class CameraModule implements Module {
 	constructor(
-		@inject(CameraComponent) private readonly component: CameraComponent,
-		@inject(SizesComponent) private readonly sizesComponent: SizesComponent,
-		@inject(CameraController) private readonly controller: CameraController
+		@inject(SizesService) private readonly _sizesService: SizesService,
+		@inject(CameraController) private readonly _controller: CameraController,
+		@inject(CameraService) private readonly _service: CameraService
 	) {}
 
 	public init(withMiniCamera?: boolean) {
-		this.component.initDefaultCamera();
-		if (withMiniCamera) this.component.setMiniCamera();
+		this._service.initDefaultCamera();
+		if (withMiniCamera) this._service.setMiniCamera();
 
-		this.controller.enable$.subscribe((status) => {
-			this.component.enabled = !!status;
-		});
-
-		this.controller.step$.subscribe(() => {
-			if (!this.component.enabled) return;
-			this.component.aspectRatio = this.sizesComponent.aspect;
+		this._controller.step$.subscribe(() => {
+			if (!this._service.enabled) return;
+			this._service.aspectRatio = this._sizesService.aspect;
 
 			if (
-				this.component.instance instanceof PerspectiveCamera ||
-				this.component.instance instanceof OrthographicCamera
+				this._service.instance instanceof PerspectiveCamera ||
+				this._service.instance instanceof OrthographicCamera
 			)
-				this.component.instance?.updateProjectionMatrix();
-			this.component.miniCamera?.updateProjectionMatrix();
+				this._service.instance?.updateProjectionMatrix();
+			this._service.miniCamera?.updateProjectionMatrix();
 		});
 	}
 
 	public dispose() {
-		this.component.removeCamera();
-		this.component.removeMiniCamera();
+		this._service.removeCamera();
+		this._service.removeMiniCamera();
 	}
 
 	public aspectRatio(value?: number) {
-		if (value) this.component.aspectRatio = value;
-		return this.component.aspectRatio;
+		if (value) this._service.aspectRatio = value;
+		return this._service.aspectRatio;
 	}
 
 	public enabled(value?: boolean) {
-		if (typeof value === "boolean") this.controller.enable$$.next(value);
-		return this.component.enabled;
+		if (typeof value === "boolean") this._service.enabled = value;
+		return this._service.enabled;
 	}
 
 	public instance(value?: Camera) {
-		if (value) this.component.instance = value;
-		return this.component.instance;
+		if (value) this._service.instance = value;
+		return this._service.instance;
 	}
 
 	public miniCamera(value?: PerspectiveCamera) {
-		if (value) this.component.miniCamera = value;
-		return this.component.miniCamera;
+		if (value) this._service.miniCamera = value;
+		return this._service.miniCamera;
 	}
 
 	public position(value?: Vector3) {
-		if (value) this.component.position = value;
-		return this.component.position;
+		if (value) this._service.position = value;
+		return this._service.position;
 	}
 
 	public quaternion(value?: Quaternion) {
-		if (value) this.component.quaternion = value;
-		return this.component.quaternion;
-	}
-
-	public enabled$() {
-		return this.controller.enable$;
+		if (value) this._service.quaternion = value;
+		return this._service.quaternion;
 	}
 }

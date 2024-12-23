@@ -1,5 +1,5 @@
 import { ProxyEvent } from "main";
-import { ProxyEventHandlersImplementation } from "../types/object.type";
+import { ProxyEventHandlersImplementation } from "../interfaces/object.interface";
 import { ProxyEventObservablesModel } from "./proxy-event-observables.model";
 
 export class ProxyEventHandlersModel

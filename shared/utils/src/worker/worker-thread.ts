@@ -7,33 +7,51 @@ import {
 	WorkerThreadProps,
 	WorkerThreadTask
 } from "../types/worker.type";
+import { TERMINATE_THREAD_FROM_WORKER_TOKEN } from "../tokens";
 
 let auto_increment_unique_id = -1;
 
 /**
+ * @description
  *
+ * [Threads](https://github.com/andywer/threads.js) based class.
+ * Contains a worker and a spawned thread.
+ *
+ * - Use the `run` method to execute a {@link WorkerThreadTask Task} and initialize the {@link Worker} & {@link AwaitedSpawnedThread Thread}.
+ *
+ * @see https://threads.js.org/getting-started
  */
 export class WorkerThread<
 	T extends ExposedWorkerThreadModule = ExposedWorkerThreadModule
 > {
-	private _handleComplete: WorkerThreadProps["complete"];
-	private _handleError: WorkerThreadProps["error"];
+	private _handleTerminate: WorkerThreadProps["onTerminate"];
+	private _handleError: WorkerThreadProps["onError"];
+	private _task?: WorkerThreadTask;
 
 	public id = (auto_increment_unique_id += 1);
 	public idle = true;
 	public worker?: Worker;
 	public thread?: AwaitedSpawnedThread<T>;
 
-	constructor(handlers?: WorkerThreadProps) {
-		this._handleComplete = handlers?.complete;
-		this._handleError = handlers?.error;
+	constructor(props?: WorkerThreadProps) {
+		this._handleTerminate = props?.onTerminate;
+		this._handleError = props?.onError;
 	}
 
-	public async run<U extends T = T>({
-		payload,
-		options
-	}: WorkerThreadTask): Promise<WorkerThreadResolution<U>> {
+	private _handleMessages(payload: Event) {
+		if (
+			payload instanceof MessageEvent &&
+			payload.data?.token === TERMINATE_THREAD_FROM_WORKER_TOKEN
+		)
+			this.terminate();
+	}
+
+	public async run<U extends T = T>(
+		task: WorkerThreadTask
+	): Promise<WorkerThreadResolution<U> | undefined> {
 		try {
+			const { payload, options } = task;
+
 			this.idle = false;
 			this.worker = new Worker(payload.path as string, {
 				type: "module",
@@ -43,19 +61,10 @@ export class WorkerThread<
 				timeout: 10000,
 				...options?.spawn
 			});
-			const threadLifecycle = this.thread?.lifecycle$?.();
-
-			if (!threadLifecycle?.pipe)
-				throw new Error(
-					"Worker Module Incompatible. Missing #lifecycle observable."
-				);
+			this._task = task;
 
 			this.worker.postMessage(payload.subject, payload.transferSubject);
-
-			threadLifecycle.subscribe({
-				complete: this._handleComplete,
-				error: this._handleError
-			});
+			this.worker.addEventListener("message", this._handleMessages.bind(this));
 
 			return {
 				worker: this.worker,
@@ -63,15 +72,28 @@ export class WorkerThread<
 			};
 		} catch (err: any) {
 			this._handleError?.(err);
-			return {};
+			return undefined;
 		}
 	}
 
-	terminate() {
-		this.worker?.terminate();
-		if (this.thread) Thread.terminate(this.thread);
+	public get task() {
+		return this._task;
+	}
+
+	public async terminate() {
+		this.worker?.removeEventListener(
+			"message",
+			this._handleMessages.bind(this)
+		);
+
+		if (this.thread) await Thread.terminate(this.thread);
+		await this.worker?.terminate();
+
 		this.worker = undefined;
 		this.thread = undefined;
+		this._task = undefined;
 		this.idle = true;
+
+		this._handleTerminate?.();
 	}
 }

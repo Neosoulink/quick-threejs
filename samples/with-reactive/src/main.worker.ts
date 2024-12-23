@@ -27,20 +27,20 @@ launchApp({
 			}
 		};
 
-		app.world.scene().background = new Color("#211d20");
-		app.world.scene().add(ambientLight, directionalLight, torus);
+		app.module.world.scene().background = new Color("#211d20");
+		app.module.world.scene().add(ambientLight, directionalLight, torus);
 
-		app.resize$?.().subscribe((event) => {
+		app.module.resize$?.().subscribe((event) => {
 			console.log(event.type);
 		});
 
-		app.wheel$?.().subscribe((event) => {
+		app.module.wheel$?.().subscribe((event) => {
 			console.log(event.type);
 		});
 
-		app.timer.step$().subscribe(() => {
-			torus.rotateY(0.05);
-			torus.rotateX(0.001);
+		app.module.timer.step$().subscribe((payload) => {
+			torus.rotateY(payload.deltaRatio * 0.01);
+			torus.rotateX(payload.deltaRatio * 0.01);
 		});
 	}
 });

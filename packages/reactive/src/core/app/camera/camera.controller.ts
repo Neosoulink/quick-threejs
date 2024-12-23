@@ -1,22 +1,19 @@
 import { inject, singleton } from "tsyringe";
-import { filter, Observable, Subject } from "rxjs";
+import { filter } from "rxjs";
 
-import { CameraComponent } from "./camera.component";
+import { CameraService } from "./camera.service";
 import { TimerController } from "../timer/timer.controller";
-import type { StepPayload } from "../../../common/interfaces/event.interface";
+
 @singleton()
 export class CameraController {
-	public readonly enable$$ = new Subject<boolean>();
-
-	public readonly enable$ = this.enable$$.pipe();
-	public readonly step$: Observable<StepPayload>;
+	public readonly step$: TimerController["step$"];
 
 	constructor(
-		@inject(CameraComponent) private readonly component: CameraComponent,
-		@inject(TimerController) private readonly timerController: TimerController
+		@inject(TimerController) private readonly timerController: TimerController,
+		@inject(CameraService) private readonly _service: CameraService
 	) {
 		this.step$ = this.timerController.step$.pipe(
-			filter(() => this.component.enabled)
+			filter(() => this._service.enabled)
 		);
 	}
 }

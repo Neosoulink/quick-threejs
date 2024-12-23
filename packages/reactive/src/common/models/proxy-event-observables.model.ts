@@ -2,7 +2,7 @@ import { Observable } from "rxjs";
 
 import { ProxyEvent } from "main";
 import { ProxyEventSubjectsModel } from "./proxy-event-subjects.models";
-import { ProxyEventObservablesImplementation } from "../types/object.type";
+import { ProxyEventObservablesImplementation } from "../interfaces/object.interface";
 
 export class ProxyEventObservablesModel
 	extends ProxyEventSubjectsModel

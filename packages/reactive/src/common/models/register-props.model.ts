@@ -1,5 +1,6 @@
-import type { RegisterModule } from "../../core/register/register.module";
+import type { ContainerizedApp } from "../interfaces";
 import type { DefaultCameraType } from "../enums/camera.enum";
+import type { RegisterModule } from "../../core";
 
 /** @description Quick-three register properties. */
 export class RegisterPropsModel {
@@ -9,6 +10,13 @@ export class RegisterPropsModel {
 	 * @required
 	 */
 	location!: string;
+
+	/**
+	 * @description Initialize the app on construct.
+	 *
+	 * @default true
+	 */
+	initOnConstruct?: boolean;
 
 	/**
 	 * @description App `canvas` element reference.
@@ -81,5 +89,5 @@ export class RegisterPropsModel {
 	 *
 	 * @default undefined
 	 */
-	onReady?: (register: RegisterModule) => unknown;
+	onReady?: (app: ContainerizedApp<RegisterModule>) => unknown;
 }

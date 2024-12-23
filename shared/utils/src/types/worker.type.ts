@@ -2,22 +2,12 @@ import { spawn, Worker } from "threads";
 import { WorkerFunction, WorkerModule } from "threads/dist/types/worker";
 import { ThreadsWorkerOptions } from "threads/dist/types/master";
 
-import type { Observable } from "rxjs";
-
 /**
- * @description Represent the worker threaded module. Extends {@link WorkerModule}
+ * @description {@link WorkerModule} representation.
  *
- * @see https://threads.js.org
+ * @see https://threads.js.org/usage#module-worker
  */
-export interface WorkerThreadModule {
-	/**
-	 * @description Lifecycle observable getter.
-	 *
-	 * __Internally used for `worker-thread` completion detection
-	 * (when `complete` is triggered).__
-	 */
-	lifecycle$: () => Observable<unknown>;
-}
+export interface WorkerThreadModule {}
 
 export type ExposedWorkerThreadModule<
 	T extends WorkerThreadModule = WorkerThreadModule
@@ -32,8 +22,8 @@ export type AwaitedSpawnedThread<T extends WorkerFunction | WorkerModule<any>> =
 	SpawnedThread<T> extends Promise<infer U> ? U : SpawnedThread<T>;
 
 export type WorkerThreadProps = {
-	complete?: () => void;
-	error?: (error: Error) => void;
+	onTerminate?: () => void;
+	onError?: (err: any) => void;
 };
 
 export type WorkerThreadPayload = {

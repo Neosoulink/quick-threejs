@@ -14,20 +14,10 @@ export default defineConfig({
 			name: "QuickThreeReactive"
 		},
 		rollupOptions: {
-			external: [
-				"@quick-threejs/utils",
-				"rxjs",
-				"threads",
-				"three",
-				"stats.js"
-			],
+			external: ["three"],
 			output: {
 				globals: {
-					"@quick-threejs/utils": "QuickThreeUtils",
-					rxjs: "rxjs",
-					threads: "Threads",
-					three: "THREE",
-					"stats.js": "Stats"
+					three: "THREE"
 				}
 			}
 		}

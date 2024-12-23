@@ -1,7 +1,7 @@
 import { Subject } from "rxjs";
 
 import { ProxyEvent } from "main";
-import { ProxyEventSubjectsImplementation } from "../types/object.type";
+import { ProxyEventSubjectsImplementation } from "../interfaces/object.interface";
 
 export class ProxyEventSubjectsModel
 	implements ProxyEventSubjectsImplementation

@@ -1,55 +1,55 @@
 import { inject, singleton } from "tsyringe";
 
-import { DebugComponent } from "./debug.component";
-import { DebugController } from "./debug.controller";
-
 import { Module } from "../../../common/interfaces/module.interface";
+
+import { DebugService } from "./debug.service";
+import { DebugController } from "./debug.controller";
 
 @singleton()
 export class DebugModule implements Module {
 	constructor(
-		@inject(DebugComponent) public readonly component: DebugComponent,
-		@inject(DebugController) public readonly controller: DebugController
+		@inject(DebugService) public readonly _service: DebugService,
+		@inject(DebugController) public readonly _controller: DebugController
 	) {
-		this.controller.step$.subscribe(() => {
-			this.component.update();
+		this._controller.step$.subscribe(() => {
+			this._service.update();
 		});
 	}
 
-	public init(props?: Parameters<DebugComponent["init"]>[0]) {
-		this.component.init(props);
+	public step$() {
+		return this._controller.step$;
 	}
 
-	public dispose() {
-		this.component.dispose();
+	public init(props?: Parameters<DebugService["activate"]>[0]) {
+		this._service.activate(props);
 	}
 
 	public axesHelper() {
-		return this.component.axesHelper;
+		return this._service.axesHelper;
 	}
 
 	public cameraControls() {
-		return this.component.cameraControls;
+		return this._service.cameraControls;
 	}
 
 	public cameraHelper() {
-		return this.component.cameraHelper;
+		return this._service.cameraHelper;
 	}
 
 	public enabled(value?: boolean) {
-		if (value) this.component.enabled = value;
-		return this.component.enabled;
+		if (value) this._service.enabled = value;
+		return this._service.enabled;
 	}
 
 	public gridHelper() {
-		return this.component.gridHelper;
+		return this._service.gridHelper;
 	}
 
 	public miniCameraControls() {
-		return this.component.miniCameraControls;
+		return this._service.miniCameraControls;
 	}
 
-	public enabled$() {
-		return this.controller.enable$;
+	public dispose() {
+		this._service.deactivate();
 	}
 }

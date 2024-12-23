@@ -3,7 +3,7 @@ import { singleton } from "tsyringe";
 import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
 
 @singleton()
-export class SizesComponent {
+export class SizesService {
 	public width = 0;
 	public height = 0;
 	public aspect = 0;
