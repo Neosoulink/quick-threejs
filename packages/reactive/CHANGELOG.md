@@ -1,5 +1,53 @@
 # @quick-threejs/reactive
 
+## 0.1.25
+
+### Patch Changes
+
+- 56ae7da: # Logs
+
+  ## drop unnecessary native supports
+
+  - Remove `Stats.js` native support
+  - Remove `lil-gui` native support
+  - Threads no longer expose **observable proxy events**
+  - Drop modules `lifeCycle` integration (to prioritize `Observable`s usage)
+    - Add `beforeStep# @quick-threejs/reactive Observable.
+  - Expose `ContainerizedApp` interface for `App` & `Register`
+  - Update `Timer` resources
+    - Add `currentTime`
+    - Add `elapsedTime`
+    - Rename `delta` to `deltaTime`
+    - Move `step()` method from **module to service**
+
+- 9ba3dcd: # Logs
+
+  ## refactor(reactive): cleaner disposal
+
+  - Containerized app (now exports `module` & `container`)
+  - Mark register component resources as optional
+  - Add an option to automatically `init` the register
+  - Improve resource documentation
+
+- 4ca0a3a: # Logs
+
+  ## `@quick-threejs/utils`
+
+  - `Threads.js` is now a part of `@quick-threejs/utils`
+  - Dropped `rxjs` and the worker lifecycle approach
+  - `WorkerPool#run` now returns an array of `WorkerThread` & `queue` boolean
+  - Add worker resources documentation
+  - Can manually run `WorkerPool#runNext`
+  - Improve `terminateAll` behavior
+  - Can terminate a thread from a worker using `MessageEvent`
+
+  ## `@quick-threejs/reactive`
+
+  - Changes based on `@quick-threejs/utils`
+
+- Updated dependencies [4ca0a3a]
+  - @quick-threejs/utils@0.1.15
+
 ## 0.1.24
 
 ### Patch Changes

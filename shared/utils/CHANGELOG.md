@@ -1,5 +1,25 @@
 # @quick-threejs/utils
 
+## 0.1.15
+
+### Patch Changes
+
+- 4ca0a3a: # Logs
+
+  ## `@quick-threejs/utils`
+
+  - `Threads.js` is now a part of `@quick-threejs/utils`
+  - Dropped `rxjs` and the worker lifecycle approach
+  - `WorkerPool#run` now returns an array of `WorkerThread` & `queue` boolean
+  - Add worker resources documentation
+  - Can manually run `WorkerPool#runNext`
+  - Improve `terminateAll` behavior
+  - Can terminate a thread from a worker using `MessageEvent`
+
+  ## `@quick-threejs/reactive`
+
+  - Changes based on `@quick-threejs/utils`
+
 ## 0.1.14
 
 ### Patch Changes
