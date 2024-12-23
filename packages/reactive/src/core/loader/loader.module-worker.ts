@@ -6,7 +6,6 @@ import { loaderModule, LoaderModule } from "./loader.module";
 export type ExposedLoaderModule = ExposedWorkerThreadModule<LoaderModule>;
 
 expose({
-	lifecycle$: loaderModule.lifecycle$.bind(loaderModule),
 	progress$: loaderModule.progress$.bind(loaderModule),
 	progressCompleted$: loaderModule.progressCompleted$.bind(loaderModule),
 	setDracoLoader: loaderModule.setDracoLoader.bind(loaderModule),

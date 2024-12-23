@@ -2,12 +2,12 @@ import { inject, singleton } from "tsyringe";
 import { AxesHelper, Camera, CameraHelper, GridHelper } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { CameraComponent } from "../camera/camera.component";
-import { AppComponent } from "../app.component";
-import { WorldComponent } from "../world/world.component";
+import { CameraService } from "../camera/camera.service";
+import { AppService } from "../app.service";
+import { WorldService } from "../world/world.service";
 
 @singleton()
-export class DebugComponent {
+export class DebugService {
 	public enabled = true;
 	public cameraControls?: OrbitControls;
 	public miniCameraControls?: OrbitControls;
@@ -16,9 +16,9 @@ export class DebugComponent {
 	public gridHelper?: GridHelper;
 
 	constructor(
-		@inject(AppComponent) private readonly appComponent: AppComponent,
-		@inject(CameraComponent) private readonly cameraComponent: CameraComponent,
-		@inject(WorldComponent) private readonly worldComponent: WorldComponent
+		@inject(AppService) private readonly _appService: AppService,
+		@inject(CameraService) private readonly _cameraService: CameraService,
+		@inject(WorldService) private readonly _worldService: WorldService
 	) {}
 
 	private _setCameraOrbitControl() {
@@ -27,16 +27,17 @@ export class DebugComponent {
 			this.cameraControls = undefined;
 		}
 
-		if (!this.enabled || !(this.cameraComponent.instance instanceof Camera))
+		if (!this.enabled || !(this._cameraService.instance instanceof Camera))
 			return;
 
-		if (this.cameraComponent.instance instanceof Camera) {
+		if (this._cameraService.instance instanceof Camera) {
 			this.cameraControls = new OrbitControls(
-				this.cameraComponent.instance,
-				this.appComponent.proxyReceiver as unknown as HTMLElement
+				this._cameraService.instance,
+				this._appService.proxyReceiver as unknown as HTMLElement
 			);
 
-			if (this.cameraControls) this.cameraControls.enableDamping = true;
+			this.cameraControls.rotateSpeed = 0.1;
+			this.cameraControls.enableDamping = true;
 		}
 	}
 
@@ -46,42 +47,41 @@ export class DebugComponent {
 			this.miniCameraControls = undefined;
 		}
 
-		if (!this.enabled) return;
+		if (!this.enabled || !this._cameraService.miniCamera) return;
 
-		if (this.cameraComponent.miniCamera) {
-			this.miniCameraControls = new OrbitControls(
-				this.cameraComponent.miniCamera,
-				this.appComponent.proxyReceiver as unknown as HTMLElement
-			);
-			this.miniCameraControls.enableDamping = true;
-		}
+		this.miniCameraControls = new OrbitControls(
+			this._cameraService.miniCamera,
+			this._appService.proxyReceiver as unknown as HTMLElement
+		);
+		this.miniCameraControls.rotateSpeed = 0.15;
+		this.miniCameraControls.enableDamping = true;
 	}
 
 	private _setCameraHelper() {
 		if (this.cameraHelper) {
-			this.worldComponent.scene.remove(this.cameraHelper);
+			this._worldService.scene.remove(this.cameraHelper);
 			this.cameraHelper = undefined;
 		}
 
 		if (!this.enabled) return;
 
-		if (this.cameraComponent.instance) {
-			this.cameraHelper = new CameraHelper(this.cameraComponent.instance);
-			this.worldComponent.scene.add(this.cameraHelper);
+		if (this._cameraService.instance) {
+			this.cameraHelper = new CameraHelper(this._cameraService.instance);
+			this._worldService.scene.add(this.cameraHelper);
 		}
 	}
 
 	private _setAxesHelper(axesSizes: number) {
 		const axesHelper = new AxesHelper(axesSizes);
-		this.worldComponent.scene.add(axesHelper);
+		this._worldService.scene.add(axesHelper);
 	}
 
 	private _setGridHelper(gridSizes: number) {
 		const axesHelper = new GridHelper(gridSizes, gridSizes);
-		this.worldComponent.scene.add(axesHelper);
+		this._worldService.scene.add(axesHelper);
 	}
 
-	public init(props?: { axesSizes?: number; gridSizes?: number }) {
+	public activate(props?: { axesSizes?: number; gridSizes?: number }) {
 		this._setCameraOrbitControl();
 		this._setMiniCameraOrbitControls();
 		this._setCameraHelper();
@@ -92,20 +92,21 @@ export class DebugComponent {
 	}
 
 	public update() {
-		if (!this.enabled) return;
 		this.cameraControls?.update();
 		this.miniCameraControls?.update();
 	}
 
-	public dispose() {
+	public deactivate() {
 		if (this.cameraHelper) {
-			this.worldComponent.scene.remove(this.cameraHelper);
+			this._worldService.scene.remove(this.cameraHelper);
 			this.cameraHelper = undefined;
 		}
+
 		if (this.cameraControls) {
 			this.cameraControls.dispose();
 			this.cameraControls = undefined;
 		}
+
 		if (this.miniCameraControls) {
 			this.miniCameraControls.dispose();
 			this.miniCameraControls = undefined;

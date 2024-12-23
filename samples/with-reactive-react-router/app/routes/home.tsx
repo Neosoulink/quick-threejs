@@ -24,15 +24,7 @@ export default function Home() {
 					gridSizes: 10,
 					withMiniCamera: true,
 					onReady: (app) => {
-						app
-							.gui()
-							?.add({ torusX: 0 }, "torusX")
-							.step(0.01)
-							.onChange((value: any) => {
-								app.worker()?.postMessage({ type: "torus-x-gui-event", value });
-							});
-
-						setApp(app);
+						setApp(app.module);
 					}
 				});
 		});

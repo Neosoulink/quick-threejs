@@ -1,66 +1,58 @@
+import { Subscription } from "rxjs";
 import { inject, singleton } from "tsyringe";
 
-import { TimerComponent } from "./timer.component";
-import { RendererComponent } from "../renderer/renderer.component";
+import type { Module } from "../../../common/interfaces";
+import { TimerService } from "./timer.service";
 import { TimerController } from "./timer.controller";
-import type { Module } from "../../../common/interfaces/module.interface";
 
 @singleton()
 export class TimerModule implements Module {
+	private _initialAnimationFrameId?: number;
+	private _subscriptions: Subscription[] = [];
+
 	constructor(
-		@inject(TimerComponent) private readonly component: TimerComponent,
-		@inject(TimerController) private readonly controller: TimerController,
-		@inject(RendererComponent)
-		private readonly rendererComponent: RendererComponent
-	) {}
-
-	public init(startTimer?: boolean): void {
-		this.controller.enable$.subscribe((status) => {
-			this.component.enabled = !!status;
-
-			if (status)
-				this.rendererComponent.instance?.setAnimationLoop(
-					this.controller.step.bind(this.controller)
-				);
-			else this.rendererComponent.instance?.setAnimationLoop(null);
-		});
-
-		if (startTimer) this.enabled(true);
+		@inject(TimerController) private readonly _controller: TimerController,
+		@inject(TimerService) private readonly _service: TimerService
+	) {
+		this._subscriptions.push(
+			this._controller.step$.subscribe(this._service.step.bind(this._service))
+		);
 	}
 
-	public clock() {
-		return this.component.clock;
+	public init(enabled?: boolean): void {
+		this.enabled(enabled);
 	}
 
 	public frame() {
-		return this.component.frame;
+		return this._service.frame;
 	}
 
-	public delta(value?: number) {
-		if (typeof value === "number") this.component.delta = value;
-		return this.component.delta;
+	public deltaTime(value?: number) {
+		if (typeof value === "number") this._service.deltaTime = value;
+		return this._service.deltaTime;
 	}
 
 	public deltaRatio(value?: number) {
-		if (typeof value === "number") this.component.deltaRatio = value;
-		return this.component.deltaRatio;
+		if (typeof value === "number") this._service.deltaRatio = value;
+		return this._service.deltaRatio;
 	}
 
 	public enabled(value?: boolean) {
-		if (typeof value === "boolean") this.controller.enable$$.next(value);
-		return this.component.enabled;
+		if (typeof value === "boolean") this._service.enabled = value;
+		return this._service.enabled;
 	}
 
 	public dispose() {
-		this.controller.step$$.complete();
-		this.controller.enable$$.complete();
+		if (this._initialAnimationFrameId !== undefined)
+			cancelAnimationFrame(this._initialAnimationFrameId);
+		this._service.enabled = false;
 	}
 
-	public enabled$() {
-		return this.controller.enable$;
+	public beforeStep$() {
+		return this._controller.beforeStep$;
 	}
 
 	public step$() {
-		return this.controller.step$;
+		return this._controller.step$;
 	}
 }

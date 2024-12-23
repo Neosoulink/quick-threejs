@@ -118,12 +118,7 @@ export class LoaderModule implements Module, WorkerThreadModule {
 	}
 
 	public dispose() {
-		this.controller.lifecycle$$.complete();
 		this.controller.progress$$.complete();
-	}
-
-	public lifecycle$() {
-		return this.controller.lifecycle$;
 	}
 
 	public progress$() {

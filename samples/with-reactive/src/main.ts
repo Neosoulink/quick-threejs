@@ -1,4 +1,5 @@
 import { register } from "@quick-threejs/reactive";
+import Stats from "stats.js";
 
 import "./style.css";
 
@@ -9,12 +10,25 @@ register({
 	gridSizes: 10,
 	withMiniCamera: true,
 	onReady: async (app) => {
+		const stats = new Stats();
+		stats.showPanel(0);
+
+		window.document.body.appendChild(stats.dom);
+
 		app.module
-			.gui()
-			?.add({ torusX: 0 }, "torusX")
-			.step(0.01)
-			.onChange((value: any) => {
-				app.module.worker()?.postMessage({ type: "torus-x-gui-event", value });
+			.thread()
+			.beforeStep$()
+			.subscribe(() => {
+				stats.begin();
 			});
+
+		app.module
+			.thread()
+			.step$()
+			.subscribe(() => {
+				stats.end();
+			});
+
+		console.log(app.module);
 	}
 });

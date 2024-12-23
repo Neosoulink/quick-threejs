@@ -1,23 +1,20 @@
 import { inject, singleton } from "tsyringe";
-import { filter, Observable, Subject } from "rxjs";
+import { filter, Observable } from "rxjs";
 
 import { ProxyEvent } from "common";
 import { AppController } from "../app.controller";
-import { SizesComponent } from "./sizes.component";
+import { SizesService } from "./sizes.service";
 
 @singleton()
 export class SizesController {
-	public readonly enable$$ = new Subject<boolean>();
-
-	public readonly enable$ = this.enable$$.pipe();
 	public readonly resize$: Observable<UIEvent & ProxyEvent>;
 
 	constructor(
-		@inject(AppController) private readonly appController: AppController,
-		@inject(SizesComponent) private readonly component: SizesComponent
+		@inject(AppController) private readonly _appController: AppController,
+		@inject(SizesService) private readonly _service: SizesService
 	) {
-		this.resize$ = this.appController.resize$$.pipe(
-			filter(() => this.component.enabled)
+		this.resize$ = this._appController.resize$$.pipe(
+			filter(() => this._service.enabled)
 		);
 	}
 }

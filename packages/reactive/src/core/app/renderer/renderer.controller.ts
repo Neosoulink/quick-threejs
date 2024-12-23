@@ -1,31 +1,28 @@
 import { inject, singleton } from "tsyringe";
-import { filter, Observable, Subject } from "rxjs";
+import { filter, Observable } from "rxjs";
 
-import type { ProxyEvent, StepPayload } from "common";
+import type { ProxyEvent } from "../../../common/interfaces/event.interface";
 import { SizesController } from "../sizes/sizes.controller";
 import { TimerController } from "../timer/timer.controller";
-import { RendererComponent } from "./renderer.component";
+import { RendererService } from "./renderer.service";
 
 @singleton()
 export class RendererController {
-	public readonly enable$$ = new Subject<boolean>();
-
-	public readonly enable$ = this.enable$$.pipe();
-	public readonly step$: Observable<StepPayload>;
+	public readonly step$: TimerController["step$"];
 	public readonly resize$: Observable<UIEvent & ProxyEvent>;
 
 	constructor(
-		@inject(RendererComponent)
-		private readonly rendererComponent: RendererComponent,
+		@inject(RendererService)
+		private readonly _service: RendererService,
 		@inject(TimerController) private readonly timerController: TimerController,
 		@inject(SizesController) private readonly sizesController: SizesController
 	) {
 		this.step$ = this.timerController.step$.pipe(
-			filter(() => this.rendererComponent.enabled)
+			filter(() => this._service.enabled)
 		);
 
 		this.resize$ = this.sizesController.resize$.pipe(
-			filter(() => this.rendererComponent.enabled)
+			filter(() => this._service.enabled)
 		);
 	}
 }

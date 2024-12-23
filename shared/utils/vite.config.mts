@@ -12,7 +12,7 @@ export default defineConfig({
 			fileName: "main"
 		},
 		rollupOptions: {
-			external: ["three"],
+			external: ["threads", "three"],
 			output: {
 				globals: {
 					three: "THREE",

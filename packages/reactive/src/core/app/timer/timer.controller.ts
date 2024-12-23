@@ -1,39 +1,36 @@
+import { excludeProperties, Properties } from "@quick-threejs/utils";
+import {
+	animationFrames,
+	filter,
+	map,
+	share,
+	Subject,
+	takeWhile,
+	tap
+} from "rxjs";
 import { inject, singleton } from "tsyringe";
-import { Subject } from "rxjs";
 
-import { TimerComponent } from "./timer.component";
-import { StepPayload } from "../../../common/interfaces/event.interface";
-import { AppController } from "../app.controller";
-import { AppLifecycleState } from "../../../common/enums/lifecycle.enum";
+import { TimerService } from "./timer.service";
 
 @singleton()
 export class TimerController {
-	public readonly step$$ = new Subject<StepPayload>();
-	public readonly enable$$ = new Subject<boolean>();
-	public readonly step$ = this.step$$.pipe();
-	public readonly enable$ = this.enable$$.pipe();
+	private readonly beforeStep$$ = new Subject<Properties<TimerService>>();
 
-	constructor(
-		@inject(TimerComponent) private readonly component: TimerComponent,
-		@inject(AppController) private readonly appController: AppController
-	) {}
+	private _previousTime = 0;
 
-	public step() {
-		this.appController.lifecycle$$.next(AppLifecycleState.STEP_STARTED);
+	public readonly beforeStep$ = this.beforeStep$$.asObservable();
+	public readonly step$ = animationFrames().pipe(
+		tap(({ elapsed }) => {
+			if (this._previousTime !== elapsed) {
+				this.beforeStep$$?.next(excludeProperties(this._service, []));
+				this._previousTime = elapsed;
+			}
+		}),
+		filter(() => this._service.enabled),
+		takeWhile(() => this._service.enabled),
+		map(() => excludeProperties(this._service, [])),
+		share()
+	);
 
-		if (this.component.enabled) {
-			this.component.delta =
-				this.component.clock.getDelta() ?? this.component.frame;
-
-			this.component.deltaRatio =
-				(this.component.delta * 1000) / this.component.frame;
-
-			this.step$$.next({
-				delta: this.component.delta,
-				deltaRatio: this.component.deltaRatio
-			});
-		}
-
-		this.appController.lifecycle$$.next(AppLifecycleState.STEP_ENDED);
-	}
+	constructor(@inject(TimerService) private readonly _service: TimerService) {}
 }

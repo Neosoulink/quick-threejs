@@ -1,6 +1,6 @@
 import { inject, singleton } from "tsyringe";
 
-import { SizesComponent } from "./sizes.component";
+import { SizesService } from "./sizes.service";
 import { SizesController } from "./sizes.controller";
 import { Module } from "../../../common/interfaces/module.interface";
 import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
@@ -8,60 +8,53 @@ import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.inte
 @singleton()
 export class SizesModule implements Module {
 	constructor(
-		@inject(SizesComponent) private readonly component: SizesComponent,
-		@inject(SizesController) private readonly controller: SizesController
+		@inject(SizesController) private readonly _controller: SizesController,
+		@inject(SizesService) private readonly _service: SizesService
 	) {}
 
 	public init(canvas: OffscreenCanvasWithStyle) {
-		this.controller.enable$.subscribe((status) => {
-			this.component.enabled = !!status;
-		});
-		this.controller.resize$.subscribe((size) => {
-			this.component.width = size.windowWidth;
-			this.component.height = size.windowHeight;
-			this.component.aspect = size.windowWidth / size.windowHeight;
+		this._controller.resize$.subscribe((size) => {
+			this._service.width = size.windowWidth;
+			this._service.height = size.windowHeight;
+			this._service.aspect = size.windowWidth / size.windowHeight;
 		});
 
-		this.component.init(canvas);
+		this._service.init(canvas);
 	}
 
 	dispose() {}
 
 	public aspect(value?: number) {
-		if (typeof value === "number") this.component.aspect = value;
-		return this.component.aspect;
+		if (typeof value === "number") this._service.aspect = value;
+		return this._service.aspect;
 	}
 
 	public enabled(value?: boolean) {
-		if (typeof value === "boolean") this.controller.enable$$.next(value);
-		return this.component.enabled;
+		if (typeof value === "boolean") this._service.enabled = value;
+		return this._service.enabled;
 	}
 
 	public frustrum(value?: number) {
-		if (typeof value === "number") this.component.frustrum = value;
-		return this.component.frustrum;
+		if (typeof value === "number") this._service.frustrum = value;
+		return this._service.frustrum;
 	}
 
 	public height(value?: number) {
-		if (typeof value === "number") this.component.height = value;
-		return this.component.height;
+		if (typeof value === "number") this._service.height = value;
+		return this._service.height;
 	}
 
 	public pixelRatio(value?: number) {
-		if (typeof value === "number") this.component.pixelRatio = value;
-		return this.component.pixelRatio;
+		if (typeof value === "number") this._service.pixelRatio = value;
+		return this._service.pixelRatio;
 	}
 
 	public width(value?: number) {
-		if (typeof value === "number") this.component.width = value;
-		return this.component.width;
-	}
-
-	public enabled$() {
-		return this.controller.enable$;
+		if (typeof value === "number") this._service.width = value;
+		return this._service.width;
 	}
 
 	public resize$() {
-		return this.controller.resize$;
+		return this._controller.resize$;
 	}
 }

@@ -1,24 +1,20 @@
 import { inject, singleton } from "tsyringe";
-import { fromEvent, map, filter, Subject } from "rxjs";
+import { fromEvent, map, filter } from "rxjs";
 import { copyProperties } from "@quick-threejs/utils";
 
-import { RegisterComponent } from "./register.component";
+import { RegisterService } from "./register.service";
 import {
 	KEYBOARD_EVENT_CODES,
 	PROXY_EVENT_LISTENERS
 } from "../../common/constants/event.constants";
-import type { RegisterLifecycleState } from "../../common/enums/lifecycle.enum";
 import { ProxyEventHandlersModel } from "../../common/models/proxy-event-handler.model";
 
 @singleton()
 export class RegisterController extends ProxyEventHandlersModel {
 	private canvas!: HTMLCanvasElement;
 
-	public readonly lifecycle$$ = new Subject<RegisterLifecycleState>();
-	public readonly lifecycle$ = this.lifecycle$$.pipe();
-
 	constructor(
-		@inject(RegisterComponent) private readonly component: RegisterComponent
+		@inject(RegisterService) private readonly _service: RegisterService
 	) {
 		super();
 	}
@@ -40,7 +36,7 @@ export class RegisterController extends ProxyEventHandlersModel {
 								? this.wheelEventHandler
 								: this.preventDefaultHandler;
 
-			// @ts-ignore
+			// @ts-ignore - This is a dynamic property
 			this[`${key}$`] = fromEvent<MouseEvent>(
 				key === "resize" ? window : canvas,
 				key
@@ -50,7 +46,7 @@ export class RegisterController extends ProxyEventHandlersModel {
 				filter((e) => (key === "keydown" && !e ? false : true))
 			);
 			this[`${key}$`].subscribe((event) => {
-				this.component.thread?.[key]?.(event);
+				this._service.thread?.[key]?.(event);
 			});
 		}
 	}

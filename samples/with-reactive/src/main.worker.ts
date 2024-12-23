@@ -38,9 +38,9 @@ launchApp({
 			console.log(event.type);
 		});
 
-		app.module.timer.step$().subscribe(() => {
-			torus.rotateY(0.05);
-			torus.rotateX(0.001);
+		app.module.timer.step$().subscribe((payload) => {
+			torus.rotateY(payload.deltaRatio * 0.01);
+			torus.rotateX(payload.deltaRatio * 0.01);
 		});
 	}
 });

@@ -1,29 +1,23 @@
 import "reflect-metadata";
 
+import { type WorkerThreadModule } from "@quick-threejs/utils";
+import { Observable } from "rxjs";
 import { inject, scoped, Lifecycle } from "tsyringe";
-import {
-	TERMINATE_THREAD_FROM_WORKER_TOKEN,
-	type WorkerThreadModule
-} from "@quick-threejs/utils";
 
+import {
+	type CoreModuleMessageEventData,
+	type Module,
+	AppProxyEventHandlersModel,
+	PROXY_EVENT_LISTENERS
+} from "../../common";
 import { AppController } from "./app.controller";
-import { AppComponent } from "./app.component";
+import { AppService } from "./app.service";
 import { TimerModule } from "./timer/timer.module";
 import { CameraModule } from "./camera/camera.module";
 import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
-import { AppLifecycleState } from "../../common/enums/lifecycle.enum";
-import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-import { AppProxyEventHandlersModel } from "../../common/models/app-proxy-event-handler.model";
-import type { Module } from "../../common/interfaces/module.interface";
-import type { OffscreenCanvasWithStyle } from "../../common/interfaces/canvas.interface";
-import type {
-	CoreModuleMessageEvent,
-	CoreModuleMessageEventData
-} from "../../common/interfaces/core.interface";
-import { Observable } from "rxjs";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppModule
@@ -31,8 +25,8 @@ export class AppModule
 	implements Module, WorkerThreadModule
 {
 	constructor(
-		@inject(AppController) private readonly controller: AppController,
-		@inject(AppComponent) private readonly component: AppComponent,
+		@inject(AppController) private readonly _controller: AppController,
+		@inject(AppService) private readonly _service: AppService,
 
 		@inject(TimerModule) public readonly timer: TimerModule,
 		@inject(SizesModule) public readonly sizes: SizesModule,
@@ -42,66 +36,45 @@ export class AppModule
 		@inject(DebugModule) public readonly debug: DebugModule
 	) {
 		super();
-		this._initProxyEvents();
 
-		if (typeof self?.addEventListener === "function")
-			self.addEventListener("message", this._onMessage.bind(this));
+		this._initProxyEvents();
 	}
 
 	private _initProxyEvents() {
 		PROXY_EVENT_LISTENERS.forEach((key) => {
-			this[`${key}$`] = () => this.controller?.[`${key}$`] as Observable<any>;
-			this[key] = (event: any) => this.controller?.[key]?.(event);
-		});
-	}
-
-	private _onMessage(event: CoreModuleMessageEvent) {
-		if (!event.data?.canvas || this.component.initialized) return;
-
-		const startTimer = !!event.data?.startTimer;
-		const withMiniCamera = !!event.data?.withMiniCamera;
-		const fullScreen = !!event.data?.fullScreen;
-
-		this.init({
-			...event.data,
-			startTimer,
-			withMiniCamera,
-			fullScreen
+			this[`${key}$`] = () => this._controller?.[`${key}$`] as Observable<any>;
+			this[key] = (event: any) => this._controller?.[key]?.(event);
 		});
 	}
 
 	public init(props: CoreModuleMessageEventData) {
-		if (!props.canvas || this.component.initialized) return;
-		this.component.initialized = true;
+		if (
+			this._service.initialized ||
+			!props?.canvas ||
+			!(this._service.canvas = props.canvas)
+		)
+			return;
 
-		props.canvas["style"] = {
-			width: props.canvas.width + "",
-			height: props.canvas.height + ""
-		};
-		const canvas = props.canvas as OffscreenCanvasWithStyle;
+		this._service.initialized = true;
 
-		this.component.canvas = canvas;
-
-		this.sizes.init(canvas);
+		this.sizes.init(this._service.canvas);
 		this.camera.init(props.withMiniCamera);
 		this.world.init();
-		this.renderer.init(canvas);
+		this.renderer.init(this._service.canvas);
 		this.timer.init(props.startTimer);
 		this.debug.init(props);
-
-		this.controller.lifecycle$$.next(AppLifecycleState.INITIALIZED);
-	}
-
-	public get canvas() {
-		return this.component.canvas;
-	}
-
-	public get initialized() {
-		return this.component.initialized;
 	}
 
 	public isInitialized() {
-		return this.component.initialized;
+		return this._service.initialized;
+	}
+
+	public beforeStep$() {
+		return this.timer.beforeStep$();
+	}
+
+	public step$() {
+		return this.timer.step$();
 	}
 
 	public dispose() {
@@ -111,17 +84,5 @@ export class AppModule
 		this.renderer.dispose();
 		this.timer.dispose();
 		this.debug.dispose();
-
-		this.controller.lifecycle$$.next(AppLifecycleState.DISPOSED);
-		this.controller.lifecycle$$.complete();
-
-		if (typeof self !== "undefined") {
-			self.removeEventListener("message", this._onMessage.bind(this));
-			self.postMessage({ token: TERMINATE_THREAD_FROM_WORKER_TOKEN });
-		}
-	}
-
-	public lifecycle$() {
-		return this.controller.lifecycle$;
 	}
 }

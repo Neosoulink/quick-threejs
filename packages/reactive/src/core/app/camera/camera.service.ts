@@ -7,17 +7,17 @@ import {
 	Quaternion,
 	Vector3
 } from "three";
-import { SizesComponent } from "../sizes/sizes.component";
+import { SizesService } from "../sizes/sizes.service";
 import { DefaultCameraType } from "../../../common/enums/camera.enum";
 
 @singleton()
-export class CameraComponent {
+export class CameraService {
 	public instance?: Camera;
 	public miniCamera?: PerspectiveCamera;
 	public enabled = true;
 
 	constructor(
-		@inject(SizesComponent) private readonly sizesComponent: SizesComponent
+		@inject(SizesService) private readonly _sizesService: SizesService
 	) {}
 
 	public set aspectRatio(ratio: number) {
@@ -51,7 +51,7 @@ export class CameraComponent {
 		) {
 			this.instance = new PerspectiveCamera(
 				70,
-				this.sizesComponent.width / this.sizesComponent.height,
+				this._sizesService.width / this._sizesService.height,
 				0.0001,
 				100
 			);
@@ -62,10 +62,10 @@ export class CameraComponent {
 
 		if (cameraType === DefaultCameraType.ORTHOGRAPHIC) {
 			this.instance = new OrthographicCamera(
-				(-this.sizesComponent.aspect * this.sizesComponent.frustrum) / 2,
-				(this.sizesComponent.aspect * this.sizesComponent.frustrum) / 2,
-				this.sizesComponent.frustrum / 2,
-				-this.sizesComponent.frustrum / 2,
+				(-this._sizesService.aspect * this._sizesService.frustrum) / 2,
+				(this._sizesService.aspect * this._sizesService.frustrum) / 2,
+				this._sizesService.frustrum / 2,
+				-this._sizesService.frustrum / 2,
 				-50,
 				50
 			);
@@ -77,7 +77,7 @@ export class CameraComponent {
 
 		this.miniCamera = new PerspectiveCamera(
 			75,
-			this.sizesComponent.width / this.sizesComponent.height,
+			this._sizesService.width / this._sizesService.height,
 			0.1,
 			500
 		);
