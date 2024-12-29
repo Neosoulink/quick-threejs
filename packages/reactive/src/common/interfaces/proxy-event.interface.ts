@@ -2,6 +2,13 @@ import type { Observable, Subject } from "rxjs";
 
 import type { PROXY_EVENT_LISTENERS } from "../constants/event.constants";
 
+export interface ProxyEvent {
+	width: number;
+	height: number;
+	windowWidth: number;
+	windowHeight: number;
+}
+
 /** @description  */
 export type ProxyEventListenerKeys = (typeof PROXY_EVENT_LISTENERS)[number];
 

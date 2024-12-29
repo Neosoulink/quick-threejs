@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { glslify } from "vite-plugin-glslify";
 import configs from "@quick-threejs/config";
 
 export default defineConfig({
@@ -28,5 +29,5 @@ export default defineConfig({
 			"@/": resolve(__dirname, "src/")
 		}
 	},
-	plugins: [dts()]
+	plugins: [dts(), glslify()]
 });

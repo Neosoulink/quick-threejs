@@ -1,14 +1,16 @@
-import { RegisterPropsModel } from "../models/register-props.model";
+import { RegisterPropsBlueprint } from "../blueprints/props.blueprint";
 
-export interface CoreModuleMessageEventData
-	extends Omit<RegisterPropsModel, "canvas" | "location"> {
-	/**
-	 * The canvas element based on.
-	 *
-	 * @defaultValue `undefined`
-	 */
-	canvas?: OffscreenCanvas;
-}
-
-export interface CoreModuleMessageEvent
-	extends MessageEvent<CoreModuleMessageEventData> {}
+export interface AppModulePropsMessageEvent
+	extends MessageEvent<
+		Omit<
+			RegisterPropsBlueprint,
+			"canvas" | "location" | "loaderDataSources"
+		> & {
+			/**
+			 * The canvas element based on.
+			 *
+			 * @default `undefined`
+			 */
+			canvas?: OffscreenCanvas;
+		}
+	> {}

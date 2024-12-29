@@ -1,6 +1,6 @@
 import type { DependencyContainer, Disposable } from "tsyringe";
 
-import type { RegisterPropsModel } from "../models";
+import type { RegisterPropsBlueprint } from "../blueprints";
 
 /**
  * @description Module representation.
@@ -11,7 +11,7 @@ export interface Module extends Disposable {
 	/**
 	 * @description Module initializer method.
 	 *
-	 * Can be used for on-launch initialization (when the app is constructed) if the {@link RegisterPropsModel.initOnConstruct initOnConstruct} param is `true` or manually later in the code.
+	 * Can be used for on-launch initialization (when the app is constructed) if the {@link RegisterPropsBlueprint.initOnConstruct initOnConstruct} param is `true` or manually later in the code.
 	 */
 	init(...props: any[]): void;
 

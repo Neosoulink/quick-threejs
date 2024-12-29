@@ -5,9 +5,9 @@ import { Observable } from "rxjs";
 import { inject, scoped, Lifecycle } from "tsyringe";
 
 import {
-	type CoreModuleMessageEventData,
+	type AppModulePropsMessageEvent,
 	type Module,
-	AppProxyEventHandlersModel,
+	AppProxyEventHandlersBlueprint,
 	PROXY_EVENT_LISTENERS
 } from "../../common";
 import { AppController } from "./app.controller";
@@ -18,10 +18,11 @@ import { RendererModule } from "./renderer/renderer.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { WorldModule } from "./world/world.module";
 import { DebugModule } from "./debug/debug.module";
+import { LoaderModule } from "./loader/loader.module";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppModule
-	extends AppProxyEventHandlersModel
+	extends AppProxyEventHandlersBlueprint
 	implements Module, WorkerThreadModule
 {
 	constructor(
@@ -33,6 +34,7 @@ export class AppModule
 		@inject(CameraModule) public readonly camera: CameraModule,
 		@inject(WorldModule) public readonly world: WorldModule,
 		@inject(RendererModule) public readonly renderer: RendererModule,
+		@inject(LoaderModule) public readonly loader: LoaderModule,
 		@inject(DebugModule) public readonly debug: DebugModule
 	) {
 		super();
@@ -47,7 +49,7 @@ export class AppModule
 		});
 	}
 
-	public init(props: CoreModuleMessageEventData) {
+	public init(props: AppModulePropsMessageEvent["data"]) {
 		if (
 			this._service.initialized ||
 			!props?.canvas ||
@@ -62,6 +64,7 @@ export class AppModule
 		this.world.init();
 		this.renderer.init(this._service.canvas);
 		this.timer.init(props.startTimer);
+		this.loader.init();
 		this.debug.init(props);
 	}
 
@@ -83,6 +86,7 @@ export class AppModule
 		this.world.dispose();
 		this.renderer.dispose();
 		this.timer.dispose();
+		this.loader.dispose();
 		this.debug.dispose();
 	}
 }

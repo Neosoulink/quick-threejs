@@ -10,6 +10,8 @@ import {
 
 launchApp({
 	onReady: (app) => {
+		const { module } = app;
+
 		const ambientLight = new AmbientLight(0xffffff, 0.1);
 		const directionalLight = new DirectionalLight(0xffffff, 0.8);
 		directionalLight.position.set(0, 0, 1);
@@ -27,18 +29,18 @@ launchApp({
 			}
 		};
 
-		app.world.scene().background = new Color("#211d20");
-		app.world.scene().add(ambientLight, directionalLight, torus);
+		module.world.scene().background = new Color("#211d20");
+		module.world.scene().add(ambientLight, directionalLight, torus);
 
-		app.resize$?.().subscribe((event) => {
+		module.resize$?.().subscribe((event) => {
 			console.log(event.type);
 		});
 
-		app.wheel$?.().subscribe((event) => {
+		module.wheel$?.().subscribe((event) => {
 			console.log(event.type);
 		});
 
-		app.timer.step$().subscribe(() => {
+		module.timer.step$().subscribe(() => {
 			torus.rotateY(0.05);
 			torus.rotateX(0.001);
 		});

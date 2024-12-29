@@ -8,9 +8,9 @@ import {
 	type ContainerizedApp,
 	PROXY_EVENT_LISTENERS,
 	CONTAINER_TOKEN,
-	CoreModuleMessageEvent
+	AppModulePropsMessageEvent
 } from "../../common";
-import { LaunchAppProps } from "../../common/models";
+import { LaunchAppProps } from "../../common/blueprints";
 import { AppModule } from "./app.module";
 
 export const launchApp = (props?: LaunchAppProps<AppModule>) => {
@@ -28,7 +28,7 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 		proxyEventHandlers[key] = module[key]?.bind?.(module);
 	});
 
-	const handleInitMessage = (event: CoreModuleMessageEvent) => {
+	const handleInitMessage = (event: AppModulePropsMessageEvent) => {
 		if (!event.data?.canvas || module.isInitialized()) return;
 
 		const startTimer = !!event.data?.startTimer;

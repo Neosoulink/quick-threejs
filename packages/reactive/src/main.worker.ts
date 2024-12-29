@@ -1,1 +1,1 @@
-export * from "./core/app/app.module-worker";
+export * from "./core/app/app.util";

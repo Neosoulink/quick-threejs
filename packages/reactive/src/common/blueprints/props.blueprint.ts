@@ -1,9 +1,11 @@
-import type { ContainerizedApp } from "../interfaces";
-import type { DefaultCameraType } from "../enums/camera.enum";
-import type { RegisterModule } from "../../core";
+import type { RegisterModule, AppModule } from "../../core";
+import type { DefaultCameraType } from "../enums";
+import type { ContainerizedApp, Module, LoaderSource } from "../interfaces";
 
-/** @description Quick-three register properties. */
-export class RegisterPropsModel {
+/**
+ * @description {@link RegisterModule} initialization properties.
+ */
+export class RegisterPropsBlueprint {
 	/**
 	 * @description The app worker logic location.
 	 *
@@ -49,7 +51,23 @@ export class RegisterPropsModel {
 	startTimer?: boolean;
 
 	/**
-	 * Enable the debug mode
+	 * @description Resources to load.
+	 *
+	 * @default []
+	 */
+	loaderDataSources?: LoaderSource[] = [];
+
+	/**
+	 * @description Will directly load the resources on initialization.
+	 *
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.initOnConstruct initOnConstruct}__
+	 *
+	 * @default true
+	 */
+	loadResourcesOnInit?: boolean;
+
+	/**
+	 * @description Enable the debug mode
 	 *
 	 * @default undefined
 	 */
@@ -59,7 +77,7 @@ export class RegisterPropsModel {
 	 * Define the {@link THREE.AxesHelper} sizes.
 	 *
 	 * @remark __Deactivated if the value is `0` or `undefined`__
-	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
 	 *
 	 * @default undefined
 	 */
@@ -69,7 +87,7 @@ export class RegisterPropsModel {
 	 * Define the {@link THREE.GridHelper} sizes.
 	 *
 	 * @remark __Deactivated if the value is `0` or `undefined`__
-	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
 	 *
 	 * @default undefined
 	 */
@@ -78,7 +96,7 @@ export class RegisterPropsModel {
 	/**
 	 * Display a mini perfective camera at the top right corner of the screen.
 	 *
-	 * @remark __This property depends on {@link RegisterPropsModel.enableDebug}__
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
 	 *
 	 * @default false
 	 */
@@ -90,4 +108,12 @@ export class RegisterPropsModel {
 	 * @default undefined
 	 */
 	onReady?: (app: ContainerizedApp<RegisterModule>) => unknown;
+}
+
+/**
+ * @description {@link AppModule} initialization properties.
+ */
+export class LaunchAppProps<M extends Module> {
+	/** @description Handler triggered when the app is ready. */
+	onReady?: (workerApp: ContainerizedApp<M>) => unknown;
 }

@@ -4,9 +4,9 @@ import {
 	Color,
 	DirectionalLight,
 	Mesh,
-	MeshToonMaterial,
-	TorusKnotGeometry
+	MeshToonMaterial
 } from "three";
+import { GLTF } from "three/examples/jsm/Addons.js";
 
 launchApp({
 	onReady: (app) => {
@@ -14,21 +14,8 @@ launchApp({
 		const directionalLight = new DirectionalLight(0xffffff, 0.8);
 		directionalLight.position.set(0, 0, 1);
 
-		const torus = new Mesh(
-			new TorusKnotGeometry(0.8, 0.35, 100, 16),
-			new MeshToonMaterial({
-				color: 0x454545
-			})
-		);
-
-		self.onmessage = (event: MessageEvent) => {
-			if (event.data?.type === "torus-x-gui-event") {
-				torus.position.x = event.data.value;
-			}
-		};
-
 		app.module.world.scene().background = new Color("#211d20");
-		app.module.world.scene().add(ambientLight, directionalLight, torus);
+		app.module.world.scene().add(ambientLight, directionalLight);
 
 		app.module.resize$?.().subscribe((event) => {
 			console.log(event.type);
@@ -38,9 +25,26 @@ launchApp({
 			console.log(event.type);
 		});
 
-		app.module.timer.step$().subscribe((payload) => {
-			torus.rotateY(payload.deltaRatio * 0.01);
-			torus.rotateX(payload.deltaRatio * 0.01);
+		app.module.loader.getLoad$().subscribe((payload) => {
+			const { resource } = payload;
+			const { scene: pawnScene } = (resource as GLTF | undefined) || {};
+			const pawn = pawnScene?.children?.[0] as Mesh | undefined;
+
+			if (!(pawn instanceof Mesh)) return;
+
+			const pawnMaterial = new MeshToonMaterial({
+				color: 0x777777
+			});
+
+			pawn.rotation.z = Math.PI * 0.055;
+			pawn.scale.setScalar(2);
+			pawn.material = pawnMaterial;
+
+			app.module.timer.step$().subscribe((payload) => {
+				pawn.rotation.y += payload.deltaRatio * 0.05;
+			});
+
+			app.module.world.scene().add(pawn);
 		});
 	}
 });
