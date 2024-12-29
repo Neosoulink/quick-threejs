@@ -1,5 +1,19 @@
 # @quick-threejs/reactive
 
+## 0.1.26
+
+### Patch Changes
+
+- 2f239f7: # Logs
+
+  ## refactor: handle loader module
+
+  - Make loader accessible from the `main` & `worker` thread
+    - Add the register props`loaderDataSources` & `loadResourcesOnInit`
+    - Improve resources getters
+    - Handle `videoTexture` and `Object3D` loads
+  - Code optimization and observable data access
+
 ## 0.1.25
 
 ### Patch Changes
