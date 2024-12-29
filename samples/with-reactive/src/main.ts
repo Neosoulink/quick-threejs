@@ -1,6 +1,8 @@
 import { register } from "@quick-threejs/reactive";
 import Stats from "stats.js";
 
+import chessPawn from "./assets/3D/pawn.glb?url";
+
 import "./style.css";
 
 register({
@@ -9,6 +11,18 @@ register({
 	axesSizes: 5,
 	gridSizes: 10,
 	withMiniCamera: true,
+	loaderDataSources: [
+		{
+			name: "pawn",
+			path: chessPawn,
+			type: "gltfModel"
+		},
+		{
+			name: "videoTexture",
+			path: "https://static.pexels.com/lib/videos/free-videos.mp4",
+			type: "video"
+		}
+	],
 	onReady: async (app) => {
 		const stats = new Stats();
 		stats.showPanel(0);
@@ -17,18 +31,16 @@ register({
 
 		app.module
 			.thread()
-			.beforeStep$()
+			.beforeStep$?.()
 			.subscribe(() => {
 				stats.begin();
 			});
 
 		app.module
 			.thread()
-			.step$()
+			.step$?.()
 			.subscribe(() => {
 				stats.end();
 			});
-
-		console.log(app.module);
 	}
 });

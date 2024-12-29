@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { RegisterModule } from "@quick-threejs/reactive";
+import type { ContainerizedApp, RegisterModule } from "@quick-threejs/reactive";
 
 export function meta() {
 	return [
@@ -9,7 +9,9 @@ export function meta() {
 }
 
 export default function Home() {
-	const [app, setApp] = useState<RegisterModule | undefined>();
+	const [app, setApp] = useState<
+		ContainerizedApp<RegisterModule> | undefined
+	>();
 
 	useEffect(() => {
 		import("@quick-threejs/reactive").then(({ register }) => {
@@ -24,10 +26,14 @@ export default function Home() {
 					gridSizes: 10,
 					withMiniCamera: true,
 					onReady: (app) => {
-						setApp(app.module);
+						setApp(app);
 					}
 				});
 		});
+
+		return () => {
+			app?.container.dispose();
+		};
 	}, []);
 
 	return <div />;

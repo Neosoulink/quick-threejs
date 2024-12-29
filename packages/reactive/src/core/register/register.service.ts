@@ -2,7 +2,7 @@ import { singleton } from "tsyringe";
 import { createWorkerPool } from "@quick-threejs/utils";
 import { WorkerThreadResolution } from "@quick-threejs/utils";
 
-import { ExposedAppModule } from "../app/app.module-worker";
+import { ExposedAppModule } from "../app/app.util";
 
 @singleton()
 export class RegisterService {

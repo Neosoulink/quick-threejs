@@ -3,7 +3,7 @@ import { Object3D, ObjectLoader } from "three";
 import { SerializedPosition, SerializedRotation } from "./types/object.type";
 import { isObject } from "./type";
 
-export const toSerializedJSON = (obj: Object3D) => {
+export const serializeObject3D = (obj: Object3D) => {
 	const serializedObject = obj.toJSON();
 
 	return JSON.stringify({
@@ -18,7 +18,11 @@ export const toSerializedJSON = (obj: Object3D) => {
 			) as SerializedRotation,
 			children:
 				serializedObject?.object?.children?.map((child, i) => ({
-					...JSON.parse(child),
+					...(typeof child === "object"
+						? child
+						: typeof child === "string"
+							? JSON.parse(child)
+							: {}),
 					position: ["x", "y", "z"].map(
 						(prop) =>
 							obj.children[i]?.position[prop as keyof typeof obj.position]
@@ -33,7 +37,10 @@ export const toSerializedJSON = (obj: Object3D) => {
 	});
 };
 
-export const deserializeJSON = (obj: string, loader = new ObjectLoader()) => {
+export const deserializeObject3D = (
+	obj: string,
+	loader = new ObjectLoader()
+) => {
 	const safeObj = JSON.parse(obj);
 
 	if (safeObj?.metadata && safeObj.object && safeObj.isSerialized) {
@@ -59,31 +66,41 @@ export const deserializeJSON = (obj: string, loader = new ObjectLoader()) => {
 		return parsedObject;
 	}
 
-	return obj;
+	return safeObj;
 };
 
-export const recursiveToSerializedJSON = (obj: any) => {
-	if (!isObject(obj)) return;
+export const recursiveSerializeObject3D = (obj: any) => {
+	if (!isObject(obj)) return undefined;
 
-	for (const key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
-			if (obj[key] instanceof Object3D) {
-				obj[key] = toSerializedJSON(obj[key]);
-			} else recursiveToSerializedJSON(obj[key]);
+	let objCopy = obj;
+	if (obj instanceof Object3D) objCopy = obj.toJSON();
+	else if (typeof obj === "object") objCopy = { ...obj };
+
+	for (const key in objCopy) {
+		if (Object.prototype.hasOwnProperty.call(objCopy, key)) {
+			if (objCopy[key] instanceof Object3D) {
+				objCopy[key] = serializeObject3D(objCopy[key]);
+			} else recursiveSerializeObject3D(objCopy[key]);
 		}
 	}
+
+	return objCopy;
 };
 
-export const recursiveDeserializeJSON = (obj: any) => {
-	if (!isObject(obj)) return;
+export const recursiveDeserializeObject3D = (serializedObj: any) => {
+	if (!isObject(serializedObj)) return;
 
-	for (const key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
-			if (obj[key]?.isSerialized) {
-				obj[key] = deserializeJSON(obj[key]);
-			} else recursiveDeserializeJSON(obj[key]);
+	const objCopy = { ...serializedObj };
+
+	for (const key in serializedObj) {
+		if (Object.prototype.hasOwnProperty.call(objCopy, key)) {
+			if (objCopy[key]?.isSerialized) {
+				objCopy[key] = deserializeObject3D(objCopy[key]);
+			} else recursiveDeserializeObject3D(objCopy[key]);
 		}
 	}
+
+	return objCopy;
 };
 
 export const copyProperties = <T extends object, U extends keyof T = keyof T>(

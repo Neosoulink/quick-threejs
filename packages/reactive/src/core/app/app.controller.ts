@@ -2,11 +2,11 @@ import { inject, singleton } from "tsyringe";
 import { Observable, Subject } from "rxjs";
 
 import { AppService } from "./app.service";
-import { ProxyEventHandlersModel } from "../../common/models/proxy-event-handler.model";
+import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 
 @singleton()
-export class AppController extends ProxyEventHandlersModel {
+export class AppController extends ProxyEventHandlersBlueprint {
 	constructor(@inject(AppService) private readonly _service: AppService) {
 		super();
 

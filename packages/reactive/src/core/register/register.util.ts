@@ -3,7 +3,7 @@ import { isBoolean, isFunction, isUndefined } from "@quick-threejs/utils";
 
 import { DefaultCameraType } from "../../common/enums";
 import type { ContainerizedApp } from "../../common/interfaces";
-import { RegisterPropsModel } from "../../common/models";
+import { RegisterPropsBlueprint } from "../../common/blueprints";
 import { CONTAINER_TOKEN } from "../../common/tokens";
 import { RegisterModule } from "./register.module";
 
@@ -14,10 +14,10 @@ import { RegisterModule } from "./register.module";
  *
  * **🏁  This helper should be called from the main thread**
  *
- * @param props {@link RegisterPropsModel}.
+ * @param props {@link RegisterPropsBlueprint}.
  */
 export const register = (
-	props: RegisterPropsModel
+	props: RegisterPropsBlueprint
 ): ContainerizedApp<RegisterModule> => {
 	if (
 		typeof props?.location !== "string" &&
@@ -54,7 +54,7 @@ export const register = (
 	props.onReady = !isFunction(props.onReady) ? undefined : props.onReady;
 
 	container.register(CONTAINER_TOKEN, { useValue: container });
-	container.register(RegisterPropsModel, { useValue: props });
+	container.register(RegisterPropsBlueprint, { useValue: props });
 
 	const module = container.resolve<RegisterModule>(RegisterModule);
 	module.initialized = true;
