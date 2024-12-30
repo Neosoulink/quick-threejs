@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@quick-threejs/reactive": "workspace:*",
-		"@react-router/node": "^7.0.1",
+		"@react-router/node": "^7.1.1",
 		"@react-router/serve": "^7.0.1",
 		"isbot": "^5.1.17",
 		"react": "^19.0.0",
