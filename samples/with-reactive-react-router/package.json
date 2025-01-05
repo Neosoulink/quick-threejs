@@ -22,7 +22,7 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@react-router/dev": "^7.0.1",
+		"@react-router/dev": "^7.1.1",
 		"@types/node": "^22",
 		"@types/react": "^19.0.2",
 		"@types/react-dom": "^19.0.2",
