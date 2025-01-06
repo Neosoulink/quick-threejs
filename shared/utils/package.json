@@ -15,7 +15,7 @@
 	"types": "./dist/main.d.ts",
 	"dependencies": {
 		"threads": "^1.7.0",
-		"three": "^0.171.0"
+		"three": "^0.172.0"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
@@ -24,6 +24,6 @@
 	},
 	"peerDependencies": {
 		"threads": "^1.7.0",
-		"three": "^0.171.0"
+		"three": "^0.172.0"
 	}
 }
