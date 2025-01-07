@@ -1,5 +1,19 @@
 # with-reactive
 
+## 0.0.19
+
+### Patch Changes
+
+- 64285f2: # Logs
+
+  ## refactor(reactive): enhance `GLTF` serialization
+
+  - Add GLTF transferable data to the worker
+    - animations (`AnimationClipJSON[]`)
+    - cameras (`Camera[]`)
+    - parser (`{ json: GLTFParser["json"] }`)
+    - scenes (`Group[]`)
+
 ## 0.0.18
 
 ### Patch Changes
