@@ -1,5 +1,12 @@
 # with-reactive
 
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies [7ae0ac8]
+  - @quick-threejs/reactive@0.1.27
+
 ## 0.0.19
 
 ### Patch Changes

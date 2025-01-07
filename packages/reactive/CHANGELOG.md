@@ -1,5 +1,11 @@
 # @quick-threejs/reactive
 
+## 0.1.27
+
+### Patch Changes
+
+- 7ae0ac8: # chore(reactive): bump version & release v0.1.26
+
 ## 0.1.26
 
 ### Patch Changes
