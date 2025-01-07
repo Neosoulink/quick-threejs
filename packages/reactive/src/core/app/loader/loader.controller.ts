@@ -7,6 +7,8 @@ import {
 	LoadedResourcePayload,
 	LOADER_SERIALIZED_LOAD_TOKEN
 } from "../../../common";
+import { AnimationClip, AnimationClipJSON, Camera, Group } from "three";
+import { GLTF, GLTFParser } from "three/examples/jsm/loaders/GLTFLoader";
 
 @scoped(Lifecycle.ResolutionScoped)
 export class LoaderController {
@@ -28,12 +30,28 @@ export class LoaderController {
 			const { payload } = event.data || {};
 
 			if (!!payload?.resource && payload.source.type === "gltfModel") {
-				const resource = payload.resource as any;
-				const scene = deserializeObject3D(resource?.scene as string);
+				const resource = payload.resource as unknown as {
+					animations?: AnimationClipJSON[];
+					cameras?: string[];
+					parser?: Partial<GLTFParser> & { json: GLTFParser["json"] };
+					scene?: string;
+					scenes?: string[];
+					userData?: GLTF["userData"];
+				};
+				const animations = resource.animations?.map((animation) =>
+					AnimationClip.parse(animation)
+				);
+				const cameras = resource.cameras?.map(
+					(camera) => deserializeObject3D(camera) as Camera
+				);
+				const scene = deserializeObject3D(resource?.scene || "") as Group;
+				const scenes = resource.scenes?.map(
+					(scene) => deserializeObject3D(scene) as Group
+				);
 
 				return {
 					...payload,
-					resource: { ...resource, scene }
+					resource: { ...resource, animations, cameras, scene, scenes }
 				} as LoadedResourcePayload;
 			}
 

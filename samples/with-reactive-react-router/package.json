@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@quick-threejs/reactive": "workspace:*",
-		"@react-router/node": "^7.0.1",
+		"@react-router/node": "^7.1.1",
 		"@react-router/serve": "^7.0.1",
 		"isbot": "^5.1.17",
 		"react": "^19.0.0",
@@ -22,8 +22,8 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@react-router/dev": "^7.0.1",
-		"@types/node": "^20",
+		"@react-router/dev": "^7.1.1",
+		"@types/node": "^22",
 		"@types/react": "^19.0.2",
 		"@types/react-dom": "^19.0.2",
 		"@types/three": "^0.171.0",
@@ -32,6 +32,6 @@
 		"tailwindcss": "^3.4.15",
 		"typescript": "^5.6.3",
 		"vite": "^6.0.3",
-		"vite-tsconfig-paths": "^5.1.2"
+		"vite-tsconfig-paths": "^5.1.4"
 	}
 }

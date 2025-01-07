@@ -1,7 +1,7 @@
 import { serializeObject3D } from "@quick-threejs/utils";
 import { filter, map, Observable, share, Subject } from "rxjs";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { VideoTexture } from "three";
+import { AnimationClipJSON, VideoTexture } from "three";
 import { inject, singleton } from "tsyringe";
 
 import {
@@ -9,6 +9,7 @@ import {
 	SerializedLoadedResourcePayload
 } from "../../../common/interfaces/loader.interface";
 import { LoaderService } from "./loader.service";
+import { JsonSerializable } from "threads";
 
 @singleton()
 export class LoaderController {
@@ -37,8 +38,17 @@ export class LoaderController {
 					const _resource = payload.resource as GLTF;
 
 					resource = {
-						userData: _resource.userData,
-						scene: serializeObject3D(_resource.scene)
+						animations: (payload?.resource as GLTF).animations.map(
+							// @ts-ignore <<toJSON methods doesn't require a parameter>>
+							(animation) => animation.toJSON() as AnimationClipJSON
+						) as unknown as JsonSerializable,
+						cameras: _resource.cameras.map((camera) =>
+							serializeObject3D(camera)
+						),
+						parser: { json: _resource.parser.json },
+						scene: serializeObject3D(_resource.scene),
+						scenes: _resource.scenes.map((scene) => serializeObject3D(scene)),
+						userData: _resource.userData
 					};
 				}
 
