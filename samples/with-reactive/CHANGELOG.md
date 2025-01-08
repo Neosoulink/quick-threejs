@@ -1,5 +1,11 @@
 # with-reactive
 
+## 0.0.21
+
+### Patch Changes
+
+- @quick-threejs/reactive@0.1.28
+
 ## 0.0.20
 
 ### Patch Changes
