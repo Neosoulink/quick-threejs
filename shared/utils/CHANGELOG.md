@@ -1,5 +1,11 @@
 # @quick-threejs/utils
 
+## 0.1.16
+
+### Patch Changes
+
+- 770489a: # chore(utils): bumps version to `0.1.16`
+
 ## 0.1.15
 
 ### Patch Changes
