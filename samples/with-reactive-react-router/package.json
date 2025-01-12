@@ -12,12 +12,12 @@
 	"dependencies": {
 		"@quick-threejs/reactive": "workspace:*",
 		"@react-router/node": "^7.1.1",
-		"@react-router/serve": "^7.0.1",
+		"@react-router/serve": "^7.1.1",
 		"isbot": "^5.1.17",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-router": "^7.1.1",
-		"three": "^0.171.0",
+		"three": "^0.172.0",
 		"stats.js": "^0.17.0"
 	},
 	"devDependencies": {
@@ -26,7 +26,7 @@
 		"@types/node": "^22",
 		"@types/react": "^19.0.2",
 		"@types/react-dom": "^19.0.2",
-		"@types/three": "^0.171.0",
+		"@types/three": "^0.172.0",
 		"autoprefixer": "^10.4.20",
 		"postcss": "^8.4.49",
 		"tailwindcss": "^3.4.15",

@@ -1,15 +1,24 @@
 import { inject, singleton } from "tsyringe";
-import { AxesHelper, Camera, CameraHelper, GridHelper } from "three";
+import {
+	AxesHelper,
+	Camera,
+	CameraHelper,
+	GridHelper,
+	PerspectiveCamera
+} from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { CameraService } from "../camera/camera.service";
 import { AppService } from "../app.service";
 import { WorldService } from "../world/world.service";
+import { SizesService } from "../sizes/sizes.service";
+import { RendererService } from "../renderer/renderer.service";
 
 @singleton()
 export class DebugService {
-	public enabled = true;
+	public enabled = false;
 	public cameraControls?: OrbitControls;
+	public miniCamera?: PerspectiveCamera;
 	public miniCameraControls?: OrbitControls;
 	public cameraHelper?: CameraHelper;
 	public axesHelper?: AxesHelper;
@@ -17,15 +26,52 @@ export class DebugService {
 
 	constructor(
 		@inject(AppService) private readonly _appService: AppService,
+		@inject(SizesService) private readonly _sizesService: SizesService,
+		@inject(RendererService) private readonly _rendererService: RendererService,
 		@inject(CameraService) private readonly _cameraService: CameraService,
 		@inject(WorldService) private readonly _worldService: WorldService
 	) {}
 
-	private _setCameraOrbitControl() {
-		if (this.cameraControls) {
-			this.cameraControls?.dispose();
-			this.cameraControls = undefined;
-		}
+	private _renderMiniCamera() {
+		if (!this.enabled || !this.miniCamera) return;
+
+		this._rendererService.instance?.setScissorTest(true);
+		this._rendererService.instance?.setViewport(
+			this._sizesService.width - this._sizesService.width / 3,
+			this._sizesService.height - this._sizesService.height / 3,
+			this._sizesService.width / 3,
+			this._sizesService.height / 3
+		);
+		this._rendererService.instance?.setScissor(
+			this._sizesService.width - this._sizesService.width / 3,
+			this._sizesService.height - this._sizesService.height / 3,
+			this._sizesService.width / 3,
+			this._sizesService.height / 3
+		);
+		this._rendererService.instance?.render(
+			this._worldService.scene,
+			this.miniCamera
+		);
+		this._rendererService.instance?.setScissorTest(false);
+	}
+
+	public initMiniCamera() {
+		this.disposeMiniCamera();
+
+		if (!this.enabled) return;
+
+		this.miniCamera = new PerspectiveCamera(
+			75,
+			this._sizesService.width / this._sizesService.height,
+			0.1,
+			500
+		);
+		this.miniCamera.position.z = 10;
+		this.miniCamera.position.x = -5;
+	}
+
+	public initOrbitControl() {
+		if (this.cameraControls) this.cameraControls?.dispose();
 
 		if (!this.enabled || !(this._cameraService.instance instanceof Camera))
 			return;
@@ -41,75 +87,79 @@ export class DebugService {
 		}
 	}
 
-	private _setMiniCameraOrbitControls() {
-		if (this.miniCameraControls) {
-			this.miniCameraControls.dispose();
-			this.miniCameraControls = undefined;
-		}
+	public initMiniCameraOrbitControls() {
+		if (this.miniCameraControls) this.miniCameraControls.dispose();
 
-		if (!this.enabled || !this._cameraService.miniCamera) return;
+		if (!this.enabled || !this.miniCamera) return;
 
 		this.miniCameraControls = new OrbitControls(
-			this._cameraService.miniCamera,
+			this.miniCamera,
 			this._appService.proxyReceiver as unknown as HTMLElement
 		);
 		this.miniCameraControls.rotateSpeed = 0.15;
 		this.miniCameraControls.enableDamping = true;
 	}
 
-	private _setCameraHelper() {
-		if (this.cameraHelper) {
-			this._worldService.scene.remove(this.cameraHelper);
-			this.cameraHelper = undefined;
-		}
+	public initCameraHelper() {
+		if (this.cameraHelper) this._worldService.scene.remove(this.cameraHelper);
 
-		if (!this.enabled) return;
+		if (!this.enabled || !this._cameraService.instance) return;
 
-		if (this._cameraService.instance) {
-			this.cameraHelper = new CameraHelper(this._cameraService.instance);
-			this._worldService.scene.add(this.cameraHelper);
-		}
+		this.cameraHelper = new CameraHelper(this._cameraService.instance);
+		this._worldService.scene.add(this.cameraHelper);
 	}
 
-	private _setAxesHelper(axesSizes: number) {
+	public initAxesHelper(axesSizes: number) {
+		if (!this.enabled) return;
+
 		const axesHelper = new AxesHelper(axesSizes);
 		this._worldService.scene.add(axesHelper);
 	}
 
-	private _setGridHelper(gridSizes: number) {
+	public initGridHelper(gridSizes: number) {
+		if (this.gridHelper) {
+			this._worldService.scene.remove(this.gridHelper);
+		}
+
+		if (!this.enabled) return;
+
 		const axesHelper = new GridHelper(gridSizes, gridSizes);
 		this._worldService.scene.add(axesHelper);
 	}
 
-	public activate(props?: { axesSizes?: number; gridSizes?: number }) {
-		this._setCameraOrbitControl();
-		this._setMiniCameraOrbitControls();
-		this._setCameraHelper();
-		if (typeof props?.axesSizes === "number")
-			this._setAxesHelper(props.axesSizes);
-		if (typeof props?.gridSizes === "number")
-			this._setGridHelper(props.gridSizes);
+	public disposeMiniCamera() {
+		if (!(this.miniCamera instanceof Camera)) return;
+
+		this.miniCamera.clearViewOffset();
+		this.miniCamera.clear();
+		this.miniCamera = undefined;
 	}
 
 	public update() {
 		this.cameraControls?.update();
 		this.miniCameraControls?.update();
+		this._renderMiniCamera();
 	}
 
-	public deactivate() {
-		if (this.cameraHelper) {
-			this._worldService.scene.remove(this.cameraHelper);
-			this.cameraHelper = undefined;
-		}
+	public dispose() {
+		this.disposeMiniCamera();
 
-		if (this.cameraControls) {
-			this.cameraControls.dispose();
-			this.cameraControls = undefined;
-		}
+		this.cameraControls?.dispose();
+		this.cameraControls = undefined;
 
-		if (this.miniCameraControls) {
-			this.miniCameraControls.dispose();
-			this.miniCameraControls = undefined;
-		}
+		this.miniCameraControls?.dispose();
+		this.miniCameraControls = undefined;
+
+		if (this.cameraHelper) this._worldService.scene.remove(this.cameraHelper);
+		this.cameraHelper?.dispose();
+		this.cameraHelper = undefined;
+
+		if (this.axesHelper) this._worldService.scene.remove(this.axesHelper);
+		this.axesHelper?.dispose();
+		this.axesHelper = undefined;
+
+		if (this.gridHelper) this._worldService.scene.remove(this.gridHelper);
+		this.gridHelper?.dispose();
+		this.gridHelper = undefined;
 	}
 }

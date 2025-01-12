@@ -11,7 +11,6 @@ import type { OffscreenCanvasWithStyle } from "../../../common/interfaces";
 import { WorldService } from "../world/world.service";
 import { CameraService } from "../camera/camera.service";
 import { SizesService } from "../sizes/sizes.service";
-import { DebugService } from "../debug/debug.service";
 
 @singleton()
 export class RendererService {
@@ -23,8 +22,7 @@ export class RendererService {
 	constructor(
 		@inject(WorldService) private readonly _worldService: WorldService,
 		@inject(CameraService) private readonly _cameraService: CameraService,
-		@inject(SizesService) private readonly _sizesService: SizesService,
-		@inject(DebugService) private readonly _debugComponent: DebugService
+		@inject(SizesService) private readonly _sizesService: SizesService
 	) {}
 
 	public setWebGLRenderer(canvas: OffscreenCanvasWithStyle) {
@@ -72,26 +70,5 @@ export class RendererService {
 			this._worldService.scene,
 			this._cameraService.instance
 		);
-
-		if (this._debugComponent.enabled && this._cameraService.miniCamera) {
-			this.instance.setScissorTest(true);
-			this.instance.setViewport(
-				this._sizesService.width - this._sizesService.width / 3,
-				this._sizesService.height - this._sizesService.height / 3,
-				this._sizesService.width / 3,
-				this._sizesService.height / 3
-			);
-			this.instance.setScissor(
-				this._sizesService.width - this._sizesService.width / 3,
-				this._sizesService.height - this._sizesService.height / 3,
-				this._sizesService.width / 3,
-				this._sizesService.height / 3
-			);
-			this.instance.render(
-				this._worldService.scene,
-				this._cameraService.miniCamera
-			);
-			this.instance.setScissorTest(false);
-		}
 	}
 }

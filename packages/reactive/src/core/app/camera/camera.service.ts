@@ -13,7 +13,6 @@ import { DefaultCameraType } from "../../../common/enums/camera.enum";
 @singleton()
 export class CameraService {
 	public instance?: Camera;
-	public miniCamera?: PerspectiveCamera;
 	public enabled = true;
 
 	constructor(
@@ -42,8 +41,8 @@ export class CameraService {
 		this.instance?.rotation.copy(rotation);
 	}
 
-	public initDefaultCamera(cameraType?: DefaultCameraType) {
-		this.removeCamera();
+	public init(cameraType?: DefaultCameraType) {
+		this.dispose();
 
 		if (
 			cameraType === DefaultCameraType.PERSPECTIVE ||
@@ -72,20 +71,7 @@ export class CameraService {
 		}
 	}
 
-	public setMiniCamera() {
-		this.removeMiniCamera();
-
-		this.miniCamera = new PerspectiveCamera(
-			75,
-			this._sizesService.width / this._sizesService.height,
-			0.1,
-			500
-		);
-		this.miniCamera.position.z = 10;
-		this.miniCamera.position.x = -5;
-	}
-
-	public removeCamera() {
+	public dispose() {
 		if (!(this.instance instanceof Camera)) return;
 		if (
 			this.instance instanceof PerspectiveCamera ||
@@ -94,12 +80,5 @@ export class CameraService {
 			this.instance.clearViewOffset();
 		this.instance.clear();
 		this.instance = undefined;
-	}
-
-	public removeMiniCamera() {
-		if (!(this.miniCamera instanceof Camera)) return;
-		this.miniCamera.clearViewOffset();
-		this.miniCamera.clear();
-		this.miniCamera = undefined;
 	}
 }

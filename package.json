@@ -36,12 +36,12 @@
 		"prettier": "^3.4.2",
 		"turbo": "latest",
 		"typescript": "^5.6.3",
-		"typescript-eslint": "^8.10.0",
+		"typescript-eslint": "^8.19.1",
 		"vite": "^6.0.3",
 		"vite-plugin-dts": "^4.3.0"
 	},
 	"dependencies": {
-		"@changesets/cli": "^2.27.9"
+		"@changesets/cli": "^2.27.11"
 	},
 	"packageManager": "pnpm@9.4.0",
 	"engines": {

@@ -60,7 +60,7 @@ export class AppModule
 		this._service.initialized = true;
 
 		this.sizes.init(this._service.canvas);
-		this.camera.init(props.withMiniCamera);
+		this.camera.init();
 		this.world.init();
 		this.renderer.init(this._service.canvas);
 		this.timer.init(props.startTimer);
