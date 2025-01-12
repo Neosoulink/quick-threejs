@@ -69,9 +69,21 @@ export class RegisterPropsBlueprint {
 	/**
 	 * @description Enable the debug mode
 	 *
+	 * @remark __Deactivated if the value is `false` or `undefined`__
+	 *
 	 * @default undefined
 	 */
 	enableDebug?: boolean;
+
+	/**
+	 * Will enable orbit controls for the cameras.
+	 *
+	 * @remark __Deactivated if the value is `false` or `undefined`__
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
+	 *
+	 * @default undefined
+	 */
+	enableControls?: boolean;
 
 	/**
 	 * Define the {@link THREE.AxesHelper} sizes.
@@ -96,11 +108,22 @@ export class RegisterPropsBlueprint {
 	/**
 	 * Display a mini perfective camera at the top right corner of the screen.
 	 *
+	 * @remark __Deactivated if the value is `false` or `undefined`__
 	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
 	 *
-	 * @default false
+	 * @default undefined
 	 */
 	withMiniCamera?: boolean;
+
+	/**
+	 * Display the camera helper.
+	 *
+	 * @remark __Deactivated if the value is `false` or `undefined`__
+	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
+	 *
+	 * @default undefined
+	 */
+	withCameraHelper?: boolean;
 
 	/**
 	 * @description Handler called when the app is ready.

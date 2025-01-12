@@ -8,9 +8,11 @@ import "./style.css";
 register({
 	location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
 	enableDebug: true,
+	enableControls: true,
 	axesSizes: 5,
 	gridSizes: 10,
 	withMiniCamera: true,
+	withCameraHelper: true,
 	loaderDataSources: [
 		{
 			name: "pawn",

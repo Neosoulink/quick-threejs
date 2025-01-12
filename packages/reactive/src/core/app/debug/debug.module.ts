@@ -1,39 +1,46 @@
+import { Subscription } from "rxjs";
+import { PerspectiveCamera } from "three";
 import { inject, singleton } from "tsyringe";
 
-import { Module } from "../../../common/interfaces/module.interface";
+import { Module, AppModulePropsMessageEvent } from "../../../common";
 
 import { DebugService } from "./debug.service";
 import { DebugController } from "./debug.controller";
 
 @singleton()
 export class DebugModule implements Module {
+	private readonly _subscriptions: Subscription[] = [];
+
 	constructor(
 		@inject(DebugService) public readonly _service: DebugService,
 		@inject(DebugController) public readonly _controller: DebugController
-	) {
-		this._controller.step$.subscribe(() => {
-			this._service.update();
-		});
-	}
+	) {}
 
-	public step$() {
-		return this._controller.step$;
-	}
+	public init(props: AppModulePropsMessageEvent["data"]) {
+		this._service.enabled = !!props.enableDebug;
 
-	public init(props?: Parameters<DebugService["activate"]>[0]) {
-		this._service.activate(props);
-	}
+		if (!this._service.enabled) return;
 
-	public axesHelper() {
-		return this._service.axesHelper;
-	}
+		if (props.withMiniCamera) this._service.initMiniCamera();
 
-	public cameraControls() {
-		return this._service.cameraControls;
-	}
+		if (props.enableControls) {
+			this._service.initOrbitControl();
+			this._service.initMiniCameraOrbitControls();
+		}
 
-	public cameraHelper() {
-		return this._service.cameraHelper;
+		if (props.withCameraHelper) this._service.initCameraHelper();
+
+		if (typeof props?.axesSizes === "number")
+			this._service.initAxesHelper(props.axesSizes);
+
+		if (typeof props?.gridSizes === "number")
+			this._service.initGridHelper(props.gridSizes);
+
+		this._subscriptions.push(
+			this._controller.step$.subscribe(() => {
+				this._service.update();
+			})
+		);
 	}
 
 	public enabled(value?: boolean) {
@@ -41,15 +48,37 @@ export class DebugModule implements Module {
 		return this._service.enabled;
 	}
 
-	public gridHelper() {
+	public miniCamera(value?: PerspectiveCamera) {
+		if (value) this._service.miniCamera = value;
+		return this._service.miniCamera;
+	}
+
+	public getAxesHelper() {
+		return this._service.axesHelper;
+	}
+
+	public getCameraControls() {
+		return this._service.cameraControls;
+	}
+
+	public getCameraHelper() {
+		return this._service.cameraHelper;
+	}
+
+	public getGridHelper() {
 		return this._service.gridHelper;
 	}
 
-	public miniCameraControls() {
+	public getMiniCameraControls() {
 		return this._service.miniCameraControls;
 	}
 
+	public getStep$() {
+		return this._controller.step$;
+	}
+
 	public dispose() {
-		this._service.deactivate();
+		this._service.dispose();
+		this._subscriptions.forEach((sub) => sub.unsubscribe());
 	}
 }
