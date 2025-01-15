@@ -1,4 +1,8 @@
-import { serializeObject3D } from "@quick-threejs/utils";
+import {
+	copyProperties,
+	excludeProperties,
+	serializeObject3D
+} from "@quick-threejs/utils";
 import { filter, map, Observable, share, Subject } from "rxjs";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { AnimationClipJSON } from "three";
@@ -57,22 +61,84 @@ export class LoaderController {
 				}
 
 				if (
+					payload?.source?.type === "audio" &&
+					payload.resource instanceof AudioBuffer
+				)
+					resource = {
+						arrayBuffer: payload.resource.getChannelData(0),
+						length: payload.resource.length,
+						sampleRate: payload.resource.sampleRate,
+						duration: payload.resource.duration
+					};
+
+				if (
 					payload?.source?.type === "video" &&
-					Array.isArray(payload.resource)
-				) {
-					console.log("Serialized Texture ===>", payload.resource);
-				}
+					payload.resource instanceof HTMLVideoElement
+				)
+					resource = {
+						...copyProperties(payload.resource, [
+							"autoplay",
+							"baseURI",
+							"controls",
+							"crossOrigin",
+							"currentTime",
+							"defaultMuted",
+							"disablePictureInPicture",
+							"draggable",
+							"duration",
+							"ended",
+							"height",
+							"hidden",
+							"loop",
+							"muted",
+							"nodeName",
+							"nodeType",
+							"paused",
+							"playbackRate",
+							"playsInline",
+							"poster",
+							"preload",
+							"readyState",
+							"seeking",
+							"spellcheck",
+							"src",
+							"tabIndex",
+							"translate",
+							"videoHeight",
+							"videoWidth",
+							"volume",
+							"width"
+						]),
+						buffered: payload.resource.buffered.length,
+						error: payload.resource.error
+							? excludeProperties(payload.resource.error, [])
+							: {},
+						played: payload.resource.played.length,
+						seekable: payload.resource.seekable.length,
+						textTracks: payload.resource.textTracks.length
+					};
 
 				return {
 					...payload,
 					resource
 				};
-			})
+			}),
+			share()
 		);
-	public readonly loadCompleted$: Observable<LoadedResourcePayload> =
-		this.load$.pipe(
-			filter((payload) => payload.toLoadCount === payload.loadedCount)
-		);
+
+	public readonly loadCompleted$: Observable<
+		Pick<LoaderService, "loadedCount" | "loadedResources" | "toLoadCount">
+	> = this.load$.pipe(
+		filter((payload) => payload.toLoadCount === payload.loadedCount),
+		map(() =>
+			copyProperties(this._service, [
+				"loadedCount",
+				"loadedResources",
+				"toLoadCount"
+			])
+		),
+		share()
+	);
 
 	constructor(
 		@inject(LoaderService) private readonly _service: LoaderService

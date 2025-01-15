@@ -1,6 +1,6 @@
-import { deserializeObject3D } from "@quick-threejs/utils";
+import { copyProperties, deserializeObject3D } from "@quick-threejs/utils";
 import { filter, fromEvent, map, share } from "rxjs";
-import { Lifecycle, scoped } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import {
 	type SerializedLoadedResourcePayload,
@@ -9,6 +9,7 @@ import {
 } from "../../../common";
 import { AnimationClip, AnimationClipJSON, Camera, Group } from "three";
 import { GLTF, GLTFParser } from "three/examples/jsm/loaders/GLTFLoader";
+import { LoaderService } from "./loader.service";
 
 @scoped(Lifecycle.ResolutionScoped)
 export class LoaderController {
@@ -59,9 +60,22 @@ export class LoaderController {
 		}),
 		share()
 	);
+
 	public readonly loadCompleted$ = this.load$.pipe(
 		filter(
 			(payload) => !!payload && payload.toLoadCount === payload.loadedCount
-		)
+		),
+		map(() =>
+			copyProperties(this._service, [
+				"loadedCount",
+				"loadedResources",
+				"toLoadCount"
+			])
+		),
+		share()
 	);
+
+	constructor(
+		@inject(LoaderService) private readonly _service: LoaderService
+	) {}
 }

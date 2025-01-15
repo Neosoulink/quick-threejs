@@ -9,7 +9,11 @@ export interface LoaderSource {
 }
 
 /** @description Supported loadable resource. */
-export type LoaderResource = GLTF | ImageBitmap | ImageBitmap[] | AudioBuffer;
+export type LoaderResource =
+	| GLTF
+	| ImageBitmap
+	| HTMLVideoElement
+	| AudioBuffer;
 
 /** @description Represent a loaded resource. */
 export interface LoadedResourcePayload {
@@ -23,5 +27,7 @@ export interface LoadedResourcePayload {
 
 export interface SerializedLoadedResourcePayload
 	extends Omit<LoadedResourcePayload, "resource"> {
-	resource?: JsonSerializable;
+	resource?:
+		| JsonSerializable
+		| { [key: string]: Float32Array | JsonSerializable };
 }

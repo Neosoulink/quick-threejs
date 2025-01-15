@@ -14,10 +14,9 @@ launchApp({
 			console.log(event.type);
 		});
 
-		app.module.loader.getLoadCompleted$().subscribe(() => {
-			const pawn = (app.module.loader?.getLoadedResources()["pawn"] as GLTF)
-				.scene?.children[0];
-			const matcap = app.module.loader?.getLoadedResources()["matcap"];
+		app.module.loader.getLoadCompleted$().subscribe((payload) => {
+			const pawn = (payload.loadedResources["pawn"] as GLTF).scene?.children[0];
+			const matcap = payload.loadedResources["matcap"];
 
 			if (!(pawn instanceof Mesh) || !(matcap instanceof ImageBitmap)) return;
 
