@@ -29,7 +29,7 @@ export class LoaderController {
 		map((event) => {
 			const { payload } = event.data || {};
 
-			if (!!payload?.resource && payload.source.type === "gltfModel") {
+			if (payload?.source?.type === "gltf") {
 				const resource = payload.resource as unknown as {
 					animations?: AnimationClipJSON[];
 					cameras?: string[];
@@ -44,10 +44,10 @@ export class LoaderController {
 				const cameras = resource.cameras?.map(
 					(camera) => deserializeObject3D(camera) as Camera
 				);
-				const scene = deserializeObject3D(resource?.scene || "") as Group;
 				const scenes = resource.scenes?.map(
 					(scene) => deserializeObject3D(scene) as Group
 				);
+				const scene = scenes?.[0];
 
 				return {
 					...payload,
@@ -60,6 +60,8 @@ export class LoaderController {
 		share()
 	);
 	public readonly loadCompleted$ = this.load$.pipe(
-		filter((payload) => payload?.toLoadCount === payload.loadedCount)
+		filter(
+			(payload) => !!payload && payload.toLoadCount === payload.loadedCount
+		)
 	);
 }

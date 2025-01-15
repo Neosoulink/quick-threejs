@@ -2,7 +2,6 @@ import "reflect-metadata";
 
 import { Subscription } from "rxjs";
 import { container, inject, singleton } from "tsyringe";
-import { CanvasTexture } from "three";
 
 import type {
 	Module,
@@ -30,7 +29,7 @@ export class LoaderModule implements Module {
 		);
 	}
 
-	private _performLoad(source: LoaderSource, resource?: LoaderResource) {
+	private _listenToLoad(source: LoaderSource, resource?: LoaderResource) {
 		this._controller.load$$.next({
 			source,
 			resource
@@ -46,39 +45,7 @@ export class LoaderModule implements Module {
 	}
 
 	public load() {
-		const firstSource = this._service.sources[0];
-		if (!firstSource) return;
-
-		this._performLoad(firstSource);
-
-		for (const source of this._service.sources) {
-			if (this._service.loadedResources[source.name]) return;
-
-			if (source.type === "gltfModel" && typeof source.path === "string")
-				this._service.loaders.gltfLoader?.load(source.path, (model) =>
-					this._performLoad(source, model)
-				);
-
-			if (source.type === "texture" && typeof source.path === "string")
-				this._service.loaders.textureLoader?.load(source.path, (texture) => {
-					this._performLoad(source, new CanvasTexture(texture));
-				});
-
-			if (source.type === "cubeTexture" && typeof source.path === "object")
-				this._service.loaders.cubeTextureLoader?.load(source.path, (texture) =>
-					this._performLoad(source, texture)
-				);
-
-			if (source.type === "video" && typeof source.path === "string")
-				this._service.loaders.videoLoader?.load(source.path, (texture) =>
-					this._performLoad(source, texture)
-				);
-
-			if (source.type === "audio" && typeof source.path === "string")
-				this._service.loaders.audioLoader?.load(source.path, (audioBuffer) => {
-					this._performLoad(source, audioBuffer);
-				});
-		}
+		this._service.load(this._listenToLoad.bind(this));
 	}
 
 	public getLoadedResources() {

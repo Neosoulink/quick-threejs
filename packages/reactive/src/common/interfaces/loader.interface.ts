@@ -1,21 +1,15 @@
 import { JsonSerializable } from "threads";
-import { CubeTextureLoader, Texture, VideoTexture } from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /** @description The sources of the {@link LoaderResource resources} to load. */
 export interface LoaderSource {
 	name: string;
-	type: "cubeTexture" | "texture" | "gltfModel" | "video" | "audio";
+	type: "audio" | "image" | "video" | "gltf";
 	path: string | string[];
 }
 
 /** @description Supported loadable resource. */
-export type LoaderResource =
-	| GLTF
-	| Texture
-	| CubeTextureLoader
-	| VideoTexture
-	| AudioBuffer;
+export type LoaderResource = GLTF | ImageBitmap | ImageBitmap[] | AudioBuffer;
 
 /** @description Represent a loaded resource. */
 export interface LoadedResourcePayload {
