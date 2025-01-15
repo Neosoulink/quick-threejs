@@ -78,11 +78,13 @@ export class RegisterModule
 			throw new Error("Canvas element is not initialized.");
 
 		this._controller.init(this._service.canvas);
+
 		if (!this._service.thread || !this._service.worker) return;
 
-		this._service.thread?.resize?.({
-			...this._controller.uiEventHandler({ type: "resize" } as UIEvent)
-		});
+		if (this.props.fullScreen)
+			this._service.thread?.resize?.({
+				...this._controller.uiEventHandler({ type: "resize" } as UIEvent)
+			});
 	}
 
 	private async _initWorkerThread() {
@@ -126,12 +128,17 @@ export class RegisterModule
 	private async _initLoader() {
 		this.loader.init(this.props.loaderDataSources);
 
-		this._loaderController.serializedLoad$.subscribe((payload) =>
+		this._loaderController.serializedLoad$.subscribe((payload) => {
+			if (payload.resource instanceof ArrayBuffer)
+				return this._service.worker?.postMessage(payload.resource, [
+					payload.resource
+				]);
+
 			this._service.worker?.postMessage({
 				token: LOADER_SERIALIZED_LOAD_TOKEN,
 				payload
-			})
-		);
+			});
+		});
 	}
 
 	public isInitialized() {

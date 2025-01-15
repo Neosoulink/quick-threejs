@@ -28,68 +28,22 @@ export class LoaderService {
 	/** @description The video loader. based on {@link HTMLVideoElement}. */
 	private get videoLoader() {
 		return {
-			load: (url: string, callback: (texture: ImageBitmap[]) => unknown) => {
-				const element: HTMLVideoElement | undefined =
+			load: (url: string, callback: (texture: HTMLVideoElement) => unknown) => {
+				const video: HTMLVideoElement | undefined =
 					document.createElement("video");
-				element.muted = true;
-				element.loop = true;
-				element.crossOrigin = "anonymous";
-				element.controls = false;
-				element.playsInline = true;
-				element.src = url;
-				element.autoplay = true;
+				video.muted = true;
+				video.loop = true;
+				video.crossOrigin = "anonymous";
+				video.controls = false;
+				video.playsInline = true;
+				video.src = url;
+				video.autoplay = true;
 
-				async function extractVideoFrames(video: HTMLVideoElement) {
-					const offscreenCanvas = new OffscreenCanvas(
-						video.videoWidth,
-						video.videoHeight
-					);
-					const ctx = offscreenCanvas.getContext("2d");
-					const frameRate = 30; // Target frame rate for extraction
-					const frames: ImageBitmap[] = [];
-
-					console.log("Extracting frames from video");
-
-					return new Promise<ImageBitmap[]>((resolve) => {
-						video.currentTime = 0;
-
-						while (video.currentTime < video.duration) {
-							ctx?.drawImage(
-								video,
-								0,
-								0,
-								offscreenCanvas.width,
-								offscreenCanvas.height
-							);
-							const bitmap = offscreenCanvas.transferToImageBitmap();
-							frames.push(bitmap);
-
-							if (video.currentTime < video.duration) {
-								video.currentTime += 1 / frameRate; // Move to the next frame
-							}
-						}
-						resolve(frames);
-
-						video.onerror = (error) => {
-							console.error("Error while extracting frames:", error);
-						};
-
-						// Start extraction
-						video.currentTime = 0;
-					});
-				}
-
-				const onLoadedData = async () => {
-					if (!element) return;
-					const frames = await extractVideoFrames(element);
-
-					console.log("Video loaded", frames);
-
-					callback(frames);
-
-					element.removeEventListener("loadeddata", onLoadedData);
+				const onCanPlayThrough = async () => {
+					callback(video);
+					video.removeEventListener("canplaythrough", onCanPlayThrough);
 				};
-				element.addEventListener("loadeddata", onLoadedData);
+				video.addEventListener("canplaythrough", onCanPlayThrough);
 			}
 		};
 	}
@@ -164,8 +118,8 @@ export class LoaderService {
 				});
 
 			if (source.type === "video")
-				this.loaders.videoLoader?.load(source.path, (texture) =>
-					onLoad?.(source, texture)
+				this.loaders.videoLoader?.load(source.path, (videoElement) =>
+					onLoad?.(source, videoElement)
 				);
 		}
 	}

@@ -1,10 +1,12 @@
 import { register } from "@quick-threejs/reactive";
 import Stats from "stats.js";
 
-import chessPawn from "./assets/3D/pawn.glb?url";
+import pawnGltf from "./assets/3D/pawn.glb?url";
 import matCapImg from "./assets/textures/matcap.jpg?url";
+import sampleAudio from "./assets/audios/sample.mp3?url";
 
 import "./style.css";
+import { Audio, AudioListener } from "three";
 
 register({
 	location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
@@ -17,13 +19,23 @@ register({
 	loaderDataSources: [
 		{
 			name: "pawn",
-			path: chessPawn,
+			path: pawnGltf,
 			type: "gltf"
 		},
 		{
 			name: "matcap",
 			path: matCapImg,
 			type: "image"
+		},
+		{
+			name: "sample",
+			path: sampleAudio,
+			type: "audio"
+		},
+		{
+			name: "free-video",
+			path: "https://static.pexels.com/lib/videos/free-videos.mp4",
+			type: "video"
 		}
 	],
 	onReady: async (app) => {
@@ -45,5 +57,20 @@ register({
 			.subscribe(() => {
 				stats.end();
 			});
+
+		app.module.loader.getLoadCompleted$().subscribe((payload) => {
+			const sample = payload.loadedResources["sample"];
+
+			if (!(sample instanceof AudioBuffer)) return;
+
+			const audioListener = new AudioListener();
+			const sampleAudio = new Audio(audioListener);
+			sampleAudio.setBuffer(sample);
+
+			document.addEventListener("click", () => {
+				sampleAudio.stop();
+				sampleAudio.play();
+			});
+		});
 	}
 });
