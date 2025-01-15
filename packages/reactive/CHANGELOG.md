@@ -1,5 +1,17 @@
 # @quick-threejs/reactive
 
+## 0.1.31
+
+### Patch Changes
+
+- b0fe891: # Logs
+
+  ## refactor(reactive): simplify loaded resources
+
+  - Send transferable video on a loaded video
+  - Send transferable audio on a loaded audio
+  - Fix `fullScreen` property
+
 ## 0.1.30
 
 ### Patch Changes
