@@ -2,6 +2,7 @@ import { register } from "@quick-threejs/reactive";
 import Stats from "stats.js";
 
 import chessPawn from "./assets/3D/pawn.glb?url";
+import matCapImg from "./assets/textures/matcap.jpg?url";
 
 import "./style.css";
 
@@ -17,12 +18,12 @@ register({
 		{
 			name: "pawn",
 			path: chessPawn,
-			type: "gltfModel"
+			type: "gltf"
 		},
 		{
-			name: "videoTexture",
-			path: "https://static.pexels.com/lib/videos/free-videos.mp4",
-			type: "video"
+			name: "matcap",
+			path: matCapImg,
+			type: "image"
 		}
 	],
 	onReady: async (app) => {

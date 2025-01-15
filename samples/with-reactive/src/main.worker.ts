@@ -1,21 +1,10 @@
 import { launchApp } from "@quick-threejs/reactive/worker";
-import {
-	AmbientLight,
-	Color,
-	DirectionalLight,
-	Mesh,
-	MeshToonMaterial
-} from "three";
+import { CanvasTexture, Color, Mesh, MeshMatcapMaterial } from "three";
 import { GLTF } from "three/examples/jsm/Addons.js";
 
 launchApp({
 	onReady: (app) => {
-		const ambientLight = new AmbientLight(0xffffff, 0.1);
-		const directionalLight = new DirectionalLight(0xffffff, 0.8);
-		directionalLight.position.set(0, 0, 1);
-
 		app.module.world.scene().background = new Color("#211d20");
-		app.module.world.scene().add(ambientLight, directionalLight);
 
 		app.module.resize$?.().subscribe((event) => {
 			console.log(event.type);
@@ -25,15 +14,16 @@ launchApp({
 			console.log(event.type);
 		});
 
-		app.module.loader.getLoad$().subscribe((payload) => {
-			const { resource } = payload;
-			const { scene: pawnScene } = (resource as GLTF | undefined) || {};
-			const pawn = pawnScene?.children?.[0] as Mesh | undefined;
+		app.module.loader.getLoadCompleted$().subscribe(() => {
+			const pawn = (app.module.loader?.getLoadedResources()["pawn"] as GLTF)
+				.scene?.children[0];
+			const matcap = app.module.loader?.getLoadedResources()["matcap"];
 
-			if (!(pawn instanceof Mesh)) return;
+			if (!(pawn instanceof Mesh) || !(matcap instanceof ImageBitmap)) return;
 
-			const pawnMaterial = new MeshToonMaterial({
-				color: 0x777777
+			const pawnMaterial = new MeshMatcapMaterial({
+				color: 0x888888,
+				matcap: new CanvasTexture(matcap)
 			});
 
 			pawn.rotation.z = Math.PI * 0.055;

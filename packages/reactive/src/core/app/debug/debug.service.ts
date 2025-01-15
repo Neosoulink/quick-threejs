@@ -6,7 +6,7 @@ import {
 	GridHelper,
 	PerspectiveCamera
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 import { CameraService } from "../camera/camera.service";
 import { AppService } from "../app.service";

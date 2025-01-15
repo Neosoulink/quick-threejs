@@ -1,7 +1,7 @@
 import { serializeObject3D } from "@quick-threejs/utils";
 import { filter, map, Observable, share, Subject } from "rxjs";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { AnimationClipJSON, VideoTexture } from "three";
+import { AnimationClipJSON } from "three";
 import { inject, singleton } from "tsyringe";
 
 import {
@@ -37,6 +37,10 @@ export class LoaderController {
 				if ((payload?.resource as GLTF)?.parser) {
 					const _resource = payload.resource as GLTF;
 
+					const scenes = _resource.scenes.map((scene) =>
+						serializeObject3D(scene)
+					);
+
 					resource = {
 						animations: (payload?.resource as GLTF).animations.map(
 							// @ts-ignore <<toJSON methods doesn't require a parameter>>
@@ -46,14 +50,18 @@ export class LoaderController {
 							serializeObject3D(camera)
 						),
 						parser: { json: _resource.parser.json },
-						scene: serializeObject3D(_resource.scene),
-						scenes: _resource.scenes.map((scene) => serializeObject3D(scene)),
+						scene: scenes?.[0],
+						scenes,
 						userData: _resource.userData
 					};
 				}
 
-				if (payload?.resource instanceof VideoTexture)
-					resource = payload.resource.toJSON() as unknown as typeof resource;
+				if (
+					payload?.source?.type === "video" &&
+					Array.isArray(payload.resource)
+				) {
+					console.log("Serialized Texture ===>", payload.resource);
+				}
 
 				return {
 					...payload,

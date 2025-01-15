@@ -1,11 +1,5 @@
 import { singleton } from "tsyringe";
-import {
-	AudioLoader,
-	CubeTextureLoader,
-	ImageBitmapLoader,
-	LoadingManager,
-	VideoTexture
-} from "three";
+import { AudioLoader, ImageBitmapLoader, LoadingManager } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
@@ -19,11 +13,10 @@ import {
 export class LoaderService {
 	public readonly loadingManager = new LoadingManager();
 	public readonly loaders: {
+		audioLoader?: AudioLoader;
 		dracoLoader?: DRACOLoader;
 		gltfLoader?: GLTFLoader;
-		textureLoader?: ImageBitmapLoader;
-		cubeTextureLoader?: CubeTextureLoader;
-		audioLoader?: AudioLoader;
+		imageLoader?: ImageBitmapLoader;
 		videoLoader?: LoaderService["videoLoader"];
 	} = {};
 
@@ -35,41 +28,77 @@ export class LoaderService {
 	/** @description The video loader. based on {@link HTMLVideoElement}. */
 	private get videoLoader() {
 		return {
-			load: (url: string, callback: (texture: VideoTexture) => unknown) => {
+			load: (url: string, callback: (texture: ImageBitmap[]) => unknown) => {
 				const element: HTMLVideoElement | undefined =
 					document.createElement("video");
 				element.muted = true;
 				element.loop = true;
+				element.crossOrigin = "anonymous";
 				element.controls = false;
 				element.playsInline = true;
 				element.src = url;
 				element.autoplay = true;
 
-				const oncanplaythrough = () => {
+				async function extractVideoFrames(video: HTMLVideoElement) {
+					const offscreenCanvas = new OffscreenCanvas(
+						video.videoWidth,
+						video.videoHeight
+					);
+					const ctx = offscreenCanvas.getContext("2d");
+					const frameRate = 30; // Target frame rate for extraction
+					const frames: ImageBitmap[] = [];
+
+					console.log("Extracting frames from video");
+
+					return new Promise<ImageBitmap[]>((resolve) => {
+						video.currentTime = 0;
+
+						while (video.currentTime < video.duration) {
+							ctx?.drawImage(
+								video,
+								0,
+								0,
+								offscreenCanvas.width,
+								offscreenCanvas.height
+							);
+							const bitmap = offscreenCanvas.transferToImageBitmap();
+							frames.push(bitmap);
+
+							if (video.currentTime < video.duration) {
+								video.currentTime += 1 / frameRate; // Move to the next frame
+							}
+						}
+						resolve(frames);
+
+						video.onerror = (error) => {
+							console.error("Error while extracting frames:", error);
+						};
+
+						// Start extraction
+						video.currentTime = 0;
+					});
+				}
+
+				const onLoadedData = async () => {
 					if (!element) return;
+					const frames = await extractVideoFrames(element);
 
-					element.play();
-					const texture = new VideoTexture(element);
-					const textureDispose = texture.dispose.bind(texture);
-					texture.dispose = () => {
-						(texture.image as HTMLVideoElement | undefined)?.remove();
-						textureDispose();
-					};
-					callback(texture);
+					console.log("Video loaded", frames);
 
-					element.removeEventListener("canplaythrough", oncanplaythrough);
+					callback(frames);
+
+					element.removeEventListener("loadeddata", onLoadedData);
 				};
-				element.addEventListener("canplaythrough", oncanplaythrough);
+				element.addEventListener("loadeddata", onLoadedData);
 			}
 		};
 	}
 
 	private _initLoaders() {
-		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
-		this.loaders.textureLoader = new ImageBitmapLoader(this.loadingManager);
-		this.loaders.cubeTextureLoader = new CubeTextureLoader(this.loadingManager);
-		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
 		this.loaders.dracoLoader = new DRACOLoader(this.loadingManager);
+		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
+		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
+		this.loaders.imageLoader = new ImageBitmapLoader(this.loadingManager);
 		this.loaders.videoLoader = this.videoLoader;
 	}
 
@@ -105,5 +134,39 @@ export class LoaderService {
 		this.loadedResources[source.name] = resource;
 		this.loadedCount = loadedCount;
 		this.toLoadCount = toLoadCount;
+	}
+
+	public load(
+		onLoad?: (source: LoaderSource, resource?: LoaderResource) => unknown
+	) {
+		const firstSource = this.sources[0];
+		if (!firstSource) return;
+
+		onLoad?.(firstSource);
+
+		for (const source of this.sources) {
+			if (this.loadedResources[source.name] || typeof source.path !== "string")
+				return;
+
+			if (source.type === "gltf")
+				this.loaders.gltfLoader?.load(source.path, (model) =>
+					onLoad?.(source, model)
+				);
+
+			if (source.type === "audio")
+				this.loaders.audioLoader?.load(source.path, (audioBuffer) => {
+					onLoad?.(source, audioBuffer);
+				});
+
+			if (source.type === "image")
+				this.loaders.imageLoader?.load(source.path, (image) => {
+					onLoad?.(source, image);
+				});
+
+			if (source.type === "video")
+				this.loaders.videoLoader?.load(source.path, (texture) =>
+					onLoad?.(source, texture)
+				);
+		}
 	}
 }
