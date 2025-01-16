@@ -46,14 +46,14 @@ register({
 
 		app.module
 			.thread()
-			.beforeStep$?.()
+			.getBeforeStep$?.()
 			.subscribe(() => {
 				stats.begin();
 			});
 
 		app.module
 			.thread()
-			.step$?.()
+			.getStep$?.()
 			.subscribe(() => {
 				stats.end();
 			});

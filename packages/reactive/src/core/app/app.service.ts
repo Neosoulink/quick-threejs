@@ -9,7 +9,7 @@ export class AppService {
 
 	public readonly proxyReceiver = new ProxyReceiver<Record<string, unknown>>();
 
-	public initialized = false;
+	public isInitialized = false;
 
 	public get canvas(): OffscreenCanvasWithStyle | undefined {
 		return this._canvas;

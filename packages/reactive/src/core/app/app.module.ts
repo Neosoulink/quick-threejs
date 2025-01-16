@@ -49,15 +49,35 @@ export class AppModule
 		});
 	}
 
+	public getProxyReceiver() {
+		return this._service.proxyReceiver;
+	}
+
+	public getCanvas() {
+		return this._service.canvas;
+	}
+
+	public getIsInitialized() {
+		return this._service.isInitialized;
+	}
+
+	public getBeforeStep$() {
+		return this.timer.beforeStep$();
+	}
+
+	public getStep$() {
+		return this.timer.step$();
+	}
+
 	public init(props: AppModulePropsMessageEvent["data"]) {
 		if (
-			this._service.initialized ||
+			this._service.isInitialized ||
 			!props?.canvas ||
 			!(this._service.canvas = props.canvas)
 		)
 			return;
 
-		this._service.initialized = true;
+		this._service.isInitialized = true;
 
 		this.sizes.init(this._service.canvas);
 		this.camera.init();
@@ -66,18 +86,6 @@ export class AppModule
 		this.timer.init(props.startTimer);
 		this.loader.init();
 		this.debug.init(props);
-	}
-
-	public isInitialized() {
-		return this._service.initialized;
-	}
-
-	public beforeStep$() {
-		return this.timer.beforeStep$();
-	}
-
-	public step$() {
-		return this.timer.step$();
 	}
 
 	public dispose() {

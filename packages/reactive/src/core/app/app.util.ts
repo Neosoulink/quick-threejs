@@ -29,7 +29,7 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 	});
 
 	const handleInitMessage = (event: AppModulePropsMessageEvent) => {
-		if (!event.data?.canvas || module.isInitialized()) return;
+		if (!event.data?.canvas || module.getIsInitialized()) return;
 
 		const startTimer = !!event.data?.startTimer;
 		const withMiniCamera = !!event.data?.withMiniCamera;
@@ -51,10 +51,12 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 
 	expose({
 		...proxyEventHandlers,
-		isInitialized: module.isInitialized.bind(module),
-		dispose: module.dispose.bind(module),
-		beforeStep$: module.beforeStep$.bind(module),
-		step$: module.step$.bind(module)
+		getProxyReceiver: module.getProxyReceiver.bind(module),
+		getCanvas: module.getCanvas.bind(module),
+		getIsInitialized: module.getIsInitialized.bind(module),
+		getBeforeStep$: module.getBeforeStep$.bind(module),
+		getStep$: module.getStep$.bind(module),
+		dispose: module.dispose.bind(module)
 	} satisfies ExposedAppModule);
 
 	return app;
