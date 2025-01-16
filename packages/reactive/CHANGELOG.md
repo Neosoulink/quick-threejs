@@ -1,5 +1,17 @@
 # @quick-threejs/reactive
 
+## 0.1.32
+
+### Patch Changes
+
+- 602cf5e: # Logs
+
+  ## refactor(reactive): expose app resources
+
+  - Add `getProxyReceiver` to `AppModule`
+  - Add `getCanvas` to `AppModule`
+  - Rename `isInitialized` method to `getIsInitialized` from `AppModule`
+
 ## 0.1.31
 
 ### Patch Changes
