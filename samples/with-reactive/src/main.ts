@@ -4,6 +4,7 @@ import Stats from "stats.js";
 import pawnGltf from "./assets/3D/pawn.glb?url";
 import matCapImg from "./assets/textures/matcap.jpg?url";
 import sampleAudio from "./assets/audios/sample.mp3?url";
+import helvetikerFont from "./assets/fonts/helvetiker_regular.typeface.json?url";
 
 import "./style.css";
 import { Audio, AudioListener } from "three";
@@ -33,30 +34,25 @@ register({
 			type: "audio"
 		},
 		{
-			name: "free-video",
-			path: "https://static.pexels.com/lib/videos/free-videos.mp4",
-			type: "video"
+			name: "helvetikerFont",
+			path: helvetikerFont,
+			type: "font"
 		}
 	],
 	onReady: async (app) => {
 		const stats = new Stats();
+		const thread = app.module.getThread();
 		stats.showPanel(0);
 
 		window.document.body.appendChild(stats.dom);
 
-		app.module
-			.thread()
-			.getBeforeStep$?.()
-			.subscribe(() => {
-				stats.begin();
-			});
+		thread.getBeforeStep$?.().subscribe(() => {
+			stats.begin();
+		});
 
-		app.module
-			.thread()
-			.getStep$?.()
-			.subscribe(() => {
-				stats.end();
-			});
+		thread.getStep$?.().subscribe(() => {
+			stats.end();
+		});
 
 		app.module.loader.getLoadCompleted$().subscribe((payload) => {
 			const sample = payload.loadedResources["sample"];

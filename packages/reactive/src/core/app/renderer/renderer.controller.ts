@@ -14,14 +14,14 @@ export class RendererController {
 	constructor(
 		@inject(RendererService)
 		private readonly _service: RendererService,
-		@inject(TimerController) private readonly timerController: TimerController,
-		@inject(SizesController) private readonly sizesController: SizesController
+		@inject(TimerController) private readonly _timerController: TimerController,
+		@inject(SizesController) private readonly _sizesController: SizesController
 	) {
-		this.step$ = this.timerController.step$.pipe(
+		this.step$ = this._timerController.step$.pipe(
 			filter(() => this._service.enabled)
 		);
 
-		this.resize$ = this.sizesController.resize$.pipe(
+		this.resize$ = this._sizesController.resize$.pipe(
 			filter(() => this._service.enabled)
 		);
 	}

@@ -1,5 +1,6 @@
 import { singleton } from "tsyringe";
 import { AudioLoader, ImageBitmapLoader, LoadingManager } from "three";
+import { FontLoader } from "three/examples/jsm/Addons";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
@@ -18,6 +19,7 @@ export class LoaderService {
 		gltfLoader?: GLTFLoader;
 		imageLoader?: ImageBitmapLoader;
 		videoLoader?: LoaderService["videoLoader"];
+		fontLoader?: FontLoader;
 	} = {};
 
 	public sources: LoaderSource[] = [];
@@ -51,6 +53,7 @@ export class LoaderService {
 	private _initLoaders() {
 		this.loaders.dracoLoader = new DRACOLoader(this.loadingManager);
 		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
+		this.loaders.fontLoader = new FontLoader(this.loadingManager);
 		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
 		this.loaders.imageLoader = new ImageBitmapLoader(this.loadingManager);
 		this.loaders.videoLoader = this.videoLoader;
@@ -108,18 +111,23 @@ export class LoaderService {
 				);
 
 			if (source.type === "audio")
-				this.loaders.audioLoader?.load(source.path, (audioBuffer) => {
-					onLoad?.(source, audioBuffer);
-				});
+				this.loaders.audioLoader?.load(source.path, (audioBuffer) =>
+					onLoad?.(source, audioBuffer)
+				);
 
 			if (source.type === "image")
-				this.loaders.imageLoader?.load(source.path, (image) => {
-					onLoad?.(source, image);
-				});
+				this.loaders.imageLoader?.load(source.path, (image) =>
+					onLoad?.(source, image)
+				);
 
 			if (source.type === "video")
 				this.loaders.videoLoader?.load(source.path, (videoElement) =>
 					onLoad?.(source, videoElement)
+				);
+
+			if (source.type === "font")
+				this.loaders.fontLoader?.load(source.path, (font) =>
+					onLoad?.(source, font)
 				);
 		}
 	}

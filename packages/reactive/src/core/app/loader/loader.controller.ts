@@ -10,6 +10,7 @@ import {
 import { AnimationClip, AnimationClipJSON, Camera, Group } from "three";
 import { GLTF, GLTFParser } from "three/examples/jsm/loaders/GLTFLoader";
 import { LoaderService } from "./loader.service";
+import { Font } from "three/examples/jsm/Addons";
 
 @scoped(Lifecycle.ResolutionScoped)
 export class LoaderController {
@@ -55,6 +56,12 @@ export class LoaderController {
 					resource: { ...resource, animations, cameras, scene, scenes }
 				} as LoadedResourcePayload;
 			}
+
+			if (payload?.source?.type === "font")
+				return {
+					...payload,
+					resource: new Font((payload.resource as unknown as Font).data)
+				} as LoadedResourcePayload;
 
 			return payload as LoadedResourcePayload;
 		}),

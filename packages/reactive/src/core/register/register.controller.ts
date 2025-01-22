@@ -46,7 +46,7 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 				filter((e) => (key === "keydown" && !e ? false : true))
 			);
 			this[`${key}$`].subscribe((event) => {
-				this._service.thread?.[key]?.(event);
+				this._service.thread?.[key]?.(event as any);
 			});
 		}
 	}

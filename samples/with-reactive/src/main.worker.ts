@@ -1,6 +1,6 @@
 import { launchApp } from "@quick-threejs/reactive/worker";
 import { CanvasTexture, Color, Mesh, MeshMatcapMaterial } from "three";
-import { GLTF } from "three/examples/jsm/Addons.js";
+import { Font, GLTF, TextGeometry } from "three/examples/jsm/Addons.js";
 
 launchApp({
 	onReady: (app) => {
@@ -15,25 +15,45 @@ launchApp({
 		});
 
 		app.module.loader.getLoadCompleted$().subscribe((payload) => {
-			const pawn = (payload.loadedResources["pawn"] as GLTF).scene?.children[0];
+			const pawn = (payload.loadedResources["pawn"] as GLTF).scene
+				?.children[0] as Mesh;
+			const font = app.module.loader.getLoadedResources()[
+				"helvetikerFont"
+			] as Font;
 			const matcap = payload.loadedResources["matcap"];
 
-			if (!(pawn instanceof Mesh) || !(matcap instanceof ImageBitmap)) return;
+			if (!pawn.isMesh || !(matcap instanceof ImageBitmap) || !font.isFont)
+				return;
 
-			const pawnMaterial = new MeshMatcapMaterial({
+			const material = new MeshMatcapMaterial({
 				color: 0x888888,
 				matcap: new CanvasTexture(matcap)
 			});
+			const text = new Mesh(
+				new TextGeometry("Hello Three.js", {
+					font,
+					size: 0.5,
+					depth: 0.2,
+					curveSegments: 12,
+					bevelEnabled: true,
+					bevelThickness: 0.03,
+					bevelSize: 0.02,
+					bevelOffset: 0,
+					bevelSegments: 4
+				}),
+				material
+			);
+			text.geometry.center();
 
 			pawn.rotation.z = Math.PI * 0.055;
 			pawn.scale.setScalar(2);
-			pawn.material = pawnMaterial;
+			pawn.material = material;
 
 			app.module.timer.step$().subscribe((payload) => {
 				pawn.rotation.y += payload.deltaRatio * 0.05;
 			});
 
-			app.module.world.scene().add(pawn);
+			app.module.world.scene().add(pawn, text);
 		});
 	}
 });
