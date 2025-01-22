@@ -14,16 +14,15 @@ import { TimerService } from "./timer.service";
 
 @singleton()
 export class TimerController {
-	private readonly beforeStep$$ = new Subject<Properties<TimerService>>();
+	private readonly _beforeStep$$ = new Subject<Properties<TimerService>>();
+	private _oldElapsed = 0;
 
-	private _previousTime = 0;
-
-	public readonly beforeStep$ = this.beforeStep$$.asObservable();
+	public readonly beforeStep$ = this._beforeStep$$.asObservable();
 	public readonly step$ = animationFrames().pipe(
 		tap(({ elapsed }) => {
-			if (this._previousTime !== elapsed) {
-				this.beforeStep$$?.next(excludeProperties(this._service, []));
-				this._previousTime = elapsed;
+			if (this._oldElapsed !== elapsed) {
+				this._beforeStep$$?.next(excludeProperties(this._service, []));
+				this._oldElapsed = elapsed;
 			}
 		}),
 		filter(() => this._service.enabled),

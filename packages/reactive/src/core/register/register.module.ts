@@ -10,7 +10,8 @@ import {
 	PROXY_EVENT_LISTENERS,
 	RegisterPropsBlueprint,
 	RegisterProxyEventHandlersBlueprint,
-	LOADER_SERIALIZED_LOAD_TOKEN
+	LOADER_SERIALIZED_LOAD_TOKEN,
+	ProxyEvent
 } from "../../common";
 import { ExposedAppModule } from "../app/app.util";
 import { RegisterService } from "./register.service";
@@ -83,7 +84,9 @@ export class RegisterModule
 
 		if (this.props.fullScreen)
 			this._service.thread?.resize?.({
-				...this._controller.uiEventHandler({ type: "resize" } as UIEvent)
+				...(this._controller.uiEventHandler({
+					type: "resize"
+				} as UIEvent) as unknown as UIEvent & ProxyEvent)
 			});
 	}
 
@@ -91,9 +94,10 @@ export class RegisterModule
 		if (!this._service.canvas)
 			throw new Error("Canvas element is not initialized.");
 
-		const offscreenCanvas = this._service.canvas.transferControlToOffscreen();
-		offscreenCanvas.width = this._service.canvas.clientWidth;
-		offscreenCanvas.height = this._service.canvas.clientHeight;
+		this._service.offscreenCanvas =
+			this._service.canvas.transferControlToOffscreen();
+		this._service.offscreenCanvas.width = this._service.canvas.clientWidth;
+		this._service.offscreenCanvas.height = this._service.canvas.clientHeight;
 
 		const [workerThread, queued] =
 			await this._service.workerPool.run<ExposedAppModule>({
@@ -106,9 +110,9 @@ export class RegisterModule
 							"onReady",
 							"loaderDataSources"
 						]),
-						canvas: offscreenCanvas
+						canvas: this._service.offscreenCanvas
 					} satisfies AppModulePropsMessageEvent["data"],
-					transferSubject: [offscreenCanvas]
+					transferSubject: [this._service.offscreenCanvas]
 				}
 			});
 
@@ -141,10 +145,6 @@ export class RegisterModule
 		});
 	}
 
-	public isInitialized() {
-		return this.initialized;
-	}
-
 	public async init() {
 		if (this.initialized) return;
 
@@ -158,26 +158,37 @@ export class RegisterModule
 		this.props.onReady?.({ module: this, container: this.container });
 	}
 
-	public canvas() {
+	public getCanvas() {
 		return this._service.canvas;
 	}
 
-	public thread() {
-		return this._service.thread;
+	public getOffscreenCanvas() {
+		return this._service.offscreenCanvas;
 	}
 
-	public worker() {
+	public getThread() {
+		return this._service.thread as unknown as ExposedAppModule;
+	}
+
+	public getWorker() {
 		return this._service.worker;
 	}
 
-	public workerPool() {
+	public getWorkerPool() {
 		return this._service.workerPool;
+	}
+
+	public isInitialized() {
+		return this.initialized;
 	}
 
 	public async dispose() {
 		await this._service.workerPool.terminateAll();
 
+		this._service.offscreenCanvas?.getContext("2d")?.closePath();
+
 		if (this._service.canvas?.dataset["reactive"] === "true") {
+			document.body.removeChild(this._service.canvas);
 			this._service.canvas.remove();
 			this._service.canvas = undefined;
 		}

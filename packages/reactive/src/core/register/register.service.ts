@@ -9,6 +9,7 @@ export class RegisterService {
 	public readonly workerPool = createWorkerPool(undefined, true);
 
 	public canvas?: HTMLCanvasElement;
+	public offscreenCanvas?: OffscreenCanvas;
 	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
 	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
 

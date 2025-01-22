@@ -69,6 +69,14 @@ export class AppModule
 		return this.timer.step$();
 	}
 
+	public getBeforeRender$() {
+		return this.world.getBeforeRender$();
+	}
+
+	public getAfterRender$() {
+		return this.world.getAfterRender$();
+	}
+
 	public init(props: AppModulePropsMessageEvent["data"]) {
 		if (
 			this._service.isInitialized ||

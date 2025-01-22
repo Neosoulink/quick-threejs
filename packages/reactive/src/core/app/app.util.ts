@@ -1,4 +1,4 @@
-import { ExposedWorkerThreadModule, Methods } from "@quick-threejs/utils";
+import { Methods } from "@quick-threejs/utils";
 import { container as parentContainer } from "tsyringe";
 import { expose } from "threads/worker";
 import type { WorkerFunction } from "threads/dist/types/worker";
@@ -55,7 +55,9 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 		getCanvas: module.getCanvas.bind(module),
 		getIsInitialized: module.getIsInitialized.bind(module),
 		getBeforeStep$: module.getBeforeStep$.bind(module),
+		getBeforeRender$: module.getBeforeRender$.bind(module),
 		getStep$: module.getStep$.bind(module),
+		getAfterRender$: module.getAfterRender$.bind(module),
 		dispose: module.dispose.bind(module)
 	} satisfies ExposedAppModule);
 
@@ -63,6 +65,6 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 };
 
 export type ExposedAppModule = Omit<
-	ExposedWorkerThreadModule<Methods<AppModule>>,
+	Methods<AppModule>,
 	`${ProxyEventListenerKeys}$` | "init"
 >;
