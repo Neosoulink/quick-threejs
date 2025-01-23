@@ -167,7 +167,7 @@ export class RegisterModule
 	}
 
 	public getThread() {
-		return this._service.thread as unknown as ExposedAppModule;
+		return this._service.thread;
 	}
 
 	public getWorker() {

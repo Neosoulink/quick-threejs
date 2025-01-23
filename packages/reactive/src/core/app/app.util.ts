@@ -1,4 +1,4 @@
-import { Methods } from "@quick-threejs/utils";
+import { ExposedWorkerThreadModule, Methods } from "@quick-threejs/utils";
 import { container as parentContainer } from "tsyringe";
 import { expose } from "threads/worker";
 import type { WorkerFunction } from "threads/dist/types/worker";
@@ -15,19 +15,11 @@ import { AppModule } from "./app.module";
 
 export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 	const container = parentContainer.createChildContainer();
-
-	container.register(CONTAINER_TOKEN, { useValue: container });
-
 	const module = container.resolve(AppModule);
 	const app: ContainerizedApp<AppModule> = { container, module };
 	const proxyEventHandlers: {
 		[key in ProxyEventListenerKeys]: WorkerFunction;
 	} = {} as typeof proxyEventHandlers;
-
-	PROXY_EVENT_LISTENERS.forEach((key) => {
-		proxyEventHandlers[key] = module[key]?.bind?.(module);
-	});
-
 	const handleInitMessage = (event: AppModulePropsMessageEvent) => {
 		if (!event.data?.canvas || module.getIsInitialized()) return;
 
@@ -47,12 +39,15 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 		self?.removeEventListener("message", handleInitMessage);
 	};
 
+	container.register(CONTAINER_TOKEN, { useValue: container });
+	PROXY_EVENT_LISTENERS.forEach((key) => {
+		proxyEventHandlers[key] = module[key]?.bind?.(module);
+	});
 	self?.addEventListener("message", handleInitMessage);
 
 	expose({
 		...proxyEventHandlers,
 		getProxyReceiver: module.getProxyReceiver.bind(module),
-		getCanvas: module.getCanvas.bind(module),
 		getIsInitialized: module.getIsInitialized.bind(module),
 		getBeforeStep$: module.getBeforeStep$.bind(module),
 		getBeforeRender$: module.getBeforeRender$.bind(module),
@@ -65,6 +60,6 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 };
 
 export type ExposedAppModule = Omit<
-	Methods<AppModule>,
-	`${ProxyEventListenerKeys}$` | "init"
+	ExposedWorkerThreadModule<Methods<AppModule>>,
+	`${ProxyEventListenerKeys}$` | "init" | "getCanvas"
 >;

@@ -30,7 +30,7 @@ launchApp({
 				matcap: new CanvasTexture(matcap)
 			});
 			const text = new Mesh(
-				new TextGeometry("Hello Three.js", {
+				new TextGeometry("@quick-threejs/reactive", {
 					font,
 					size: 0.5,
 					depth: 0.2,
@@ -43,11 +43,13 @@ launchApp({
 				}),
 				material
 			);
-			text.geometry.center();
 
 			pawn.rotation.z = Math.PI * 0.055;
 			pawn.scale.setScalar(2);
 			pawn.material = material;
+
+			text.position.set(0, 2.5, 0);
+			text.geometry.center();
 
 			app.module.timer.step$().subscribe((payload) => {
 				pawn.rotation.y += payload.deltaRatio * 0.05;
