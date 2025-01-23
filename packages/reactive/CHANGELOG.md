@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.36
+
+### Patch Changes
+
+- 99951a5: # Logs
+
+  ## fix(reactive): remove lagy `console.log`
+
 ## 0.1.35
 
 ### Patch Changes

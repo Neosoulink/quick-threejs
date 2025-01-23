@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/reactive",
-	"version": "0.1.35",
+	"version": "0.1.36",
 	"description": "Reactively quick start a three.js app ⚡️",
 	"repository": {
 		"type": "git",
