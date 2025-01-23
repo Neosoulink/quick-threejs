@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.37
+
+### Patch Changes
+
+- 3aa313f: # Logs
+
+  ## fix(reactive): correct lifecyles
+
 ## 0.1.36
 
 ### Patch Changes
