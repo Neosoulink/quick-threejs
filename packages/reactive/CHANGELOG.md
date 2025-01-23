@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.34
+
+### Patch Changes
+
+- 3828ff6: # Logs
+
+  ## fix(reactive): correct exposed thread type
+
 ## 0.1.33
 
 ### Patch Changes
