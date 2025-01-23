@@ -39,14 +39,6 @@ export class RegisterService {
 	public uiEventHandler(e: UIEvent) {
 		const rect = this.canvas?.getBoundingClientRect();
 
-		console.log(
-			"uiEventHandler",
-			this.getScreenSizes(),
-			e.type,
-			rect?.top,
-			rect?.left
-		);
-
 		return {
 			...this.getScreenSizes(),
 			type: e.type,
