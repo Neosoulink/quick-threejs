@@ -12,7 +12,7 @@ import { GLTF, GLTFParser } from "three/examples/jsm/loaders/GLTFLoader";
 import { LoaderService } from "./loader.service";
 import { Font } from "three/examples/jsm/Addons";
 
-@scoped(Lifecycle.ResolutionScoped)
+@scoped(Lifecycle.ContainerScoped)
 export class LoaderController {
 	public readonly load$ = fromEvent<
 		MessageEvent<

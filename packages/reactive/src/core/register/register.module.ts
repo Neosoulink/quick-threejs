@@ -19,7 +19,7 @@ import { LoaderModule } from "./loader/loader.module";
 import { LoaderController } from "./loader/loader.controller";
 import { Subscription } from "rxjs";
 
-@scoped(Lifecycle.ResolutionScoped)
+@scoped(Lifecycle.ContainerScoped)
 export class RegisterModule
 	extends RegisterProxyEventHandlersBlueprint
 	implements Module
