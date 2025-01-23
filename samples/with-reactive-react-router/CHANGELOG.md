@@ -1,5 +1,12 @@
 # with-reactive-react-router
 
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies [99951a5]
+  - @quick-threejs/reactive@0.1.36
+
 ## 0.0.14
 
 ### Patch Changes
