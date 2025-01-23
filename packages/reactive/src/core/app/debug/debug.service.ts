@@ -1,11 +1,5 @@
-import { inject, singleton } from "tsyringe";
-import {
-	AxesHelper,
-	Camera,
-	CameraHelper,
-	GridHelper,
-	PerspectiveCamera
-} from "three";
+import { inject, Lifecycle, scoped } from "tsyringe";
+import { AxesHelper, Camera, GridHelper, PerspectiveCamera } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 import { CameraService } from "../camera/camera.service";
@@ -14,13 +8,12 @@ import { WorldService } from "../world/world.service";
 import { SizesService } from "../sizes/sizes.service";
 import { RendererService } from "../renderer/renderer.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class DebugService {
 	public enabled = false;
 	public cameraControls?: OrbitControls;
 	public miniCamera?: PerspectiveCamera;
 	public miniCameraControls?: OrbitControls;
-	public cameraHelper?: CameraHelper;
 	public axesHelper?: AxesHelper;
 	public gridHelper?: GridHelper;
 
@@ -100,15 +93,6 @@ export class DebugService {
 		this.miniCameraControls.enableDamping = true;
 	}
 
-	public initCameraHelper() {
-		if (this.cameraHelper) this._worldService.scene.remove(this.cameraHelper);
-
-		if (!this.enabled || !this._cameraService.instance) return;
-
-		this.cameraHelper = new CameraHelper(this._cameraService.instance);
-		this._worldService.scene.add(this.cameraHelper);
-	}
-
 	public initAxesHelper(axesSizes: number) {
 		if (!this.enabled) return;
 
@@ -149,10 +133,6 @@ export class DebugService {
 
 		this.miniCameraControls?.dispose();
 		this.miniCameraControls = undefined;
-
-		if (this.cameraHelper) this._worldService.scene.remove(this.cameraHelper);
-		this.cameraHelper?.dispose();
-		this.cameraHelper = undefined;
 
 		if (this.axesHelper) this._worldService.scene.remove(this.axesHelper);
 		this.axesHelper?.dispose();

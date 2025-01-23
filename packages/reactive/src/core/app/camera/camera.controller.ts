@@ -1,10 +1,10 @@
-import { inject, singleton } from "tsyringe";
 import { filter } from "rxjs";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { CameraService } from "./camera.service";
 import { TimerController } from "../timer/timer.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class CameraController {
 	public readonly step$: TimerController["step$"];
 

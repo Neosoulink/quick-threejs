@@ -1,12 +1,12 @@
-import { inject, singleton } from "tsyringe";
 import { filter, Observable } from "rxjs";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type { ProxyEvent } from "../../../common/interfaces/proxy-event.interface";
 import { SizesController } from "../sizes/sizes.controller";
 import { TimerController } from "../timer/timer.controller";
 import { RendererService } from "./renderer.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class RendererController {
 	public readonly step$: TimerController["step$"];
 	public readonly resize$: Observable<UIEvent & ProxyEvent>;

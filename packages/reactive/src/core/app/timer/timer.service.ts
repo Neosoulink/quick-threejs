@@ -1,6 +1,6 @@
-import { singleton } from "tsyringe";
+import { Lifecycle, scoped } from "tsyringe";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TimerService {
 	public readonly frame = 1000 / 60;
 	public readonly initialTime = Date.now();

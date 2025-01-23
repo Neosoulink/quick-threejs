@@ -1,10 +1,12 @@
 import { container as parentContainer } from "tsyringe";
 import { isBoolean, isFunction, isUndefined } from "@quick-threejs/utils";
 
-import { DefaultCameraType } from "../../common/enums";
-import type { ContainerizedApp } from "../../common/interfaces";
-import { RegisterPropsBlueprint } from "../../common/blueprints";
-import { CONTAINER_TOKEN } from "../../common/tokens";
+import {
+	CONTAINER_TOKEN,
+	RegisterPropsBlueprint,
+	DefaultCameraType,
+	ContainerizedApp
+} from "../../common";
 import { RegisterModule } from "./register.module";
 
 /**
@@ -57,7 +59,6 @@ export const register = (
 	container.register(RegisterPropsBlueprint, { useValue: props });
 
 	const module = container.resolve<RegisterModule>(RegisterModule);
-	module.initialized = true;
 
 	return {
 		container,

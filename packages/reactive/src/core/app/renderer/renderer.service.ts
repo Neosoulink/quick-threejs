@@ -5,14 +5,14 @@ import {
 	SRGBColorSpace,
 	WebGLRenderer
 } from "three";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type { OffscreenCanvasWithStyle } from "../../../common/interfaces";
 import { WorldService } from "../world/world.service";
 import { CameraService } from "../camera/camera.service";
 import { SizesService } from "../sizes/sizes.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class RendererService {
 	public static readonly RENDERER_PIXEL_RATIO: number = 1;
 

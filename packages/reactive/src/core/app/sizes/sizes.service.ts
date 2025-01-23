@@ -1,8 +1,8 @@
-import { singleton } from "tsyringe";
+import { Lifecycle, scoped } from "tsyringe";
 
 import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class SizesService {
 	public width = 0;
 	public height = 0;

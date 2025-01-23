@@ -1,13 +1,13 @@
 import { Subscription } from "rxjs";
 import { PerspectiveCamera } from "three";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { Module, AppModulePropsMessageEvent } from "../../../common";
 
 import { DebugService } from "./debug.service";
 import { DebugController } from "./debug.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class DebugModule implements Module {
 	private readonly _subscriptions: Subscription[] = [];
 
@@ -27,8 +27,6 @@ export class DebugModule implements Module {
 			this._service.initOrbitControl();
 			this._service.initMiniCameraOrbitControls();
 		}
-
-		if (props.withCameraHelper) this._service.initCameraHelper();
 
 		if (typeof props?.axesSizes === "number")
 			this._service.initAxesHelper(props.axesSizes);
@@ -59,10 +57,6 @@ export class DebugModule implements Module {
 
 	public getCameraControls() {
 		return this._service.cameraControls;
-	}
-
-	public getCameraHelper() {
-		return this._service.cameraHelper;
 	}
 
 	public getGridHelper() {

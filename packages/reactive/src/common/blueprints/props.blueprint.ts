@@ -116,16 +116,6 @@ export class RegisterPropsBlueprint {
 	withMiniCamera?: boolean;
 
 	/**
-	 * Display the camera helper.
-	 *
-	 * @remark __Deactivated if the value is `false` or `undefined`__
-	 * @remark __This property depends on {@link RegisterPropsBlueprint.enableDebug enableDebug}__
-	 *
-	 * @default undefined
-	 */
-	withCameraHelper?: boolean;
-
-	/**
 	 * @description Handler called when the app is ready.
 	 *
 	 * @default undefined

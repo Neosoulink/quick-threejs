@@ -8,11 +8,11 @@ import {
 	takeWhile,
 	tap
 } from "rxjs";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { TimerService } from "./timer.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TimerController {
 	private readonly _beforeStep$$ = new Subject<Properties<TimerService>>();
 	private _oldElapsed = 0;

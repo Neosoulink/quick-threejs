@@ -1,18 +1,15 @@
-import "reflect-metadata";
-
 import { Subscription } from "rxjs";
-import { container, inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type {
-	Module,
-	LoaderSource,
-	LoaderResource
-} from "../../../common/interfaces";
+import {
+	RegisterPropsBlueprint,
+	type Module,
+	type LoaderSource
+} from "../../../common";
 import { LoaderController } from "./loader.controller";
 import { LoaderService } from "./loader.service";
-import { RegisterPropsBlueprint } from "../../../common/blueprints";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class LoaderModule implements Module {
 	private readonly _subscriptions: Subscription[] = [];
 
@@ -29,13 +26,6 @@ export class LoaderModule implements Module {
 		);
 	}
 
-	private _listenToLoad(source: LoaderSource, resource?: LoaderResource) {
-		this._controller.load$$.next({
-			source,
-			resource
-		});
-	}
-
 	public init(sources: LoaderSource[] = []) {
 		this._service.init(sources);
 		this._service.setDracoDecoder();
@@ -45,7 +35,12 @@ export class LoaderModule implements Module {
 	}
 
 	public load() {
-		this._service.load(this._listenToLoad.bind(this));
+		this._service.launchLoad((source, resource) =>
+			this._controller.load$$.next({
+				source,
+				resource
+			})
+		);
 	}
 
 	public getLoadedResources() {
@@ -81,8 +76,7 @@ export class LoaderModule implements Module {
 	}
 
 	public dispose() {
+		this._subscriptions.forEach((sub) => sub.unsubscribe());
 		this._controller.load$$.complete();
 	}
 }
-
-export const loaderModule = container.resolve(LoaderModule);

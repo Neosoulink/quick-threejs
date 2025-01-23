@@ -1,11 +1,10 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 import { Observable, Subject } from "rxjs";
 
 import { AppService } from "./app.service";
 import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class AppController extends ProxyEventHandlersBlueprint {
 	constructor(@inject(AppService) private readonly _service: AppService) {
 		super();

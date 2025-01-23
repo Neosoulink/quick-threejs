@@ -1,8 +1,8 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 import { WorldService } from "./world.service";
 import { share, Subject } from "rxjs";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class WorldController {
 	private readonly _beforeRender$$ = new Subject<{}>();
 	private readonly _afterRender$$ = new Subject<{}>();

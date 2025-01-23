@@ -10,21 +10,22 @@ import {
 	PROXY_EVENT_LISTENERS,
 	RegisterPropsBlueprint,
 	RegisterProxyEventHandlersBlueprint,
-	LOADER_SERIALIZED_LOAD_TOKEN,
-	ProxyEvent
+	LOADER_SERIALIZED_LOAD_TOKEN
 } from "../../common";
 import { ExposedAppModule } from "../app/app.util";
 import { RegisterService } from "./register.service";
 import { RegisterController } from "./register.controller";
 import { LoaderModule } from "./loader/loader.module";
 import { LoaderController } from "./loader/loader.controller";
+import { Subscription } from "rxjs";
 
-@scoped(Lifecycle.ContainerScoped)
+@scoped(Lifecycle.ResolutionScoped)
 export class RegisterModule
 	extends RegisterProxyEventHandlersBlueprint
 	implements Module
 {
-	public initialized = false;
+	private readonly _subscriptions: Subscription[] = [];
+	private _initialized: boolean = false;
 
 	constructor(
 		@inject(RegisterService) private readonly _service: RegisterService,
@@ -32,10 +33,10 @@ export class RegisterModule
 		private readonly _controller: RegisterController,
 		@inject(LoaderController)
 		private readonly _loaderController: LoaderController,
+		@inject(CONTAINER_TOKEN) public readonly container: DependencyContainer,
 		@inject(RegisterPropsBlueprint)
 		public readonly props: RegisterPropsBlueprint,
-		@inject(LoaderModule) public readonly loader: LoaderModule,
-		@inject(CONTAINER_TOKEN) public readonly container: DependencyContainer
+		@inject(LoaderModule) public readonly loader: LoaderModule
 	) {
 		super();
 
@@ -74,19 +75,20 @@ export class RegisterModule
 		});
 	}
 
-	private async _initController() {
+	private async _initEvents() {
 		if (!this._service.canvas)
 			throw new Error("Canvas element is not initialized.");
 
-		this._controller.init(this._service.canvas);
+		if (!this._service.thread || !this._service.worker)
+			throw new Error("Worker-thread is not initialized.");
 
-		if (!this._service.thread || !this._service.worker) return;
+		this._controller.init();
 
 		if (this.props.fullScreen)
 			this._service.thread?.resize?.({
-				...(this._controller.uiEventHandler({
+				...this._service.uiEventHandler({
 					type: "resize"
-				} as UIEvent) as unknown as UIEvent & ProxyEvent)
+				} as UIEvent)
 			});
 	}
 
@@ -132,28 +134,31 @@ export class RegisterModule
 	private async _initLoader() {
 		this.loader.init(this.props.loaderDataSources);
 
-		this._loaderController.serializedLoad$.subscribe((payload) => {
-			if (payload.resource instanceof ArrayBuffer)
-				return this._service.worker?.postMessage(payload.resource, [
-					payload.resource
-				]);
+		this._subscriptions.push(
+			this._loaderController.serializedLoad$.subscribe((payload) => {
+				if (payload.resource instanceof ArrayBuffer)
+					return this._service.worker?.postMessage(payload.resource, [
+						payload.resource
+					]);
 
-			this._service.worker?.postMessage({
-				token: LOADER_SERIALIZED_LOAD_TOKEN,
-				payload
-			});
-		});
+				this._service.worker?.postMessage({
+					token: LOADER_SERIALIZED_LOAD_TOKEN,
+					payload
+				});
+			})
+		);
 	}
 
 	public async init() {
-		if (this.initialized) return;
+		if (this._initialized) return;
+		this._initialized = true;
 
 		await this._initCanvas();
 		await this._initWorkerThread();
 		await this._initService();
-		await this._initController();
 		await this._initObservableProxyEvents();
 		await this._initLoader();
+		await this._initEvents();
 
 		this.props.onReady?.({ module: this, container: this.container });
 	}
@@ -179,13 +184,12 @@ export class RegisterModule
 	}
 
 	public isInitialized() {
-		return this.initialized;
+		return this._initialized;
 	}
 
 	public async dispose() {
+		this._subscriptions.map((sub) => sub.unsubscribe());
 		await this._service.workerPool.terminateAll();
-
-		this._service.offscreenCanvas?.getContext("2d")?.closePath();
 
 		if (this._service.canvas?.dataset["reactive"] === "true") {
 			document.body.removeChild(this._service.canvas);
@@ -193,6 +197,6 @@ export class RegisterModule
 			this._service.canvas = undefined;
 		}
 
-		this.initialized = false;
+		this._initialized = false;
 	}
 }

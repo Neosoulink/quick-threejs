@@ -1,7 +1,7 @@
 import { Scene } from "three";
-import { singleton } from "tsyringe";
+import { Lifecycle, scoped } from "tsyringe";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class WorldService {
 	public scene = new Scene();
 	public enabled = true;
