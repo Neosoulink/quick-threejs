@@ -1,5 +1,16 @@
 # @quick-threejs/reactive
 
+## 0.1.35
+
+### Patch Changes
+
+- 090a83e: # Log
+
+  ## fix(reactive): correct modules life-cycle scopes
+
+  - Make all modules `ContainerScope` (solve container disposal)
+  - Remove native camera helper support
+
 ## 0.1.34
 
 ### Patch Changes
