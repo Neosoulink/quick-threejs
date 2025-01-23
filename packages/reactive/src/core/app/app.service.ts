@@ -1,9 +1,9 @@
 import { ProxyReceiver } from "@quick-threejs/utils";
-import { singleton } from "tsyringe";
+import { Lifecycle, scoped } from "tsyringe";
 
 import { OffscreenCanvasWithStyle } from "../../common/interfaces";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class AppService {
 	private _canvas?: OffscreenCanvasWithStyle;
 

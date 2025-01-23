@@ -1,5 +1,5 @@
 import { Vector2Like } from "three";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type {
 	Module,
@@ -8,7 +8,7 @@ import type {
 import { RendererService } from "./renderer.service";
 import { RendererController } from "./renderer.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class RendererModule implements Module {
 	constructor(
 		@inject(RendererController)

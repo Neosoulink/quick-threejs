@@ -1,4 +1,4 @@
-import { singleton } from "tsyringe";
+import { Lifecycle, scoped } from "tsyringe";
 import { AudioLoader, ImageBitmapLoader, LoadingManager } from "three";
 import { FontLoader } from "three/examples/jsm/Addons";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -10,7 +10,7 @@ import {
 	LoaderSource
 } from "../../../common/interfaces/loader.interface";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class LoaderService {
 	public readonly loadingManager = new LoadingManager();
 	public readonly loaders: {
@@ -93,7 +93,7 @@ export class LoaderService {
 		this.toLoadCount = toLoadCount;
 	}
 
-	public load(
+	public launchLoad(
 		onLoad?: (source: LoaderSource, resource?: LoaderResource) => unknown
 	) {
 		const firstSource = this.sources[0];

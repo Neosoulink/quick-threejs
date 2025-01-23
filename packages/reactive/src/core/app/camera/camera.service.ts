@@ -1,4 +1,4 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 import {
 	Camera,
 	Euler,
@@ -10,7 +10,7 @@ import {
 import { SizesService } from "../sizes/sizes.service";
 import { DefaultCameraType } from "../../../common/enums/camera.enum";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class CameraService {
 	public instance?: Camera;
 	public enabled = true;

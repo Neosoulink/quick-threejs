@@ -1,4 +1,4 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 import { Scene } from "three";
 
 import { WorldService } from "./world.service";
@@ -6,7 +6,7 @@ import { WorldService } from "./world.service";
 import { Module } from "../../../common/interfaces/module.interface";
 import { WorldController } from "./world.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class WorldModule implements Module {
 	constructor(
 		@inject(WorldService) private readonly _service: WorldService,

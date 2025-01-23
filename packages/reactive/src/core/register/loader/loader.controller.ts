@@ -6,7 +6,7 @@ import {
 import { filter, map, Observable, share, Subject } from "rxjs";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { AnimationClipJSON } from "three";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import {
 	LoadedResourcePayload,
@@ -15,7 +15,7 @@ import {
 import { LoaderService } from "./loader.service";
 import { JsonSerializable } from "threads";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class LoaderController {
 	public readonly load$$ = new Subject<
 		Pick<LoadedResourcePayload, "resource" | "source">

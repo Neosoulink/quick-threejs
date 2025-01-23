@@ -1,4 +1,3 @@
-import { inject, singleton } from "tsyringe";
 import {
 	Camera,
 	OrthographicCamera,
@@ -6,6 +5,7 @@ import {
 	Quaternion,
 	Vector3
 } from "three";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { CameraService } from "./camera.service";
 import { CameraController } from "./camera.controller";
@@ -13,7 +13,7 @@ import { SizesService } from "../sizes/sizes.service";
 import type { Module } from "../../../common/interfaces/module.interface";
 import { Subscription } from "rxjs";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class CameraModule implements Module {
 	private readonly _subscriptions: Subscription[] = [];
 

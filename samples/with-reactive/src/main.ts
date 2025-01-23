@@ -16,7 +16,6 @@ register({
 	axesSizes: 5,
 	gridSizes: 10,
 	withMiniCamera: true,
-	withCameraHelper: true,
 	loaderDataSources: [
 		{
 			name: "pawn",
@@ -63,10 +62,21 @@ register({
 			const sampleAudio = new Audio(audioListener);
 			sampleAudio.setBuffer(sample);
 
-			document.addEventListener("click", () => {
+			document.onclick = () => {
 				sampleAudio.stop();
 				sampleAudio.play();
-			});
+			};
 		});
 	}
 });
+
+// HOW TO DISPOSE APP
+// setTimeout(() => {
+// 	app1.container.clearInstances();
+// 	app1.container.dispose();
+// 	document.onclick = null;
+// }, 1500);
+
+// setTimeout(() => {
+// 	registerApp();
+// }, 3000);

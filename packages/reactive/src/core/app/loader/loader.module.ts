@@ -1,13 +1,11 @@
-import "reflect-metadata";
-
 import { Subscription } from "rxjs";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type { Module } from "../../../common/interfaces";
 import { LoaderController } from "./loader.controller";
 import { LoaderService } from "./loader.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class LoaderModule implements Module {
 	private readonly _subscriptions: Subscription[] = [];
 	constructor(

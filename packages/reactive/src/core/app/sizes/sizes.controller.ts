@@ -1,11 +1,11 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 import { filter, Observable } from "rxjs";
 
 import { ProxyEvent } from "common";
 import { AppController } from "../app.controller";
 import { SizesService } from "./sizes.service";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class SizesController {
 	public readonly resize$: Observable<UIEvent & ProxyEvent>;
 

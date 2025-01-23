@@ -1,11 +1,11 @@
 import { Subscription } from "rxjs";
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type { Module } from "../../../common/interfaces";
 import { TimerService } from "./timer.service";
 import { TimerController } from "./timer.controller";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TimerModule implements Module {
 	private _initialAnimationFrameId?: number;
 	private _subscriptions: Subscription[] = [];

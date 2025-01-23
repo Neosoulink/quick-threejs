@@ -1,11 +1,11 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { SizesService } from "./sizes.service";
 import { SizesController } from "./sizes.controller";
 import { Module } from "../../../common/interfaces/module.interface";
 import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class SizesModule implements Module {
 	constructor(
 		@inject(SizesController) private readonly _controller: SizesController,

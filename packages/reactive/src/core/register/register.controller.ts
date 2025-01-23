@@ -1,44 +1,36 @@
 import { inject, singleton } from "tsyringe";
 import { fromEvent, map, filter } from "rxjs";
-import { copyProperties } from "@quick-threejs/utils";
 
 import { RegisterService } from "./register.service";
-import {
-	KEYBOARD_EVENT_CODES,
-	PROXY_EVENT_LISTENERS
-} from "../../common/constants/event.constants";
+import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
 
 @singleton()
 export class RegisterController extends ProxyEventHandlersBlueprint {
-	private canvas!: HTMLCanvasElement;
-
 	constructor(
 		@inject(RegisterService) private readonly _service: RegisterService
 	) {
 		super();
 	}
 
-	public init(canvas: HTMLCanvasElement) {
-		this.canvas = canvas;
-
+	public init() {
 		for (const key of PROXY_EVENT_LISTENERS) {
 			const eventHandler =
 				key.startsWith("mouse") ||
 				key.startsWith("pointer") ||
 				key.startsWith("touch")
-					? this.mouseEventHandler
+					? this._service.mouseEventHandler.bind(this._service)
 					: key.startsWith("key")
-						? this.keyEventHandler
+						? this._service.keyEventHandler.bind(this._service)
 						: key === "resize"
-							? this.uiEventHandler
+							? this._service.uiEventHandler.bind(this._service)
 							: key === "wheel"
-								? this.wheelEventHandler
-								: this.preventDefaultHandler;
+								? this._service.wheelEventHandler.bind(this._service)
+								: this._service.preventDefaultHandler.bind(this._service);
 
 			// @ts-ignore - This is a dynamic property
 			this[`${key}$`] = fromEvent<MouseEvent>(
-				key === "resize" ? window : canvas,
+				key === "resize" ? window : this._service.canvas!,
 				key
 			).pipe(
 				// @ts-ignore
@@ -49,88 +41,5 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 				this._service.thread?.[key]?.(event as any);
 			});
 		}
-	}
-
-	public preventDefaultHandler(e: Event) {
-		e.preventDefault();
-
-		return {
-			type: e.type
-		};
-	}
-
-	public getScreenSizes() {
-		return {
-			width: this.canvas.width,
-			height: this.canvas.height,
-			windowWidth: window?.innerWidth ?? 0,
-			windowHeight: window?.innerHeight ?? 0
-		};
-	}
-
-	public uiEventHandler(e: UIEvent) {
-		const rect = this.canvas.getBoundingClientRect();
-
-		return {
-			...this.getScreenSizes(),
-			type: e.type,
-			top: rect.top,
-			left: rect.left
-		};
-	}
-
-	public mouseEventHandler(e: PointerEvent) {
-		return {
-			...this.getScreenSizes(),
-			...copyProperties(e, [
-				"ctrlKey",
-				"metaKey",
-				"shiftKey",
-				"button",
-				"pointerType",
-				"clientX",
-				"clientY",
-				"pageX",
-				"pageY"
-			])
-		};
-	}
-
-	public touchEventHandler(e: TouchEvent) {
-		const touches: {
-			pageX: number;
-			pageY: number;
-		}[] = [];
-
-		const data = { type: e.type, touches };
-		for (let i = 0; i < e.touches.length; ++i) {
-			const touch = e.touches[i];
-			touches.push({
-				pageX: touch?.pageX ?? 0,
-				pageY: touch?.pageY ?? 0
-			});
-		}
-
-		return { ...this.getScreenSizes(), ...data };
-	}
-
-	public wheelEventHandler(e: WheelEvent) {
-		e.preventDefault();
-
-		return {
-			...this.getScreenSizes(),
-			...copyProperties(e, ["deltaX", "deltaY"])
-		};
-	}
-
-	public keyEventHandler(e: KeyboardEvent) {
-		if (!KEYBOARD_EVENT_CODES.includes(e.code)) return undefined;
-
-		e.preventDefault();
-
-		return {
-			...this.getScreenSizes(),
-			...copyProperties(e, ["ctrlKey", "metaKey", "shiftKey", "keyCode"])
-		};
 	}
 }
