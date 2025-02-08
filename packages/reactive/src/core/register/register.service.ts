@@ -1,18 +1,29 @@
-import { Lifecycle, scoped } from "tsyringe";
-import { copyProperties, createWorkerPool } from "@quick-threejs/utils";
+import { inject, Lifecycle, scoped } from "tsyringe";
+import {
+	copyProperties,
+	createWorkerPool,
+	WorkerPool
+} from "@quick-threejs/utils";
 import { WorkerThreadResolution } from "@quick-threejs/utils";
 
-import { KEYBOARD_EVENT_CODES } from "../../common";
+import { KEYBOARD_EVENT_CODES, RegisterPropsBlueprint } from "../../common";
 import { ExposedAppModule } from "../app/app.util";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RegisterService {
-	public readonly workerPool = createWorkerPool(undefined, true);
+	public readonly workerPool: WorkerPool;
 
 	public canvas?: HTMLCanvasElement;
 	public offscreenCanvas?: OffscreenCanvas;
 	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
 	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
+
+	constructor(
+		@inject(RegisterPropsBlueprint)
+		private readonly _props: RegisterPropsBlueprint
+	) {
+		this.workerPool = createWorkerPool(undefined, this._props.enableDebug);
+	}
 
 	public init(app: WorkerThreadResolution<ExposedAppModule>) {
 		this.worker = app.worker;

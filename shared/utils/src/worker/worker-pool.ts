@@ -21,7 +21,7 @@ export class WorkerPool {
 		public readonly maxWorkersCount: number,
 		public debugMode: boolean,
 		public onWorkerThreadRun?: (
-			workerThread?: WorkerThread<ExposedWorkerThreadModule>
+			workerThread?: WorkerThreadResolution<ExposedWorkerThreadModule>
 		) => void
 	) {
 		for (let i = 0; i < this.maxWorkersCount; i++)
@@ -90,7 +90,8 @@ export class WorkerPool {
 		task: WorkerThreadTask,
 		immediate = false
 	): Promise<
-		[workerThread: WorkerThreadResolution<T> | undefined, queued: boolean]
+		| [workerThread: WorkerThreadResolution<T> | undefined, queued: boolean]
+		| undefined
 	> {
 		if (immediate) {
 			const workerThread = this._createWorkerThread();
@@ -101,7 +102,7 @@ export class WorkerPool {
 					task
 				);
 
-			return [await workerThread.run<T>(task), false];
+			return [await workerThread.run<T>(task), true];
 		}
 
 		const availableWorkerThread = this.nextAvailableWorkerThread;
@@ -119,7 +120,9 @@ export class WorkerPool {
 			);
 
 		const workerThread = await availableWorkerThread.run<T>(task);
-		this.onWorkerThreadRun?.(availableWorkerThread);
+		if (!workerThread) return undefined;
+
+		this.onWorkerThreadRun?.(workerThread);
 
 		return [workerThread, false];
 	}

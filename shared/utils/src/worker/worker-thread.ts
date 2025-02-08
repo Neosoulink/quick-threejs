@@ -66,10 +66,7 @@ export class WorkerThread<
 			this.worker.postMessage(payload.subject, payload.transferSubject);
 			this.worker.addEventListener("message", this._handleMessages.bind(this));
 
-			return {
-				worker: this.worker,
-				thread: this.thread
-			};
+			return this;
 		} catch (err: any) {
 			this._handleError?.(err);
 			return undefined;
