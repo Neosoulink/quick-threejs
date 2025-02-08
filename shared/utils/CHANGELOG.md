@@ -1,5 +1,15 @@
 # @quick-threejs/utils
 
+## 0.1.17
+
+### Patch Changes
+
+- aeb0be4: # 02-08-2025
+
+  ## refactor(utils): improve worker-thread accessibility
+
+  - `WorkerThread` class now return `this` on `#run` method execution
+
 ## 0.1.16
 
 ### Patch Changes
