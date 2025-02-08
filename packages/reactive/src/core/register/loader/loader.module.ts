@@ -8,6 +8,7 @@ import {
 } from "../../../common";
 import { LoaderController } from "./loader.controller";
 import { LoaderService } from "./loader.service";
+import { DRACOLoader } from "three/examples/jsm/Addons";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderModule implements Module {
@@ -77,6 +78,13 @@ export class LoaderModule implements Module {
 
 	public dispose() {
 		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		Object.keys(this._service.loaders).forEach((loaderKey) => {
+			const loader = this._service.loaders[loaderKey];
+
+			if (loader instanceof DRACOLoader) loader.dispose();
+
+			this._service.loaders[loaderKey] = undefined;
+		});
 		this._controller.load$$.complete();
 	}
 }

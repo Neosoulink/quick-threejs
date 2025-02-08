@@ -102,7 +102,7 @@ export class RegisterModule
 		this._service.offscreenCanvas.height = this._service.canvas.clientHeight;
 
 		const [workerThread, queued] =
-			await this._service.workerPool.run<ExposedAppModule>({
+			(await this._service.workerPool.run<ExposedAppModule>({
 				payload: {
 					path: this.props.location,
 					subject: {
@@ -116,7 +116,7 @@ export class RegisterModule
 					} satisfies AppModulePropsMessageEvent["data"],
 					transferSubject: [this._service.offscreenCanvas]
 				}
-			});
+			})) || [];
 
 		if (!workerThread || queued)
 			throw new Error("Unable to retrieve the worker-thread info.");
