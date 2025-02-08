@@ -1,5 +1,19 @@
 # @quick-threejs/reactive
 
+## 0.1.38
+
+### Patch Changes
+
+- 987f537: # 02-08-2025
+
+  ## refactor(reactive): handle loaders disposal
+
+  - Properly dispose of loaders
+  - Fix workers accessibility
+
+- Updated dependencies [aeb0be4]
+  - @quick-threejs/utils@0.1.17
+
 ## 0.1.37
 
 ### Patch Changes
