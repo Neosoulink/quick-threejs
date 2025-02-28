@@ -3,7 +3,6 @@ import { spawn, Thread, Worker } from "threads";
 import {
 	AwaitedSpawnedThread,
 	ExposedWorkerThreadModule,
-	WorkerThreadResolution,
 	WorkerThreadProps,
 	WorkerThreadTask
 } from "../types/worker.type";
@@ -48,7 +47,7 @@ export class WorkerThread<
 
 	public async run<U extends T = T>(
 		task: WorkerThreadTask
-	): Promise<WorkerThreadResolution<U> | undefined> {
+	): Promise<WorkerThread<U> | undefined> {
 		try {
 			const { payload, options } = task;
 
