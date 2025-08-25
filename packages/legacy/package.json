@@ -38,7 +38,7 @@
 		"@quick-threejs/config": "workspace:*",
 		"@types/events": "^3.0.3",
 		"@types/jest": "^29.5.14",
-		"@types/stats.js": "^0.17.3",
+		"@types/stats.js": "^0.17.4",
 		"@types/three": "^0.172.0",
 		"babel-jest": "^29.7.0",
 		"events": "^3.3.0",
