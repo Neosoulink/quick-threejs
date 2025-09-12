@@ -1,5 +1,14 @@
 # @quick-threejs/utils
 
+## 0.1.18
+
+### Patch Changes
+
+- e9fae86: feat(utils): add url script generator
+- a0f6c0a: # 09-12-2025
+
+  ## refactor: move worker out of utils
+
 ## 0.1.17
 
 ### Patch Changes

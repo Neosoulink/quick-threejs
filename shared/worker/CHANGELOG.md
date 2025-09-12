@@ -1,5 +1,17 @@
 # @quick-threejs/worker
 
+## 0.1.17
+
+### Patch Changes
+
+- a0f6c0a: # 09-12-2025
+
+  ## refactor: move worker out of utils
+
+- Updated dependencies [e9fae86]
+- Updated dependencies [a0f6c0a]
+  - @quick-threejs/utils@0.1.18
+
 ## 0.1.16
 
 ## 0.1.15
