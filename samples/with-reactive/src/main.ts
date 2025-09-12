@@ -1,5 +1,6 @@
 import { register } from "@quick-threejs/reactive";
 import Stats from "stats.js";
+import { Audio, AudioListener } from "three";
 
 import pawnGltf from "./assets/3D/pawn.glb?url";
 import matCapImg from "./assets/textures/matcap.jpg?url";
@@ -7,11 +8,18 @@ import sampleAudio from "./assets/audios/sample.mp3?url";
 import helvetikerFont from "./assets/fonts/helvetiker_regular.typeface.json?url";
 
 import "./style.css";
-import { Audio, AudioListener } from "three";
+
+const isDev = import.meta.env.DEV;
+const location = new URL(
+	`./main.worker.${isDev ? "ts" : "js"}`,
+	import.meta.url
+) as unknown as string;
+
+if (isDev) console.log("🚧 worker location:", location);
 
 const registerApp = () =>
 	register({
-		location: new URL("./main.worker.ts", import.meta.url) as unknown as string,
+		location,
 		enableDebug: true,
 		enableControls: true,
 		axesSizes: 5,
