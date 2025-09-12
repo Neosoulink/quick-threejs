@@ -1,4 +1,5 @@
-import { ExposedWorkerThreadModule, Methods } from "@quick-threejs/utils";
+import type { Methods } from "@quick-threejs/utils";
+import type { ExposedWorkerThreadModule } from "@quick-threejs/worker";
 import { container as parentContainer } from "tsyringe";
 import { expose } from "threads/worker";
 import type { WorkerFunction } from "threads/dist/types/worker";

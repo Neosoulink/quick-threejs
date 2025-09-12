@@ -1,9 +1,9 @@
-import { WorkerThread } from "./worker-thread";
+import { WorkerThread } from "./thread";
 import {
 	ExposedWorkerThreadModule,
 	WorkerThreadResolution,
 	WorkerThreadTask
-} from "../types/worker.type";
+} from "./types/worker.type";
 
 /**
  * @description {@link WorkerThread} Pool.

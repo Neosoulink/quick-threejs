@@ -112,6 +112,9 @@ importers:
       '@quick-threejs/utils':
         specifier: workspace:*
         version: link:../../shared/utils
+      '@quick-threejs/worker':
+        specifier: workspace:*
+        version: link:../../shared/worker
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -314,6 +317,25 @@ importers:
 
   shared/utils:
     dependencies:
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+    devDependencies:
+      '@quick-threejs/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: ^24.3.1
+        version: 24.3.1
+      '@types/three':
+        specifier: ^0.172.0
+        version: 0.172.0
+
+  shared/worker:
+    dependencies:
+      '@quick-threejs/utils':
+        specifier: workspace:*
+        version: link:../utils
       threads:
         specifier: ^1.7.0
         version: 1.7.0
