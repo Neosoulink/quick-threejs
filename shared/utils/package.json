@@ -19,7 +19,7 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/node": "^22.10.2",
+		"@types/node": "^24.3.1",
 		"@types/three": "^0.172.0"
 	},
 	"peerDependencies": {
