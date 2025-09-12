@@ -1,6 +1,6 @@
-import { spawn, Worker } from "threads";
-import { WorkerFunction, WorkerModule } from "threads/dist/types/worker";
-import { ThreadsWorkerOptions } from "threads/dist/types/master";
+import type { spawn, Worker } from "threads";
+import type { WorkerFunction, WorkerModule } from "threads/dist/types/worker";
+import type { ThreadsWorkerOptions } from "threads/dist/types/master";
 
 /**
  * @description {@link WorkerModule} representation.

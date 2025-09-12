@@ -1,0 +1,10 @@
+{
+	"extends": "@quick-threejs/config/typescript",
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+
+		"outDir": "./dist"
+	},
+	"include": ["src", "*.config.mjs"]
+}
