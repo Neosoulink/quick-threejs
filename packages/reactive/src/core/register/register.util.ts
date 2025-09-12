@@ -21,10 +21,7 @@ import { RegisterModule } from "./register.module";
 export const register = (
 	props: RegisterPropsBlueprint
 ): ContainerizedApp<RegisterModule> => {
-	if (
-		typeof props?.location !== "string" &&
-		!((props?.location as any) instanceof URL)
-	)
+	if (!props?.location || !URL.canParse(props.location))
 		throw new Error(
 			"Invalid register props detected. location path is required"
 		);

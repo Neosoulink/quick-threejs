@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import type { DependencyContainer, Disposable } from "tsyringe";
 
 import type { RegisterPropsBlueprint } from "../blueprints";

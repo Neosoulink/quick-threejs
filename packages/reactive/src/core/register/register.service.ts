@@ -7,7 +7,7 @@ import {
 import { WorkerThreadResolution } from "@quick-threejs/utils";
 
 import { KEYBOARD_EVENT_CODES, RegisterPropsBlueprint } from "../../common";
-import { ExposedAppModule } from "../app/app.util";
+import { ExposedAppModule } from "../app/app.worker";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RegisterService {
