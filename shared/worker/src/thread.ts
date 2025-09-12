@@ -3,11 +3,10 @@ import { spawn, Thread, Worker } from "threads";
 import {
 	AwaitedSpawnedThread,
 	ExposedWorkerThreadModule,
-	WorkerThreadResolution,
 	WorkerThreadProps,
 	WorkerThreadTask
-} from "../types/worker.type";
-import { TERMINATE_THREAD_FROM_WORKER_TOKEN } from "../tokens";
+} from "./types/worker.type";
+import { TERMINATE_THREAD_FROM_WORKER_TOKEN } from "./tokens";
 
 let auto_increment_unique_id = -1;
 
@@ -48,7 +47,7 @@ export class WorkerThread<
 
 	public async run<U extends T = T>(
 		task: WorkerThreadTask
-	): Promise<WorkerThreadResolution<U> | undefined> {
+	): Promise<WorkerThread<U> | undefined> {
 		try {
 			const { payload, options } = task;
 

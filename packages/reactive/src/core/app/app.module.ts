@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { type WorkerThreadModule } from "@quick-threejs/utils";
+import type { WorkerThreadModule } from "@quick-threejs/worker";
 import { Observable } from "rxjs";
 import { inject, scoped, Lifecycle } from "tsyringe";
 

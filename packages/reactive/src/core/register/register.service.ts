@@ -1,13 +1,13 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
+import { copyProperties } from "@quick-threejs/utils";
 import {
-	copyProperties,
 	createWorkerPool,
-	WorkerPool
-} from "@quick-threejs/utils";
-import { WorkerThreadResolution } from "@quick-threejs/utils";
+	type WorkerPool,
+	type WorkerThreadResolution
+} from "@quick-threejs/worker";
 
 import { KEYBOARD_EVENT_CODES, RegisterPropsBlueprint } from "../../common";
-import { ExposedAppModule } from "../app/app.util";
+import { ExposedAppModule } from "../app/app.worker";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RegisterService {

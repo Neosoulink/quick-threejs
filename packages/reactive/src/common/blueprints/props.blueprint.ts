@@ -1,6 +1,9 @@
-import type { RegisterModule, AppModule } from "../../core";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import type { DefaultCameraType } from "../enums";
 import type { ContainerizedApp, Module, LoaderSource } from "../interfaces";
+import type { AppModule } from "../../core/app/app.module";
+import type { RegisterModule } from "../../core/register/register.module";
 
 /**
  * @description {@link RegisterModule} initialization properties.

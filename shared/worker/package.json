@@ -1,6 +1,6 @@
 {
-	"name": "@quick-threejs/utils",
-	"version": "0.1.17",
+	"name": "@quick-threejs/worker",
+	"version": "0.1.16",
 	"scripts": {
 		"prepare": "pnpm run build",
 		"lint": "eslint && tsc --noEmit",
@@ -14,6 +14,8 @@
 	"module": "./dist/main.mjs",
 	"types": "./dist/main.d.ts",
 	"dependencies": {
+		"@quick-threejs/utils": "workspace:*",
+		"threads": "^1.7.0",
 		"three": "^0.172.0"
 	},
 	"devDependencies": {
@@ -22,6 +24,7 @@
 		"@types/three": "^0.172.0"
 	},
 	"peerDependencies": {
+		"threads": "^1.7.0",
 		"three": "^0.172.0"
 	}
 }

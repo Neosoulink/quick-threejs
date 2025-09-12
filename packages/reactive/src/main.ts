@@ -1,2 +1,4 @@
-export * from "./core";
-export * from "./common";
+export * from "./common/";
+
+export * from "./core/register/register.module";
+export * from "./core/register/register.util";

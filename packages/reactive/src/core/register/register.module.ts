@@ -12,7 +12,7 @@ import {
 	RegisterProxyEventHandlersBlueprint,
 	LOADER_SERIALIZED_LOAD_TOKEN
 } from "../../common";
-import { ExposedAppModule } from "../app/app.util";
+import { ExposedAppModule } from "../app/app.worker";
 import { RegisterService } from "./register.service";
 import { RegisterController } from "./register.controller";
 import { LoaderModule } from "./loader/loader.module";
