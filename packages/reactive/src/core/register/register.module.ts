@@ -132,7 +132,10 @@ export class RegisterModule
 	}
 
 	private async _initLoader() {
-		this.loader.init(this.props.loaderDataSources);
+		this.loader.init({
+			sources: this.props.loaderDataSources,
+			dracoDecoderPath: this.props.loaderDracoDecoderPath
+		});
 
 		this._subscriptions.push(
 			this._loaderController.serializedLoad$.subscribe((payload) => {

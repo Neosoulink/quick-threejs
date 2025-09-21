@@ -27,9 +27,9 @@ export class LoaderModule implements Module {
 		);
 	}
 
-	public init(sources: LoaderSource[] = []) {
-		this._service.init(sources);
-		this._service.setDracoDecoder();
+	public init(params: { sources?: LoaderSource[]; dracoDecoderPath?: string }) {
+		this._service.init(params.sources || []);
+		this._service.setDracoDecoder(params.dracoDecoderPath);
 
 		if ([undefined, true].includes(this._props.loadResourcesOnInit))
 			this.load();

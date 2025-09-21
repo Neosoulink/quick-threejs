@@ -61,6 +61,13 @@ export class RegisterPropsBlueprint {
 	loaderDataSources?: LoaderSource[] = [];
 
 	/**
+	 * @description GLTF Draco decoder path.
+	 *
+	 * @default undefined
+	 */
+	loaderDracoDecoderPath?: string;
+
+	/**
 	 * @description Will directly load the resources on initialization.
 	 *
 	 * @remark __This property depends on {@link RegisterPropsBlueprint.initOnConstruct initOnConstruct}__
