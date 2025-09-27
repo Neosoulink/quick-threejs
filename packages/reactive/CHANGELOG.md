@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.40
+
+### Patch Changes
+
+- 8e4169a: # 09-21-25
+
+  ## refactor(reactive): allow draco decoder path overwrite
+
 ## 0.1.39
 
 ### Patch Changes
