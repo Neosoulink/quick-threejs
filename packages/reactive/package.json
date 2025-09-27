@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/reactive",
-	"version": "0.1.39",
+	"version": "0.1.40",
 	"description": "Reactively quick start a three.js app ⚡️",
 	"repository": {
 		"type": "git",
@@ -46,7 +46,7 @@
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
 		"@quick-threejs/worker": "workspace:*",
-		"rxjs": "^7.8.1",
+		"rxjs": "^7.8.2",
 		"threads": "^1.7.0",
 		"three": "^0.172.0",
 		"vite-plugin-glslify": "^2.1.0"
