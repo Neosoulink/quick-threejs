@@ -22,7 +22,11 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 		[key in ProxyEventListenerKeys]: WorkerFunction;
 	} = {} as typeof proxyEventHandlers;
 	const handleInitMessage = (event: AppModulePropsMessageEvent) => {
-		if (!event.data?.canvas || module.getIsInitialized()) return;
+		if (
+			(!event.data?.canvas && !event.data?.mainThread) ||
+			module.getIsInitialized()
+		)
+			return;
 
 		const startTimer = !!event.data?.startTimer;
 		const withMiniCamera = !!event.data?.withMiniCamera;
@@ -30,6 +34,14 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 
 		module.init({
 			...event.data,
+			canvas:
+				props?.canvas ||
+				event.data.canvas ||
+				(event.data.mainThread
+					? (self?.document?.getElementsByTagName(
+							"canvas"
+						)[0] as HTMLCanvasElement)
+					: undefined),
 			startTimer,
 			withMiniCamera,
 			fullScreen
@@ -46,7 +58,7 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 	});
 	self?.addEventListener("message", handleInitMessage);
 
-	expose({
+	const exposedApp: ExposedAppModule = {
 		...proxyEventHandlers,
 		getProxyReceiver: module.getProxyReceiver.bind(module),
 		getIsInitialized: module.getIsInitialized.bind(module),
@@ -55,7 +67,15 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 		getStep$: module.getStep$.bind(module),
 		getAfterRender$: module.getAfterRender$.bind(module),
 		dispose: module.dispose.bind(module)
-	} satisfies ExposedAppModule);
+	};
+
+	parentContainer.register("MAIN_THREAD_APP", { useValue: exposedApp });
+
+	try {
+		expose(exposedApp);
+	} catch (error) {
+		console.warn("Failed to expose the app module.", (error as Error).message);
+	}
 
 	return app;
 };
