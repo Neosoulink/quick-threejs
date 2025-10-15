@@ -6,7 +6,11 @@ import {
 	type WorkerThreadResolution
 } from "@quick-threejs/worker";
 
-import { KEYBOARD_EVENT_CODES, RegisterPropsBlueprint } from "../../common";
+import {
+	KEYBOARD_EVENT_CODES,
+	OffscreenCanvasWithStyle,
+	RegisterPropsBlueprint
+} from "../../common";
 import { ExposedAppModule } from "../app/app.worker";
 
 @scoped(Lifecycle.ContainerScoped)
@@ -14,7 +18,7 @@ export class RegisterService {
 	public readonly workerPool: WorkerPool;
 
 	public canvas?: HTMLCanvasElement;
-	public offscreenCanvas?: OffscreenCanvas;
+	public offscreenCanvas?: OffscreenCanvasWithStyle;
 	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
 	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
 

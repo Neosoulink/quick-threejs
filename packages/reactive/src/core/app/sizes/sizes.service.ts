@@ -11,9 +11,16 @@ export class SizesService {
 	public frustrum = 5;
 	public enabled = true;
 
-	public init(canvas: OffscreenCanvasWithStyle, enabled?: boolean) {
-		this.height = Number(canvas.height ?? this.height);
-		this.width = Number(canvas.width ?? this.width);
+	public init(
+		canvas: OffscreenCanvasWithStyle | HTMLCanvasElement,
+		enabled?: boolean
+	) {
+		this.height = Number(
+			(canvas as OffscreenCanvasWithStyle).height ?? this.height
+		);
+		this.width = Number(
+			(canvas as OffscreenCanvasWithStyle).width ?? this.width
+		);
 		this.aspect = this.width / this.height;
 		this.enabled = enabled === undefined ? true : !!enabled;
 	}

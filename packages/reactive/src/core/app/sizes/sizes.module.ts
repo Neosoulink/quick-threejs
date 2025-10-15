@@ -12,7 +12,7 @@ export class SizesModule implements Module {
 		@inject(SizesService) private readonly _service: SizesService
 	) {}
 
-	public init(canvas: OffscreenCanvasWithStyle) {
+	public init(canvas: OffscreenCanvasWithStyle | HTMLCanvasElement) {
 		this._controller.resize$.subscribe((size) => {
 			this._service.width = size.windowWidth;
 			this._service.height = size.windowHeight;

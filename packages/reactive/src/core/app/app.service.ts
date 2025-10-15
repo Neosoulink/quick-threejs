@@ -5,22 +5,26 @@ import { OffscreenCanvasWithStyle } from "../../common/interfaces";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppService {
-	private _canvas?: OffscreenCanvasWithStyle;
+	private _canvas?: HTMLCanvasElement | OffscreenCanvasWithStyle;
 
 	public readonly proxyReceiver = new ProxyReceiver<Record<string, unknown>>();
 
 	public isInitialized = false;
 
-	public get canvas(): OffscreenCanvasWithStyle | undefined {
+	public get canvas():
+		| OffscreenCanvasWithStyle
+		| HTMLCanvasElement
+		| undefined {
 		return this._canvas;
 	}
 
-	public set canvas(canvas: OffscreenCanvasWithStyle | OffscreenCanvas) {
+	public set canvas(canvas: HTMLCanvasElement | OffscreenCanvasWithStyle) {
+		// @ts-ignore
 		canvas["style"] = {
 			width: canvas.width + "",
 			height: canvas.height + ""
 		};
 
-		this._canvas = canvas as OffscreenCanvasWithStyle;
+		this._canvas = canvas;
 	}
 }

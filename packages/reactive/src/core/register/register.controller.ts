@@ -1,9 +1,11 @@
-import { inject, Lifecycle, scoped } from "tsyringe";
-import { fromEvent, map, filter } from "rxjs";
+import { container, inject, Lifecycle, scoped } from "tsyringe";
+import { fromEvent, map, filter, Subject } from "rxjs";
 
+import type { ExposedAppModule } from "../app/app.worker";
 import { RegisterService } from "./register.service";
 import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
+import { ProxyEvent } from "common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RegisterController extends ProxyEventHandlersBlueprint {
@@ -14,6 +16,14 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 	}
 
 	public init() {
+		let mainThreadApp: ExposedAppModule | undefined;
+
+		try {
+			mainThreadApp = container.resolve<ExposedAppModule>("MAIN_THREAD_APP");
+		} catch {
+			mainThreadApp = undefined;
+		}
+
 		for (const key of PROXY_EVENT_LISTENERS) {
 			const eventHandler =
 				key.startsWith("mouse") ||
@@ -29,16 +39,42 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 								: this._service.preventDefaultHandler.bind(this._service);
 
 			// @ts-ignore - This is a dynamic property
-			this[`${key}$`] = fromEvent<MouseEvent>(
+			this[`${key}$$`] = new Subject<
+				MouseEvent &
+					ProxyEvent &
+					UIEvent &
+					PointerEvent &
+					TouchEvent &
+					WheelEvent &
+					KeyboardEvent &
+					ProxyEvent
+			>();
+
+			fromEvent<MouseEvent>(
 				key === "resize" ? window : this._service.canvas!,
 				key
-			).pipe(
-				// @ts-ignore
-				map(eventHandler.bind(this)),
-				filter((e) => (key === "keydown" && !e ? false : true))
-			);
+			)
+				.pipe(
+					// @ts-ignore
+					map(eventHandler.bind(this)),
+					filter((e) => (key === "keydown" && !e ? false : true))
+				)
+				.subscribe((event) => {
+					this[`${key}$$`].next(
+						event as MouseEvent &
+							ProxyEvent &
+							UIEvent &
+							PointerEvent &
+							TouchEvent &
+							WheelEvent &
+							KeyboardEvent
+					);
+				});
+			// @ts-ignore - This is a dynamic property
+			this[`${key}$`] = this[`${key}$$`].asObservable();
 			this[`${key}$`].subscribe((event) => {
 				this._service.thread?.[key]?.(event as any);
+				mainThreadApp?.[key]?.(event as any);
 			});
 		}
 	}

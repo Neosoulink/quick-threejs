@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import type { DefaultCameraType } from "../enums";
-import type { ContainerizedApp, Module, LoaderSource } from "../interfaces";
+import type {
+	ContainerizedApp,
+	Module,
+	LoaderSource,
+	OffscreenCanvasWithStyle
+} from "../interfaces";
 import type { AppModule } from "../../core/app/app.module";
 import type { RegisterModule } from "../../core/register/register.module";
 
@@ -22,6 +27,13 @@ export class RegisterPropsBlueprint {
 	 * @default true
 	 */
 	initOnConstruct?: boolean;
+
+	/**
+	 * @description Initialize the app on main thread.
+	 *
+	 * @default false
+	 */
+	mainThread?: boolean;
 
 	/**
 	 * @description App `canvas` element reference.
@@ -137,6 +149,9 @@ export class RegisterPropsBlueprint {
  * @description {@link AppModule} initialization properties.
  */
 export class LaunchAppProps<M extends Module> {
+	/** @description App `canvas` element reference. */
+	canvas?: OffscreenCanvasWithStyle | HTMLCanvasElement;
+
 	/** @description Handler triggered when the app is ready. */
 	onReady?: (workerApp: ContainerizedApp<M>) => unknown;
 }

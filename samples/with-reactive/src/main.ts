@@ -54,11 +54,11 @@ const registerApp = () =>
 
 			window.document.body.appendChild(stats.dom);
 
-			thread.getBeforeRender$?.().subscribe(() => {
+			thread?.getBeforeRender$?.().subscribe(() => {
 				stats.begin();
 			});
 
-			thread.getStep$?.().subscribe(() => {
+			thread?.getStep$?.().subscribe(() => {
 				stats.end();
 			});
 
