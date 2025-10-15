@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.41
+
+### Patch Changes
+
+- f5ab95a: # 10-15-2025
+
+  ## fix(reactive): correct debug helpers access
+
 ## 0.1.40
 
 ### Patch Changes
