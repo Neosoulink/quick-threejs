@@ -1,5 +1,19 @@
 # @quick-threejs/reactive
 
+## 0.1.42
+
+### Patch Changes
+
+- 281d5c0: # 10-15-2025
+
+  ## chore(deps): upgrade `threejs` v180
+
+- 882cb88: # 10-15-2025
+
+  ## refactor(reactive): support main thread execution
+
+  - Add an option to execute the experience on the main thread only
+
 ## 0.1.41
 
 ### Patch Changes
