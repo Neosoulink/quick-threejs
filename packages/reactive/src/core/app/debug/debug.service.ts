@@ -96,8 +96,8 @@ export class DebugService {
 	public initAxesHelper(axesSizes: number) {
 		if (!this.enabled) return;
 
-		const axesHelper = new AxesHelper(axesSizes);
-		this._worldService.scene.add(axesHelper);
+		this.axesHelper = new AxesHelper(axesSizes);
+		this._worldService.scene.add(this.axesHelper);
 	}
 
 	public initGridHelper(gridSizes: number) {
@@ -107,8 +107,8 @@ export class DebugService {
 
 		if (!this.enabled) return;
 
-		const axesHelper = new GridHelper(gridSizes, gridSizes);
-		this._worldService.scene.add(axesHelper);
+		this.gridHelper = new GridHelper(gridSizes, gridSizes);
+		this._worldService.scene.add(this.gridHelper);
 	}
 
 	public disposeMiniCamera() {
