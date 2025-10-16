@@ -52,7 +52,7 @@ launchApp({
 			text.geometry.center();
 
 			app.module.timer.step$().subscribe((payload) => {
-				pawn.rotation.y += payload.deltaRatio * 0.05;
+				pawn.rotation.y += payload.delta * 2;
 			});
 
 			app.module.world.scene().add(pawn, text);
