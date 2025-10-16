@@ -7,7 +7,7 @@ import {
 } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type { OffscreenCanvasWithStyle } from "../../../common/interfaces";
+import type { OffscreenCanvasStb } from "../../../common/interfaces";
 import { WorldService } from "../world/world.service";
 import { CameraService } from "../camera/camera.service";
 import { SizesService } from "../sizes/sizes.service";
@@ -25,7 +25,7 @@ export class RendererService {
 		@inject(SizesService) private readonly _sizesService: SizesService
 	) {}
 
-	public setWebGLRenderer(canvas: OffscreenCanvasWithStyle) {
+	public setWebGLRenderer(canvas: OffscreenCanvasStb | HTMLCanvasElement) {
 		this.instance = new WebGLRenderer({
 			canvas,
 			context: canvas.getContext("webgl2", {

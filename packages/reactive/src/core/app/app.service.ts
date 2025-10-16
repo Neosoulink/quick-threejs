@@ -1,24 +1,21 @@
 import { ProxyReceiver } from "@quick-threejs/utils";
 import { Lifecycle, scoped } from "tsyringe";
 
-import { OffscreenCanvasWithStyle } from "../../common/interfaces";
+import { OffscreenCanvasStb } from "../../common/interfaces";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppService {
-	private _canvas?: HTMLCanvasElement | OffscreenCanvasWithStyle;
+	private _canvas?: HTMLCanvasElement | OffscreenCanvasStb;
 
 	public readonly proxyReceiver = new ProxyReceiver<Record<string, unknown>>();
 
 	public isInitialized = false;
 
-	public get canvas():
-		| OffscreenCanvasWithStyle
-		| HTMLCanvasElement
-		| undefined {
+	public get canvas(): OffscreenCanvasStb | HTMLCanvasElement | undefined {
 		return this._canvas;
 	}
 
-	public set canvas(canvas: HTMLCanvasElement | OffscreenCanvasWithStyle) {
+	public set canvas(canvas: HTMLCanvasElement | OffscreenCanvasStb) {
 		// @ts-ignore
 		canvas["style"] = {
 			width: canvas.width + "",

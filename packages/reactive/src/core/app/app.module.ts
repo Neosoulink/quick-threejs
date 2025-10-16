@@ -8,7 +8,7 @@ import {
 	type AppModulePropsMessageEvent,
 	type Module,
 	AppProxyEventHandlersBlueprint,
-	OffscreenCanvasWithStyle,
+	OffscreenCanvasStb,
 	PROXY_EVENT_LISTENERS
 } from "../../common";
 import { AppController } from "./app.controller";
@@ -79,7 +79,7 @@ export class AppModule
 	}
 
 	public init(props: AppModulePropsMessageEvent["data"]) {
-		this._service.canvas = props.canvas as OffscreenCanvasWithStyle;
+		this._service.canvas = props.canvas as OffscreenCanvasStb;
 
 		if (this._service.isInitialized || !this._service.canvas) return;
 

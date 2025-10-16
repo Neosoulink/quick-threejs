@@ -13,7 +13,7 @@ import {
 	RegisterProxyEventHandlersBlueprint,
 	LOADER_SERIALIZED_LOAD_TOKEN,
 	ProxyEvent,
-	OffscreenCanvasWithStyle
+	OffscreenCanvasStb
 } from "../../common";
 import { ExposedAppModule } from "../app/app.worker";
 import { RegisterService } from "./register.service";
@@ -119,7 +119,7 @@ export class RegisterModule
 			throw new Error("Canvas element is not initialized.");
 
 		this._service.offscreenCanvas =
-			this._service.canvas.transferControlToOffscreen() as OffscreenCanvasWithStyle;
+			this._service.canvas.transferControlToOffscreen() as OffscreenCanvasStb;
 		this._service.offscreenCanvas.width = this._service.canvas.clientWidth;
 		this._service.offscreenCanvas.height = this._service.canvas.clientHeight;
 

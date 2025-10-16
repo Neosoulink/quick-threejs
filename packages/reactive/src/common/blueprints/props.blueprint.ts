@@ -5,7 +5,7 @@ import type {
 	ContainerizedApp,
 	Module,
 	LoaderSource,
-	OffscreenCanvasWithStyle
+	OffscreenCanvasStb
 } from "../interfaces";
 import type { AppModule } from "../../core/app/app.module";
 import type { RegisterModule } from "../../core/register/register.module";
@@ -150,7 +150,7 @@ export class RegisterPropsBlueprint {
  */
 export class LaunchAppProps<M extends Module> {
 	/** @description App `canvas` element reference. */
-	canvas?: OffscreenCanvasWithStyle | HTMLCanvasElement;
+	canvas?: OffscreenCanvasStb | HTMLCanvasElement;
 
 	/** @description Handler triggered when the app is ready. */
 	onReady?: (workerApp: ContainerizedApp<M>) => unknown;
