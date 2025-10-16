@@ -28,8 +28,8 @@ export class TimerModule implements Module {
 	}
 
 	public deltaTime(value?: number) {
-		if (typeof value === "number") this._service.deltaTime = value;
-		return this._service.deltaTime;
+		if (typeof value === "number") this._service.delta = value;
+		return this._service.delta;
 	}
 
 	public deltaRatio(value?: number) {

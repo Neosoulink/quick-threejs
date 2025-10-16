@@ -1,22 +1,23 @@
+import { Clock } from "three";
 import { Lifecycle, scoped } from "tsyringe";
 
 @scoped(Lifecycle.ContainerScoped)
 export class TimerService {
-	public readonly frame = 1000 / 60;
+	public readonly fps = 60;
+	public readonly frame = 1000 / this.fps;
+	public readonly clock = new Clock();
 	public readonly initialTime = Date.now();
 
-	public currentTime = 0;
-	public deltaTime = 0;
+	public elapsed = 0;
+	public previousDelta = 0;
+	public delta = 0;
 	public deltaRatio = 0;
-	public elapsedTime = 0;
 	public enabled = false;
 
 	public step() {
-		const now = Date.now();
-
-		this.deltaTime = now - this.currentTime;
-		this.currentTime = now;
-		this.elapsedTime = now - this.initialTime;
-		this.deltaRatio = this.deltaTime / this.frame;
+		this.elapsed = this.clock.getElapsedTime();
+		this.delta = this.elapsed - this.previousDelta;
+		this.previousDelta = this.elapsed;
+		this.deltaRatio = this.delta / this.frame;
 	}
 }
