@@ -1,5 +1,16 @@
 # with-reactive
 
+## 0.0.37
+
+### Patch Changes
+
+- b6945c7: # 10-16-2025
+
+  ## refactor(reactive): enhance timer service
+
+- Updated dependencies [b6945c7]
+  - @quick-threejs/reactive@0.1.44
+
 ## 0.0.36
 
 ### Patch Changes
