@@ -1,4 +1,4 @@
-import { OffscreenCanvasWithStyle } from "main";
+import { OffscreenCanvasStb } from "main";
 import { RegisterPropsBlueprint } from "../blueprints/props.blueprint";
 
 export interface AppModulePropsMessageEvent
@@ -12,6 +12,6 @@ export interface AppModulePropsMessageEvent
 			 *
 			 * @default `undefined`
 			 */
-			canvas?: OffscreenCanvasWithStyle | HTMLCanvasElement;
+			canvas?: OffscreenCanvasStb | HTMLCanvasElement;
 		}
 	> {}

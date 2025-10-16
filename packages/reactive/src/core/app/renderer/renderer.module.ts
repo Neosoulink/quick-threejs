@@ -1,10 +1,7 @@
 import { Vector2Like } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type {
-	Module,
-	OffscreenCanvasWithStyle
-} from "../../../common/interfaces";
+import type { Module, OffscreenCanvasStb } from "../../../common/interfaces";
 import { RendererService } from "./renderer.service";
 import { RendererController } from "./renderer.controller";
 
@@ -16,7 +13,7 @@ export class RendererModule implements Module {
 		@inject(RendererService) private readonly _service: RendererService
 	) {}
 
-	public init(canvas: OffscreenCanvasWithStyle): void {
+	public init(canvas: OffscreenCanvasStb): void {
 		this._controller.step$.subscribe(() => this._service.render());
 		this._controller.resize$.subscribe((size) =>
 			this._service.setSize(size.windowWidth, size.windowHeight)

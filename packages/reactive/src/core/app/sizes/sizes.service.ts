@@ -1,6 +1,6 @@
 import { Lifecycle, scoped } from "tsyringe";
 
-import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
+import { OffscreenCanvasStb } from "../../../common/interfaces/canvas.interface";
 
 @scoped(Lifecycle.ContainerScoped)
 export class SizesService {
@@ -12,15 +12,11 @@ export class SizesService {
 	public enabled = true;
 
 	public init(
-		canvas: OffscreenCanvasWithStyle | HTMLCanvasElement,
+		canvas: OffscreenCanvasStb | HTMLCanvasElement,
 		enabled?: boolean
 	) {
-		this.height = Number(
-			(canvas as OffscreenCanvasWithStyle).height ?? this.height
-		);
-		this.width = Number(
-			(canvas as OffscreenCanvasWithStyle).width ?? this.width
-		);
+		this.height = Number((canvas as OffscreenCanvasStb).height ?? this.height);
+		this.width = Number((canvas as OffscreenCanvasStb).width ?? this.width);
 		this.aspect = this.width / this.height;
 		this.enabled = enabled === undefined ? true : !!enabled;
 	}

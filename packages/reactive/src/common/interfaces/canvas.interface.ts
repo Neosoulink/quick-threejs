@@ -1,4 +1,4 @@
-export interface OffscreenCanvasWithStyle extends OffscreenCanvas {
+export interface OffscreenCanvasStb extends OffscreenCanvas {
 	style: Partial<CSSStyleDeclaration> & {
 		width: CSSStyleDeclaration["width"];
 		height: CSSStyleDeclaration["height"];

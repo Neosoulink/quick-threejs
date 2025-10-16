@@ -3,7 +3,7 @@ import { inject, Lifecycle, scoped } from "tsyringe";
 import { SizesService } from "./sizes.service";
 import { SizesController } from "./sizes.controller";
 import { Module } from "../../../common/interfaces/module.interface";
-import { OffscreenCanvasWithStyle } from "../../../common/interfaces/canvas.interface";
+import { OffscreenCanvasStb } from "../../../common/interfaces/canvas.interface";
 
 @scoped(Lifecycle.ContainerScoped)
 export class SizesModule implements Module {
@@ -12,7 +12,7 @@ export class SizesModule implements Module {
 		@inject(SizesService) private readonly _service: SizesService
 	) {}
 
-	public init(canvas: OffscreenCanvasWithStyle | HTMLCanvasElement) {
+	public init(canvas: OffscreenCanvasStb | HTMLCanvasElement) {
 		this._controller.resize$.subscribe((size) => {
 			this._service.width = size.windowWidth;
 			this._service.height = size.windowHeight;

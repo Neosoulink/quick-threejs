@@ -51,7 +51,7 @@ export class CameraService {
 			this.instance = new PerspectiveCamera(
 				70,
 				this._sizesService.width / this._sizesService.height,
-				0.0001,
+				0.1,
 				100
 			);
 

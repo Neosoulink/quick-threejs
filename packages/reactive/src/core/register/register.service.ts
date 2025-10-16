@@ -8,7 +8,7 @@ import {
 
 import {
 	KEYBOARD_EVENT_CODES,
-	OffscreenCanvasWithStyle,
+	OffscreenCanvasStb,
 	RegisterPropsBlueprint
 } from "../../common";
 import { ExposedAppModule } from "../app/app.worker";
@@ -18,7 +18,7 @@ export class RegisterService {
 	public readonly workerPool: WorkerPool;
 
 	public canvas?: HTMLCanvasElement;
-	public offscreenCanvas?: OffscreenCanvasWithStyle;
+	public offscreenCanvas?: OffscreenCanvasStb;
 	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
 	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
 
