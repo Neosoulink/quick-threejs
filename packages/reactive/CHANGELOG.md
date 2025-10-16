@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.43
+
+### Patch Changes
+
+- 1f340c7: # 10-16-2025
+
+  - `PerspectiveCamera#near` property correction
+
 ## 0.1.42
 
 ### Patch Changes
