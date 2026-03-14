@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/utils",
-	"version": "0.1.18",
+	"version": "0.1.19",
 	"scripts": {
 		"prepare": "pnpm run build",
 		"lint": "eslint && tsc --noEmit",
