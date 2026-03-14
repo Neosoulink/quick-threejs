@@ -1,5 +1,13 @@
 # @quick-threejs/reactive
 
+## 0.1.46
+
+### Patch Changes
+
+- 33b4377: # 03-14-2026
+
+  ## refactor(reactive): upgrade draco decoder version
+
 ## 0.1.45
 
 ### Patch Changes
