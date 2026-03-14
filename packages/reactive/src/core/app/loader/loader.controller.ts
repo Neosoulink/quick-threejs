@@ -1,16 +1,15 @@
 import { copyProperties, deserializeObject3D } from "@quick-threejs/utils";
 import { filter, fromEvent, map, share } from "rxjs";
+import { type GLTF, type GLTFParser, Font } from "three/examples/jsm/Addons";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
 import {
 	type SerializedLoadedResourcePayload,
-	LoadedResourcePayload,
+	type LoadedResourcePayload,
 	LOADER_SERIALIZED_LOAD_TOKEN
-} from "../../../common";
+} from "@/common";
 import { AnimationClip, AnimationClipJSON, Camera, Group } from "three";
-import { GLTF, GLTFParser } from "three/examples/jsm/loaders/GLTFLoader";
 import { LoaderService } from "./loader.service";
-import { Font } from "three/examples/jsm/Addons";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderController {

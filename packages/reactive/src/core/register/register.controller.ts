@@ -1,11 +1,13 @@
 import { container, inject, Lifecycle, scoped } from "tsyringe";
 import { fromEvent, map, filter, Subject } from "rxjs";
 
+import {
+	type ProxyEvent,
+	PROXY_EVENT_LISTENERS,
+	ProxyEventHandlersBlueprint
+} from "@/common";
 import type { ExposedAppModule } from "../app/app.worker";
 import { RegisterService } from "./register.service";
-import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
-import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
-import { ProxyEvent } from "common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RegisterController extends ProxyEventHandlersBlueprint {

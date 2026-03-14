@@ -10,13 +10,13 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@types/three": "^0.172.0"
+		"@types/three": "^0.183.1 "
 	},
 	"dependencies": {
 		"@quick-threejs/reactive": "workspace:*",
 		"@quick-threejs/utils": "workspace:*",
 		"stats.js": "^0.17.0",
-		"three": "^0.180.0",
+		"three": "^0.183.1 ",
 		"url": "^0.11.4"
 	}
 }

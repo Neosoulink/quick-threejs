@@ -1,11 +1,12 @@
-import { Clock } from "three";
+import type { ProxyReceiver } from "@quick-threejs/utils";
+import { Timer } from "three";
 import { Lifecycle, scoped } from "tsyringe";
 
 @scoped(Lifecycle.ContainerScoped)
 export class TimerService {
 	public readonly fps = 60;
 	public readonly frame = 1000 / this.fps;
-	public readonly clock = new Clock();
+	public readonly timer = new Timer();
 	public readonly initialTime = Date.now();
 
 	public elapsed = 0;
@@ -14,8 +15,14 @@ export class TimerService {
 	public deltaRatio = 0;
 	public enabled = false;
 
+	init(proxy: ProxyReceiver<Record<string, unknown>>) {
+		this.timer.connect(proxy as unknown as Document);
+	}
+
 	public step() {
-		this.elapsed = this.clock.getElapsedTime();
+		this.timer.update();
+
+		this.elapsed = this.timer.getElapsed();
 		this.delta = this.elapsed - this.previousDelta;
 		this.previousDelta = this.elapsed;
 		this.deltaRatio = this.delta / this.frame;

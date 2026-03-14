@@ -1,9 +1,6 @@
 import { Lifecycle, scoped } from "tsyringe";
 
-import {
-	LoadedResourcePayload,
-	LoaderResource
-} from "../../../common/interfaces";
+import type { LoadedResourcePayload, LoaderResource } from "@/common";
 import { LoaderService as RegisterLoaderService } from "../../register/loader/loader.service";
 
 @scoped(Lifecycle.ResolutionScoped)

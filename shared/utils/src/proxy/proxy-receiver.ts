@@ -1,6 +1,6 @@
 import { BaseEvent, EventDispatcher } from "three";
 
-export class ProxyReceiver<
+export class BaseProxyReceiver<
 	T extends Record<string, any>
 > extends EventDispatcher<T> {
 	public readonly style: Partial<HTMLCanvasElement["style"]> = {};
@@ -61,4 +61,12 @@ export class ProxyReceiver<
 	}
 
 	focus() {}
+}
+
+export class ProxyReceiver<
+	T extends Record<string, any>
+> extends BaseProxyReceiver<T> {
+	public readonly ownerDocument = new BaseProxyReceiver<
+		Record<string, unknown>
+	>();
 }

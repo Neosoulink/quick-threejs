@@ -7,10 +7,10 @@ import { inject, scoped, Lifecycle } from "tsyringe";
 import {
 	type AppModulePropsMessageEvent,
 	type Module,
+	type OffscreenCanvasStb,
 	AppProxyEventHandlersBlueprint,
-	OffscreenCanvasStb,
 	PROXY_EVENT_LISTENERS
-} from "../../common";
+} from "@/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TimerModule } from "./timer/timer.module";

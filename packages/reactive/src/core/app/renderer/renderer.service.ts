@@ -7,7 +7,7 @@ import {
 } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type { OffscreenCanvasStb } from "../../../common/interfaces";
+import type { OffscreenCanvasStb } from "@/common";
 import { WorldService } from "../world/world.service";
 import { CameraService } from "../camera/camera.service";
 import { SizesService } from "../sizes/sizes.service";

@@ -1,9 +1,8 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
 import { Scene } from "three";
 
+import { type Module } from "@/common";
 import { WorldService } from "./world.service";
-
-import { Module } from "../../../common/interfaces/module.interface";
 import { WorldController } from "./world.controller";
 
 @scoped(Lifecycle.ContainerScoped)

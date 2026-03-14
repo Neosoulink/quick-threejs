@@ -5,10 +5,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 import {
-	LoadedResourcePayload,
-	LoaderResource,
-	LoaderSource
-} from "../../../common/interfaces/loader.interface";
+	type LoadedResourcePayload,
+	type LoaderResource,
+	type LoaderSource
+} from "@/common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderService {

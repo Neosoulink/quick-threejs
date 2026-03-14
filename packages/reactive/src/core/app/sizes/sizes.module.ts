@@ -2,8 +2,7 @@ import { inject, Lifecycle, scoped } from "tsyringe";
 
 import { SizesService } from "./sizes.service";
 import { SizesController } from "./sizes.controller";
-import { Module } from "../../../common/interfaces/module.interface";
-import { OffscreenCanvasStb } from "../../../common/interfaces/canvas.interface";
+import type { Module, OffscreenCanvasStb } from "@/common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class SizesModule implements Module {

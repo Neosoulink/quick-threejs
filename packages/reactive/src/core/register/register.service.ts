@@ -7,10 +7,10 @@ import {
 } from "@quick-threejs/worker";
 
 import {
+	type OffscreenCanvasStb,
 	KEYBOARD_EVENT_CODES,
-	OffscreenCanvasStb,
 	RegisterPropsBlueprint
-} from "../../common";
+} from "@/common";
 import { ExposedAppModule } from "../app/app.worker";
 
 @scoped(Lifecycle.ContainerScoped)

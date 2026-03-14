@@ -1,7 +1,7 @@
 import { Vector2Like } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type { Module, OffscreenCanvasStb } from "../../../common/interfaces";
+import type { Module, OffscreenCanvasStb } from "@/common";
 import { RendererService } from "./renderer.service";
 import { RendererController } from "./renderer.controller";
 

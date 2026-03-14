@@ -23,7 +23,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			"@/": resolve(__dirname, "src/")
+			"@": resolve(__dirname, "src/")
 		}
 	},
 	plugins: [dts()]

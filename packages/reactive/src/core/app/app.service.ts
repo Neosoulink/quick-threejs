@@ -1,7 +1,7 @@
 import { ProxyReceiver } from "@quick-threejs/utils";
 import { Lifecycle, scoped } from "tsyringe";
 
-import { OffscreenCanvasStb } from "../../common/interfaces";
+import { type OffscreenCanvasStb } from "@/common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppService {

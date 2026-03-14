@@ -2,8 +2,7 @@ import { Subscription } from "rxjs";
 import { PerspectiveCamera } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import { Module, AppModulePropsMessageEvent } from "../../../common";
-
+import type { Module, AppModulePropsMessageEvent } from "@/common";
 import { DebugService } from "./debug.service";
 import { DebugController } from "./debug.controller";
 

@@ -1,6 +1,6 @@
 import { Lifecycle, scoped } from "tsyringe";
 
-import { OffscreenCanvasStb } from "../../../common/interfaces/canvas.interface";
+import { type OffscreenCanvasStb } from "@/common";
 
 @scoped(Lifecycle.ContainerScoped)
 export class SizesService {
