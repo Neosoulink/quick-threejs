@@ -7,8 +7,8 @@ import type {
 	LoaderSource,
 	OffscreenCanvasStb
 } from "../interfaces";
-import type { AppModule } from "../../core/app/app.module";
-import type { RegisterModule } from "../../core/register/register.module";
+import type { AppModule } from "@/core/app/app.module";
+import type { RegisterModule } from "@/core/register/register.module";
 
 /**
  * @description {@link RegisterModule} initialization properties.

@@ -5,16 +5,16 @@ import { type DependencyContainer, inject, Lifecycle, scoped } from "tsyringe";
 import { Subscription } from "rxjs";
 
 import {
-	type Module,
 	type AppModulePropsMessageEvent,
+	type Module,
+	type OffscreenCanvasStb,
+	type ProxyEvent,
 	CONTAINER_TOKEN,
+	LOADER_SERIALIZED_LOAD_TOKEN,
 	PROXY_EVENT_LISTENERS,
 	RegisterPropsBlueprint,
-	RegisterProxyEventHandlersBlueprint,
-	LOADER_SERIALIZED_LOAD_TOKEN,
-	ProxyEvent,
-	OffscreenCanvasStb
-} from "../../common";
+	RegisterProxyEventHandlersBlueprint
+} from "@/common";
 import { ExposedAppModule } from "../app/app.worker";
 import { RegisterService } from "./register.service";
 import { RegisterController } from "./register.controller";
@@ -106,6 +106,7 @@ export class RegisterModule
 		self.postMessage({
 			mainThread: true,
 			...excludeProperties(this.props, [
+				"mainThread",
 				"canvas",
 				"location",
 				"onReady",

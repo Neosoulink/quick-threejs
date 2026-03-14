@@ -17,7 +17,7 @@
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"react-router": "^7.9.0",
-		"three": "^0.180.0",
+		"three": "^0.183.1 ",
 		"stats.js": "^0.17.0"
 	},
 	"devDependencies": {
@@ -26,12 +26,10 @@
 		"@types/node": "^24.3.1",
 		"@types/react": "^19.1.12",
 		"@types/react-dom": "^19.1.9",
-		"@types/three": "^0.172.0",
+		"@types/three": "^0.183.1 ",
 		"autoprefixer": "^10.4.20",
 		"postcss": "^8.4.49",
-		"tailwindcss": "^3.4.15",
-		"typescript": "^5.7.3",
-		"vite": "^6.0.3",
-		"vite-tsconfig-paths": "^5.1.4"
+		"tailwindcss": "^4.2.1",
+		"vite-tsconfig-paths": "^6.1.1"
 	}
 }

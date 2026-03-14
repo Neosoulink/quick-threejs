@@ -1,14 +1,14 @@
 import { Subscription } from "rxjs";
+import { DRACOLoader } from "three/examples/jsm/Addons";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
 import {
-	RegisterPropsBlueprint,
 	type Module,
-	type LoaderSource
-} from "../../../common";
+	type LoaderSource,
+	RegisterPropsBlueprint
+} from "@/common";
 import { LoaderController } from "./loader.controller";
 import { LoaderService } from "./loader.service";
-import { DRACOLoader } from "three/examples/jsm/Addons";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderModule implements Module {

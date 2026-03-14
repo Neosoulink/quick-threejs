@@ -5,7 +5,10 @@
 		"emitDecoratorMetadata": true,
 
 		"baseUrl": "./src",
-		"outDir": "./dist"
+		"outDir": "./dist",
+		"paths": {
+			"@/*": ["./*"]
+		}
 	},
 	"include": ["src"],
 	"exclude": ["*.config.mjs", "*.config.ts"]

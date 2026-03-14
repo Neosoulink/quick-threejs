@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
-import type { Module } from "../../../common/interfaces";
+import type { Module } from "@/common";
 import { LoaderController } from "./loader.controller";
 import { LoaderService } from "./loader.service";
 

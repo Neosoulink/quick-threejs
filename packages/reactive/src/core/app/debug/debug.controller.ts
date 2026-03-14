@@ -1,7 +1,7 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
+import { filter } from "rxjs";
 
 import { TimerController } from "../timer/timer.controller";
-import { filter } from "rxjs";
 import { CameraService } from "../camera/camera.service";
 
 @scoped(Lifecycle.ContainerScoped)

@@ -7,11 +7,11 @@ import type { WorkerFunction } from "threads/dist/types/worker";
 import {
 	type ProxyEventListenerKeys,
 	type ContainerizedApp,
+	type LaunchAppProps,
 	PROXY_EVENT_LISTENERS,
 	CONTAINER_TOKEN,
 	AppModulePropsMessageEvent
-} from "../../common";
-import { LaunchAppProps } from "../../common/blueprints";
+} from "@/common";
 import { AppModule } from "./app.module";
 
 export const launchApp = (props?: LaunchAppProps<AppModule>) => {

@@ -1,6 +1,6 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
 import { AxesHelper, Camera, GridHelper, PerspectiveCamera } from "three";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { OrbitControls } from "three/examples/jsm/Addons";
 
 import { CameraService } from "../camera/camera.service";
 import { AppService } from "../app.service";

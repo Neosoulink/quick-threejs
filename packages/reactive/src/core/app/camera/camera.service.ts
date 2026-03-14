@@ -1,14 +1,15 @@
-import { inject, Lifecycle, scoped } from "tsyringe";
 import {
+	type Euler,
+	type Quaternion,
+	type Vector3,
 	Camera,
-	Euler,
 	OrthographicCamera,
-	PerspectiveCamera,
-	Quaternion,
-	Vector3
+	PerspectiveCamera
 } from "three";
+import { inject, Lifecycle, scoped } from "tsyringe";
+
+import { DefaultCameraType } from "@/common";
 import { SizesService } from "../sizes/sizes.service";
-import { DefaultCameraType } from "../../../common/enums/camera.enum";
 
 @scoped(Lifecycle.ContainerScoped)
 export class CameraService {

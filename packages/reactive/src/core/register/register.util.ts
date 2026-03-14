@@ -6,7 +6,7 @@ import {
 	RegisterPropsBlueprint,
 	DefaultCameraType,
 	ContainerizedApp
-} from "../../common";
+} from "@/common";
 import { RegisterModule } from "./register.module";
 
 /**

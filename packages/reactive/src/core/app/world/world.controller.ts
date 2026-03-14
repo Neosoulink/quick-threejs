@@ -1,6 +1,7 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
-import { WorldService } from "./world.service";
 import { share, Subject } from "rxjs";
+
+import { WorldService } from "./world.service";
 
 @scoped(Lifecycle.ContainerScoped)
 export class WorldController {

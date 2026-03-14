@@ -1,9 +1,8 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
 import { Observable, Subject } from "rxjs";
 
+import { ProxyEventHandlersBlueprint, PROXY_EVENT_LISTENERS } from "@/common";
 import { AppService } from "./app.service";
-import { ProxyEventHandlersBlueprint } from "../../common/blueprints/proxy.blueprint";
-import { PROXY_EVENT_LISTENERS } from "../../common/constants/event.constants";
 
 @scoped(Lifecycle.ContainerScoped)
 export class AppController extends ProxyEventHandlersBlueprint {
@@ -14,10 +13,12 @@ export class AppController extends ProxyEventHandlersBlueprint {
 			this[`${eventType}$$`] = new Subject<any>();
 			this[`${eventType}$`] = this[`${eventType}$$`].pipe() as Observable<any>;
 			this[eventType] = (event: any) => {
-				this._service.proxyReceiver.handleEvent({
+				const payload = {
 					...event,
 					type: event.type || eventType
-				});
+				};
+				this._service.proxyReceiver.handleEvent(payload);
+				this._service.proxyReceiver.ownerDocument.handleEvent(payload);
 				this[`${eventType}$$`].next(event);
 			};
 		}

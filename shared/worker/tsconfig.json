@@ -4,7 +4,10 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 
-		"outDir": "./dist"
+		"outDir": "./dist",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	},
 	"include": ["src", "*.config.mjs"]
 }

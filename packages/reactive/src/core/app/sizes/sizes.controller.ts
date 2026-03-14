@@ -1,7 +1,7 @@
 import { inject, Lifecycle, scoped } from "tsyringe";
 import { filter, Observable } from "rxjs";
 
-import { ProxyEvent } from "common";
+import { type ProxyEvent } from "@/common";
 import { AppController } from "../app.controller";
 import { SizesService } from "./sizes.service";
 

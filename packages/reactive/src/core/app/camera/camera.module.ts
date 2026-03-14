@@ -1,17 +1,17 @@
+import { Subscription } from "rxjs";
 import {
-	Camera,
+	type Camera,
+	type Quaternion,
+	type Vector3,
 	OrthographicCamera,
-	PerspectiveCamera,
-	Quaternion,
-	Vector3
+	PerspectiveCamera
 } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
+import type { Module } from "@/common";
 import { CameraService } from "./camera.service";
 import { CameraController } from "./camera.controller";
 import { SizesService } from "../sizes/sizes.service";
-import type { Module } from "../../../common/interfaces/module.interface";
-import { Subscription } from "rxjs";
 
 @scoped(Lifecycle.ContainerScoped)
 export class CameraModule implements Module {

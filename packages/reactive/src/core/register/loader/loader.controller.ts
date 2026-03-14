@@ -4,16 +4,16 @@ import {
 	serializeObject3D
 } from "@quick-threejs/utils";
 import { filter, map, Observable, share, Subject } from "rxjs";
-import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { AnimationClipJSON } from "three";
+import { type JsonSerializable } from "threads";
+import { type GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import { type AnimationClipJSON } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
 import {
-	LoadedResourcePayload,
-	SerializedLoadedResourcePayload
-} from "../../../common/interfaces/loader.interface";
+	type LoadedResourcePayload,
+	type SerializedLoadedResourcePayload
+} from "@/common";
 import { LoaderService } from "./loader.service";
-import { JsonSerializable } from "threads";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderController {
