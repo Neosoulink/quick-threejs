@@ -1,5 +1,18 @@
 # @quick-threejs/legacy
 
+## 0.1.11
+
+### Patch Changes
+
+- 3f4095e: # 03-13-2026
+
+  ## chore(deps): upgrade core dependencies
+
+  - Upgrade `three` to `^0.183.1`
+  - Upgrade `@types/three` to `^0.183.1`
+  - `@quick-threejs/reactive` now uses `THREE.TIMER` instead of `THREE.CLOCK`
+  - Fix `Vite` path alias resolution
+
 ## 0.1.10
 
 ### Patch Changes
