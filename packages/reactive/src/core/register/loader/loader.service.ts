@@ -75,7 +75,7 @@ export class LoaderService {
 
 		this.loaders.dracoLoader.setDecoderPath(
 			dracoDecoderPath ??
-				"https://www.gstatic.com/draco/versioned/decoders/1.4.3/"
+				"https://www.gstatic.com/draco/versioned/decoders/1.5.7/"
 		);
 		this.loaders.gltfLoader?.setDRACOLoader(this.loaders.dracoLoader);
 	}
