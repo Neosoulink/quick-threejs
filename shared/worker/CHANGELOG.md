@@ -1,5 +1,12 @@
 # @quick-threejs/worker
 
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies [ad90f53]
+  - @quick-threejs/utils@0.1.20
+
 ## 0.1.18
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @quick-threejs/reactive
 
+## 0.1.47
+
+### Patch Changes
+
+- da25875: # 03-26-2026
+
+  ## refactor(reactive): handle render sizing
+
+  - Add & handle `canvasWrapper` prop
+  - Add & handle `autoRenderResize` prop
+  - Correct `fullScreen` prop handling
+  - Auto `pixelRation` management
+  - Move debug props under `debug` prop
+  - Global ode logic improvement
+
+- Updated dependencies [ad90f53]
+  - @quick-threejs/utils@0.1.20
+  - @quick-threejs/worker@0.1.19
+
 ## 0.1.46
 
 ### Patch Changes
