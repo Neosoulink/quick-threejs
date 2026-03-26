@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.20
+
+### Patch Changes
+
+- ad90f53: # 03-26-2026
+
+  ## feat(shared): add `isNumber` type checker
+
 ## 0.1.19
 
 ### Patch Changes
