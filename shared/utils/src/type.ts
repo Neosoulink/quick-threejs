@@ -18,6 +18,10 @@ export const isString = (value: any) => {
 	return !!value && typeof value === "string";
 };
 
+export const isNumber = (value: any) => {
+	return typeof value === "number";
+};
+
 export const isFunction = (value: any) => {
 	return !!value && typeof value === "function";
 };
