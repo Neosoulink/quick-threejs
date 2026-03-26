@@ -7,7 +7,6 @@ import { inject, scoped, Lifecycle } from "tsyringe";
 import {
 	type AppModulePropsMessageEvent,
 	type Module,
-	type OffscreenCanvasStb,
 	AppProxyEventHandlersBlueprint,
 	PROXY_EVENT_LISTENERS
 } from "@/common";
@@ -79,16 +78,11 @@ export class AppModule
 	}
 
 	public init(props: AppModulePropsMessageEvent["data"]) {
-		this._service.canvas = props.canvas as OffscreenCanvasStb;
-
-		if (this._service.isInitialized || !this._service.canvas) return;
-
-		this._service.isInitialized = true;
-
-		this.sizes.init(this._service.canvas);
+		this._service.init(props.canvas);
+		this.sizes.init(props);
 		this.camera.init();
 		this.world.init();
-		this.renderer.init(this._service.canvas);
+		this.renderer.init(props);
 		this.timer.init(props.startTimer);
 		this.loader.init();
 		this.debug.init(props);

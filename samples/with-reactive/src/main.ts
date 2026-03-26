@@ -7,7 +7,7 @@ import matCapImg from "./assets/textures/matcap.jpg?url";
 import sampleAudio from "./assets/audios/sample.mp3?url";
 import helvetikerFont from "./assets/fonts/helvetiker_regular.typeface.json?url";
 
-import "./style.css";
+import "./assets/css/global.css";
 
 const isDev = import.meta.env.DEV;
 const location = new URL(
@@ -20,11 +20,6 @@ if (isDev) console.log("🚧 worker location:", location);
 const registerApp = () =>
 	register({
 		location,
-		enableDebug: true,
-		enableControls: true,
-		axesSizes: 5,
-		gridSizes: 10,
-		withMiniCamera: true,
 		loaderDataSources: [
 			{
 				name: "pawn",
@@ -47,9 +42,15 @@ const registerApp = () =>
 				type: "font"
 			}
 		],
+		debug: {
+			enabled: true,
+			enableControls: true,
+			axesSizes: 5,
+			gridSizes: 10
+		},
 		onReady: async (app) => {
 			const stats = new Stats();
-			const thread = app.module.getThread();
+			const { thread } = app.module.getWorkerThread() || {};
 			stats.showPanel(0);
 
 			window.document.body.appendChild(stats.dom);

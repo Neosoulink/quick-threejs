@@ -14,37 +14,34 @@ import {
 } from "@/common";
 import { AppModule } from "./app.module";
 
-export const launchApp = (props?: LaunchAppProps<AppModule>) => {
+export const launchApp = async (props?: LaunchAppProps<AppModule>) => {
 	const container = parentContainer.createChildContainer();
 	const module = container.resolve(AppModule);
 	const app: ContainerizedApp<AppModule> = { container, module };
 	const proxyEventHandlers: {
 		[key in ProxyEventListenerKeys]: WorkerFunction;
 	} = {} as typeof proxyEventHandlers;
+
 	const handleInitMessage = (event: AppModulePropsMessageEvent) => {
+		if (!event.data?.initApp) return;
 		if (
 			(!event.data?.canvas && !event.data?.mainThread) ||
 			module.getIsInitialized()
 		)
 			return;
 
-		const startTimer = !!event.data?.startTimer;
-		const withMiniCamera = !!event.data?.withMiniCamera;
-		const fullScreen = !!event.data?.fullScreen;
+		const canvas =
+			event.data.canvas ||
+			props?.canvas ||
+			(event.data.mainThread
+				? (self?.document?.getElementsByTagName(
+						"canvas"
+					)[0] as HTMLCanvasElement)
+				: undefined);
 
 		module.init({
 			...event.data,
-			canvas:
-				props?.canvas ||
-				event.data.canvas ||
-				(event.data.mainThread
-					? (self?.document?.getElementsByTagName(
-							"canvas"
-						)[0] as HTMLCanvasElement)
-					: undefined),
-			startTimer,
-			withMiniCamera,
-			fullScreen
+			canvas
 		});
 
 		props?.onReady?.(app);
@@ -74,7 +71,9 @@ export const launchApp = (props?: LaunchAppProps<AppModule>) => {
 	try {
 		expose(exposedApp);
 	} catch (error) {
-		console.warn("Failed to expose the app module.", (error as Error).message);
+		const ErrorMessage =
+			error instanceof Error ? error.message : "Unknown error";
+		console.warn("Unable to expose the App Module.", ErrorMessage);
 	}
 
 	return app;

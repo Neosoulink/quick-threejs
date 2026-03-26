@@ -5,6 +5,8 @@ import type { PROXY_EVENT_LISTENERS } from "../constants/event.constants";
 export interface ProxyEvent {
 	width: number;
 	height: number;
+	wrapperWidth: number;
+	wrapperHeight: number;
 	windowWidth: number;
 	windowHeight: number;
 }

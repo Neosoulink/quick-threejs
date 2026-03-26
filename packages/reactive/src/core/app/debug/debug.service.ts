@@ -19,7 +19,7 @@ export class DebugService {
 
 	constructor(
 		@inject(AppService) private readonly _appService: AppService,
-		@inject(SizesService) private readonly _sizesService: SizesService,
+		@inject(SizesService) private readonly _sizes: SizesService,
 		@inject(RendererService) private readonly _rendererService: RendererService,
 		@inject(CameraService) private readonly _cameraService: CameraService,
 		@inject(WorldService) private readonly _worldService: WorldService
@@ -28,18 +28,20 @@ export class DebugService {
 	private _renderMiniCamera() {
 		if (!this.enabled || !this.miniCamera) return;
 
+		const { width, height } = this._sizes.getViewPortSizes();
+
 		this._rendererService.instance?.setScissorTest(true);
 		this._rendererService.instance?.setViewport(
-			this._sizesService.width - this._sizesService.width / 3,
-			this._sizesService.height - this._sizesService.height / 3,
-			this._sizesService.width / 3,
-			this._sizesService.height / 3
+			width - width / 3,
+			height - height / 3,
+			width / 3,
+			height / 3
 		);
 		this._rendererService.instance?.setScissor(
-			this._sizesService.width - this._sizesService.width / 3,
-			this._sizesService.height - this._sizesService.height / 3,
-			this._sizesService.width / 3,
-			this._sizesService.height / 3
+			width - width / 3,
+			height - height / 3,
+			width / 3,
+			height / 3
 		);
 		this._rendererService.instance?.render(
 			this._worldService.scene,
@@ -53,12 +55,7 @@ export class DebugService {
 
 		if (!this.enabled) return;
 
-		this.miniCamera = new PerspectiveCamera(
-			75,
-			this._sizesService.width / this._sizesService.height,
-			0.1,
-			500
-		);
+		this.miniCamera = new PerspectiveCamera(75, this._sizes.aspect, 0.1, 500);
 		this.miniCamera.position.z = 10;
 		this.miniCamera.position.x = -5;
 	}

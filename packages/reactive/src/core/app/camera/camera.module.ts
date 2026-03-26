@@ -1,24 +1,16 @@
 import { Subscription } from "rxjs";
-import {
-	type Camera,
-	type Quaternion,
-	type Vector3,
-	OrthographicCamera,
-	PerspectiveCamera
-} from "three";
+import type { Camera, Quaternion, Vector3 } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
 
 import type { Module } from "@/common";
 import { CameraService } from "./camera.service";
 import { CameraController } from "./camera.controller";
-import { SizesService } from "../sizes/sizes.service";
 
 @scoped(Lifecycle.ContainerScoped)
 export class CameraModule implements Module {
-	private readonly _subscriptions: Subscription[] = [];
+	private _subscriptions: Subscription[] = [];
 
 	constructor(
-		@inject(SizesService) private readonly _sizesService: SizesService,
 		@inject(CameraController) private readonly _controller: CameraController,
 		@inject(CameraService) private readonly _service: CameraService
 	) {}
@@ -27,16 +19,9 @@ export class CameraModule implements Module {
 		this._service.init();
 
 		this._subscriptions.push(
-			this._controller.step$.subscribe(() => {
-				if (!this._service.enabled) return;
-				this._service.aspectRatio = this._sizesService.aspect;
-
-				if (
-					this._service.instance instanceof PerspectiveCamera ||
-					this._service.instance instanceof OrthographicCamera
-				)
-					this._service.instance?.updateProjectionMatrix();
-			})
+			this._controller.step$.subscribe(
+				this._service.handleStep.bind(this._service)
+			)
 		);
 	}
 
@@ -67,6 +52,7 @@ export class CameraModule implements Module {
 
 	public dispose() {
 		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		this._subscriptions = [];
 		this._service.dispose();
 	}
 }

@@ -18,20 +18,15 @@ export class RegisterService {
 	public readonly workerPool: WorkerPool;
 
 	public canvas?: HTMLCanvasElement;
+	public canvasWrapper?: HTMLElement;
 	public offscreenCanvas?: OffscreenCanvasStb;
-	public worker?: WorkerThreadResolution<ExposedAppModule>["worker"];
-	public thread?: WorkerThreadResolution<ExposedAppModule>["thread"];
+	public workerThread?: WorkerThreadResolution<ExposedAppModule>;
 
 	constructor(
 		@inject(RegisterPropsBlueprint)
 		private readonly _props: RegisterPropsBlueprint
 	) {
-		this.workerPool = createWorkerPool(undefined, this._props.enableDebug);
-	}
-
-	public init(app: WorkerThreadResolution<ExposedAppModule>) {
-		this.worker = app.worker;
-		this.thread = app.thread;
+		this.workerPool = createWorkerPool(undefined, !!this._props.debug?.enabled);
 	}
 
 	public preventDefaultHandler(e: Event) {
@@ -46,6 +41,8 @@ export class RegisterService {
 		return {
 			width: this.canvas?.width,
 			height: this.canvas?.height,
+			wrapperWidth: this.canvasWrapper?.clientWidth ?? 0,
+			wrapperHeight: this.canvasWrapper?.clientHeight ?? 0,
 			windowWidth: window?.innerWidth ?? 0,
 			windowHeight: window?.innerHeight ?? 0
 		};

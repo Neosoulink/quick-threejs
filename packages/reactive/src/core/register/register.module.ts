@@ -46,11 +46,14 @@ export class RegisterModule
 	}
 
 	private get currentWorker() {
-		return this.props.mainThread ? self : this._service.worker;
+		return this.props.mainThread ? self : this._service.workerThread?.worker;
 	}
 
 	private async _initCanvas() {
 		try {
+			if (this.props.canvasWrapper instanceof HTMLElement)
+				this._service.canvasWrapper = this.props.canvasWrapper;
+
 			if (this.props.canvas instanceof HTMLCanvasElement)
 				this._service.canvas = this.props.canvas;
 
@@ -74,48 +77,76 @@ export class RegisterModule
 		}
 	}
 
-	private async _initServiceWorker() {
-		this._service.init({
-			worker: this._service.worker,
-			thread: this._service.thread
-		});
-	}
-
 	private async _initEvents() {
 		if (!this._service.canvas)
 			throw new Error("Canvas element is not initialized.");
 
 		this._controller.init();
 
-		setTimeout(() => {
-			const event = new UIEvent("resize") as UIEvent & ProxyEvent;
-			event.width = window.innerWidth;
-			event.height = window.innerHeight;
-			event.windowWidth = window.innerWidth;
-			event.windowHeight = window.innerHeight;
+		const viewElement = this._service.canvas;
+		const event = new UIEvent("resize") as UIEvent & ProxyEvent;
 
-			this._controller.resize$$.next(
-				this._service.uiEventHandler(event) as unknown as UIEvent & ProxyEvent
+		event.width = viewElement?.width ?? window.innerWidth;
+		event.height = viewElement?.height ?? window.innerHeight;
+		event.wrapperWidth = this.props.canvasWrapper?.clientWidth ?? 0;
+		event.wrapperHeight = this.props.canvasWrapper?.clientHeight ?? 0;
+		event.windowWidth = window.innerWidth;
+		event.windowHeight = window.innerHeight;
+
+		if (!this.props.mainThread)
+			this._subscriptions.push(
+				this._controller.resize$.subscribe((event) => {
+					if (!this.props.autoRenderResize) return;
+
+					const canvas = this._service.canvas;
+					if (!canvas) return;
+
+					const width = this.props.fullScreen
+						? event.windowWidth
+						: (this.props.canvasWrapper?.clientWidth ?? 0);
+					const height = this.props.fullScreen
+						? event.windowHeight
+						: (this.props.canvasWrapper?.clientHeight ?? 0);
+
+					canvas.style.width = width + "px";
+					canvas.style.height = height + "px";
+				})
 			);
-		}, 0);
+
+		this._controller.resize$$.next(this._service.uiEventHandler(event) as any);
 	}
 
-	private async _initOnMainThread() {
-		await import(`${this.props.location}`);
-
-		self.postMessage({
-			mainThread: true,
+	private async _initCore() {
+		const data = {
 			...excludeProperties(this.props, [
-				"mainThread",
 				"canvas",
+				"canvasWrapper",
 				"location",
 				"onReady",
 				"loaderDataSources"
-			])
-		});
-	}
+			]),
+			pixelRatio: Math.min(window.devicePixelRatio, 2),
+			initApp: true,
+			hasCanvasWrapper: !!this.props.canvasWrapper
+		} satisfies AppModulePropsMessageEvent["data"];
 
-	private async _initOnWorkerThread() {
+		if (this.props.mainThread) {
+			await import(`${this.props.location}`);
+
+			await new Promise<void>((resolve) => {
+				const handleMessage = (event: MessageEvent) => {
+					if (event.data.mainThread) {
+						resolve();
+						self.removeEventListener("message", handleMessage);
+					}
+				};
+				self.addEventListener("message", handleMessage);
+				self.postMessage(data);
+			});
+
+			return;
+		}
+
 		if (!this._service.canvas)
 			throw new Error("Canvas element is not initialized.");
 
@@ -124,19 +155,16 @@ export class RegisterModule
 		this._service.offscreenCanvas.width = this._service.canvas.clientWidth;
 		this._service.offscreenCanvas.height = this._service.canvas.clientHeight;
 
+		const subjectData = {
+			...data,
+			canvas: this._service.offscreenCanvas
+		} satisfies AppModulePropsMessageEvent["data"];
+
 		const [workerThread, queued] =
 			(await this._service.workerPool.run<ExposedAppModule>({
 				payload: {
 					path: this.props.location,
-					subject: {
-						...excludeProperties(this.props, [
-							"canvas",
-							"location",
-							"onReady",
-							"loaderDataSources"
-						]),
-						canvas: this._service.offscreenCanvas
-					} satisfies AppModulePropsMessageEvent["data"],
+					subject: subjectData,
 					transferSubject: [this._service.offscreenCanvas]
 				}
 			})) || [];
@@ -144,8 +172,7 @@ export class RegisterModule
 		if (!workerThread || queued)
 			throw new Error("Unable to retrieve the worker-thread info.");
 
-		this._service.worker = workerThread.worker;
-		this._service.thread = workerThread.thread;
+		this._service.workerThread = workerThread;
 	}
 
 	private async _initObservables() {
@@ -180,9 +207,7 @@ export class RegisterModule
 		this._initialized = true;
 
 		await this._initCanvas();
-		if (this.props.mainThread) await this._initOnMainThread();
-		else await this._initOnWorkerThread();
-		await this._initServiceWorker();
+		await this._initCore();
 		await this._initObservables();
 		await this._initLoader();
 		await this._initEvents();
@@ -198,16 +223,16 @@ export class RegisterModule
 		return this._service.offscreenCanvas;
 	}
 
-	public getThread() {
-		return this._service.thread;
-	}
-
-	public getWorker() {
-		return this._service.worker;
+	public getWorkerThread() {
+		return this._service.workerThread;
 	}
 
 	public getWorkerPool() {
 		return this._service.workerPool;
+	}
+
+	public getProps() {
+		return this.props;
 	}
 
 	public isInitialized() {

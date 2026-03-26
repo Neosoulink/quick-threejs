@@ -7,7 +7,8 @@ import { LoaderService } from "./loader.service";
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderModule implements Module {
-	private readonly _subscriptions: Subscription[] = [];
+	private _subscriptions: Subscription[] = [];
+
 	constructor(
 		@inject(LoaderController) private readonly _controller: LoaderController,
 		@inject(LoaderService) private readonly _service: LoaderService
@@ -42,6 +43,7 @@ export class LoaderModule implements Module {
 	}
 
 	public dispose() {
-		this._subscriptions.forEach((subscription) => subscription.unsubscribe());
+		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		this._subscriptions = [];
 	}
 }
