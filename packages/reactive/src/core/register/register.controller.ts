@@ -1,5 +1,5 @@
 import { container, inject, Lifecycle, scoped } from "tsyringe";
-import { fromEvent, map, filter, Subject } from "rxjs";
+import { fromEvent, map, filter, Subject, Observable } from "rxjs";
 
 import {
 	type ProxyEvent,
@@ -40,25 +40,14 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 								? this._service.wheelEventHandler.bind(this._service)
 								: this._service.preventDefaultHandler.bind(this._service);
 
-			// @ts-ignore - This is a dynamic property
-			this[`${key}$$`] = new Subject<
-				MouseEvent &
-					ProxyEvent &
-					UIEvent &
-					PointerEvent &
-					TouchEvent &
-					WheelEvent &
-					KeyboardEvent &
-					ProxyEvent
-			>();
+			this[`${key}$$`] = new Subject<any>();
 
 			fromEvent<MouseEvent>(
 				key === "resize" ? window : this._service.canvas!,
 				key
 			)
 				.pipe(
-					// @ts-ignore
-					map(eventHandler.bind(this)),
+					map((event) => eventHandler.bind(this)(event as any)),
 					filter((e) => (key === "keydown" && !e ? false : true))
 				)
 				.subscribe((event) => {
@@ -72,10 +61,9 @@ export class RegisterController extends ProxyEventHandlersBlueprint {
 							KeyboardEvent
 					);
 				});
-			// @ts-ignore - This is a dynamic property
-			this[`${key}$`] = this[`${key}$$`].asObservable();
+			this[`${key}$`] = this[`${key}$$`].asObservable() as Observable<any>;
 			this[`${key}$`].subscribe((event) => {
-				this._service.thread?.[key]?.(event as any);
+				this._service.workerThread?.thread?.[key]?.(event as any);
 				mainThreadApp?.[key]?.(event as any);
 			});
 		}

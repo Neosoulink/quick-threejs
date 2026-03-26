@@ -46,6 +46,9 @@ export class TimerModule implements Module {
 		if (this._initialAnimationFrameId !== undefined)
 			cancelAnimationFrame(this._initialAnimationFrameId);
 		this._service.enabled = false;
+
+		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		this._subscriptions = [];
 	}
 
 	public beforeStep$() {

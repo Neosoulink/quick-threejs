@@ -5,7 +5,7 @@ export interface AppModulePropsMessageEvent
 	extends MessageEvent<
 		Omit<
 			RegisterPropsBlueprint,
-			"canvas" | "location" | "loaderDataSources"
+			"canvas" | "canvasWrapper" | "location" | "loaderDataSources"
 		> & {
 			/**
 			 * The canvas element based on.
@@ -13,5 +13,26 @@ export interface AppModulePropsMessageEvent
 			 * @default `undefined`
 			 */
 			canvas?: OffscreenCanvasStb | HTMLCanvasElement;
+
+			/**
+			 * Whether the canvas has a wrapper element.
+			 *
+			 * @default `undefined`
+			 */
+			hasCanvasWrapper?: boolean;
+
+			/**
+			 * The pixel ratio to use for the renderer.
+			 *
+			 * @default `1`
+			 */
+			pixelRatio?: number;
+
+			/**
+			 * The app is initialized.
+			 *
+			 * @default `true`
+			 */
+			initApp: true;
 		}
 	> {}

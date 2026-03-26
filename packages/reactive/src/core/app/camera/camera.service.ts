@@ -16,9 +16,7 @@ export class CameraService {
 	public instance?: Camera;
 	public enabled = true;
 
-	constructor(
-		@inject(SizesService) private readonly _sizesService: SizesService
-	) {}
+	constructor(@inject(SizesService) private readonly _sizes: SizesService) {}
 
 	public set aspectRatio(ratio: number) {
 		if (this.instance instanceof PerspectiveCamera)
@@ -49,12 +47,7 @@ export class CameraService {
 			cameraType === DefaultCameraType.PERSPECTIVE ||
 			cameraType === undefined
 		) {
-			this.instance = new PerspectiveCamera(
-				70,
-				this._sizesService.width / this._sizesService.height,
-				0.1,
-				100
-			);
+			this.instance = new PerspectiveCamera(70, this._sizes.aspect, 0.1, 100);
 
 			this.instance.position.z = 8;
 			return;
@@ -62,14 +55,24 @@ export class CameraService {
 
 		if (cameraType === DefaultCameraType.ORTHOGRAPHIC) {
 			this.instance = new OrthographicCamera(
-				(-this._sizesService.aspect * this._sizesService.frustrum) / 2,
-				(this._sizesService.aspect * this._sizesService.frustrum) / 2,
-				this._sizesService.frustrum / 2,
-				-this._sizesService.frustrum / 2,
+				(-this._sizes.aspect * this._sizes.frustrum) / 2,
+				(this._sizes.aspect * this._sizes.frustrum) / 2,
+				this._sizes.frustrum / 2,
+				-this._sizes.frustrum / 2,
 				-50,
 				50
 			);
 		}
+	}
+
+	public handleStep() {
+		this.aspectRatio = this._sizes.aspect;
+
+		if (
+			this.instance instanceof PerspectiveCamera ||
+			this.instance instanceof OrthographicCamera
+		)
+			this.instance?.updateProjectionMatrix();
 	}
 
 	public dispose() {

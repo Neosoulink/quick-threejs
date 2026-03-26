@@ -8,7 +8,7 @@ import { DebugController } from "./debug.controller";
 
 @scoped(Lifecycle.ContainerScoped)
 export class DebugModule implements Module {
-	private readonly _subscriptions: Subscription[] = [];
+	private _subscriptions: Subscription[] = [];
 
 	constructor(
 		@inject(DebugService) public readonly _service: DebugService,
@@ -16,27 +16,25 @@ export class DebugModule implements Module {
 	) {}
 
 	public init(props: AppModulePropsMessageEvent["data"]) {
-		this._service.enabled = !!props.enableDebug;
+		this._service.enabled = !!props.debug?.enabled;
 
 		if (!this._service.enabled) return;
 
-		if (props.withMiniCamera) this._service.initMiniCamera();
+		if (props.debug?.withMiniCamera) this._service.initMiniCamera();
 
-		if (props.enableControls) {
+		if (props.debug?.enableControls) {
 			this._service.initOrbitControl();
 			this._service.initMiniCameraOrbitControls();
 		}
 
-		if (typeof props?.axesSizes === "number")
-			this._service.initAxesHelper(props.axesSizes);
+		if (typeof props.debug?.axesSizes === "number")
+			this._service.initAxesHelper(props.debug.axesSizes);
 
-		if (typeof props?.gridSizes === "number")
-			this._service.initGridHelper(props.gridSizes);
+		if (typeof props.debug?.gridSizes === "number")
+			this._service.initGridHelper(props.debug.gridSizes);
 
 		this._subscriptions.push(
-			this._controller.step$.subscribe(() => {
-				this._service.update();
-			})
+			this._controller.step$.subscribe(this._service.update.bind(this._service))
 		);
 	}
 
@@ -73,5 +71,6 @@ export class DebugModule implements Module {
 	public dispose() {
 		this._service.dispose();
 		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		this._subscriptions = [];
 	}
 }

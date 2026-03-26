@@ -1,25 +1,31 @@
-import { Vector2Like } from "three";
 import { inject, Lifecycle, scoped } from "tsyringe";
+import { Subscription } from "rxjs";
 
-import type { Module, OffscreenCanvasStb } from "@/common";
+import type { AppModulePropsMessageEvent, Module } from "@/common";
 import { RendererService } from "./renderer.service";
 import { RendererController } from "./renderer.controller";
 
 @scoped(Lifecycle.ContainerScoped)
 export class RendererModule implements Module {
+	private _subscriptions: Subscription[] = [];
+
 	constructor(
 		@inject(RendererController)
 		private readonly _controller: RendererController,
 		@inject(RendererService) private readonly _service: RendererService
 	) {}
 
-	public init(canvas: OffscreenCanvasStb): void {
-		this._controller.step$.subscribe(() => this._service.render());
-		this._controller.resize$.subscribe((size) =>
-			this._service.setSize(size.windowWidth, size.windowHeight)
+	public init({ canvas }: AppModulePropsMessageEvent["data"]): void {
+		this._subscriptions.push(
+			this._controller.step$.subscribe(
+				this._service.render.bind(this._service)
+			),
+			this._controller.resize$.subscribe(
+				this._service.handleAutoResize.bind(this._service)
+			)
 		);
 
-		this._service.setWebGLRenderer(canvas);
+		this._service.init(canvas!);
 	}
 
 	public enabled(value?: boolean) {
@@ -27,12 +33,13 @@ export class RendererModule implements Module {
 		return this._service.enabled;
 	}
 
-	public instance() {
-		return this._service.instance;
+	public enabledAutoResize(value?: boolean) {
+		if (typeof value === "boolean") this._service.enabledAutoResize = value;
+		return this._service.enabledAutoResize;
 	}
 
-	public setSize(value: Vector2Like) {
-		return this._service.setSize(value.x, value.y);
+	public instance() {
+		return this._service.instance;
 	}
 
 	public render() {
@@ -40,6 +47,8 @@ export class RendererModule implements Module {
 	}
 
 	public dispose() {
+		this._subscriptions.forEach((sub) => sub.unsubscribe());
+		this._subscriptions = [];
 		this._service.instance?.dispose();
 		this._service.instance = undefined;
 	}
