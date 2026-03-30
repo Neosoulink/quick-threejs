@@ -1,5 +1,16 @@
 # @quick-threejs/reactive
 
+## 0.1.48
+
+### Patch Changes
+
+- 176e8a2: # 03-30-2026
+
+  ## refactor(reactive): register props improvement
+
+  - Register `canvasWrapper` parent element support
+  - Register `pixelRatio` support
+
 ## 0.1.47
 
 ### Patch Changes
