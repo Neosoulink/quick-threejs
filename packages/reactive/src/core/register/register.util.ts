@@ -54,6 +54,10 @@ export const register = (
 		isUndefined(props.startTimer) || !isBoolean(props.startTimer)
 			? true
 			: props.startTimer;
+	props.pixelRatio =
+		isUndefined(props.pixelRatio) || !isNumber(props.pixelRatio)
+			? Math.min(window.devicePixelRatio, 2)
+			: props.pixelRatio;
 	props.onReady = !isFunction(props.onReady) ? undefined : props.onReady;
 
 	if (props.debug) {

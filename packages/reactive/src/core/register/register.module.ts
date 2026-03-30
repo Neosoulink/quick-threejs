@@ -51,18 +51,10 @@ export class RegisterModule
 
 	private async _initCanvas() {
 		try {
-			if (this.props.canvasWrapper instanceof HTMLElement)
-				this._service.canvasWrapper = this.props.canvasWrapper;
-
-			if (this.props.canvas instanceof HTMLCanvasElement)
-				this._service.canvas = this.props.canvas;
-
-			if (typeof this.props.canvas === "string") {
-				const canvas_ = document.querySelector(this.props.canvas as string);
-
-				if (canvas_ instanceof HTMLCanvasElement)
-					this._service.canvas = canvas_;
-			}
+			this._service.canvas =
+				this.props.canvas instanceof HTMLCanvasElement
+					? this.props.canvas
+					: undefined;
 
 			if (!this._service.canvas) {
 				this._service.canvas = document.createElement("canvas");
@@ -70,6 +62,13 @@ export class RegisterModule
 				this._service.canvas.dataset["reactive"] = "true";
 				document.body.appendChild(this._service.canvas);
 			}
+
+			this._service.canvasWrapper =
+				this.props.canvasWrapper instanceof HTMLElement
+					? this.props.canvasWrapper
+					: this.props.canvasWrapper === "parent"
+						? (this.props.canvas?.parentElement ?? undefined)
+						: undefined;
 		} catch (err) {
 			console.error(
 				`🛑 Unable to initialize the canvas:\n${err instanceof Error ? err.message : "Something went wrong"}`
@@ -83,35 +82,41 @@ export class RegisterModule
 
 		this._controller.init();
 
-		const viewElement = this._service.canvas;
-		const event = new UIEvent("resize") as UIEvent & ProxyEvent;
-
-		event.width = viewElement?.width ?? window.innerWidth;
-		event.height = viewElement?.height ?? window.innerHeight;
-		event.wrapperWidth = this.props.canvasWrapper?.clientWidth ?? 0;
-		event.wrapperHeight = this.props.canvasWrapper?.clientHeight ?? 0;
-		event.windowWidth = window.innerWidth;
-		event.windowHeight = window.innerHeight;
-
 		if (!this.props.mainThread)
 			this._subscriptions.push(
-				this._controller.resize$.subscribe((event) => {
-					if (!this.props.autoRenderResize) return;
-
+				this._controller.resize$.subscribe((e) => {
 					const canvas = this._service.canvas;
-					if (!canvas) return;
 
-					const width = this.props.fullScreen
-						? event.windowWidth
-						: (this.props.canvasWrapper?.clientWidth ?? 0);
-					const height = this.props.fullScreen
-						? event.windowHeight
-						: (this.props.canvasWrapper?.clientHeight ?? 0);
+					if (!this.props.autoRenderResize || !canvas) return;
+
+					const canvasWrapper = this._service.canvasWrapper;
+					const fullScreen = this.props.fullScreen;
+					const width = fullScreen
+						? e.windowWidth
+						: canvasWrapper
+							? e.wrapperWidth
+							: e.width;
+					const height = fullScreen
+						? e.windowHeight
+						: canvasWrapper
+							? e.wrapperHeight
+							: e.height;
 
 					canvas.style.width = width + "px";
 					canvas.style.height = height + "px";
 				})
 			);
+
+		const canvas = this._service.canvas;
+		const canvasWrapper = this._service.canvasWrapper;
+		const event = new UIEvent("resize") as UIEvent & ProxyEvent;
+
+		event.width = canvas?.width ?? 0;
+		event.height = canvas?.height ?? 0;
+		event.wrapperWidth = canvasWrapper?.clientWidth ?? 0;
+		event.wrapperHeight = canvasWrapper?.clientHeight ?? 0;
+		event.windowWidth = window.innerWidth;
+		event.windowHeight = window.innerHeight;
 
 		this._controller.resize$$.next(this._service.uiEventHandler(event) as any);
 	}
@@ -125,7 +130,7 @@ export class RegisterModule
 				"onReady",
 				"loaderDataSources"
 			]),
-			pixelRatio: Math.min(window.devicePixelRatio, 2),
+			pixelRatio: this.props.pixelRatio,
 			initApp: true,
 			hasCanvasWrapper: !!this.props.canvasWrapper
 		} satisfies AppModulePropsMessageEvent["data"];

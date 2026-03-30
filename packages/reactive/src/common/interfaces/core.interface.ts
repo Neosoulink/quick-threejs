@@ -22,13 +22,6 @@ export interface AppModulePropsMessageEvent
 			hasCanvasWrapper?: boolean;
 
 			/**
-			 * The pixel ratio to use for the renderer.
-			 *
-			 * @default `1`
-			 */
-			pixelRatio?: number;
-
-			/**
 			 * The app is initialized.
 			 *
 			 * @default `true`

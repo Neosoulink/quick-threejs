@@ -45,8 +45,6 @@ export class SizesService {
 			: this.hasCanvasWrapper
 				? size.wrapperWidth / size.wrapperHeight
 				: size.width / size.height;
-
-		console.log("size", this);
 	}
 
 	public getViewPortSizes() {
