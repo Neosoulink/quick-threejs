@@ -51,7 +51,7 @@ export class RegisterPropsBlueprint {
 	 *
 	 * @default undefined
 	 */
-	canvasWrapper?: HTMLElement;
+	canvasWrapper?: HTMLElement | "parent";
 
 	/**
 	 * @description Use the window size to render the canvas in fullscreen and auto-resize it.
@@ -59,6 +59,13 @@ export class RegisterPropsBlueprint {
 	 * @default true
 	 */
 	fullScreen?: boolean;
+
+	/**
+	 * Initial pixel ratio to use for the renderer.
+	 *
+	 * @default `Math.min(window.devicePixelRatio, 2)`
+	 */
+	pixelRatio?: number;
 
 	/**
 	 * @description Auto-resize the renderer when the canvas size changes.
