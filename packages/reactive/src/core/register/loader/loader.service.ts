@@ -1,5 +1,6 @@
+import { copyProperties, Properties } from "@quick-threejs/utils";
 import { Lifecycle, scoped } from "tsyringe";
-import { AudioLoader, ImageBitmapLoader, LoadingManager } from "three";
+import { AudioLoader, ImageBitmapLoader, Loader, LoadingManager } from "three";
 import { FontLoader } from "three/examples/jsm/Addons";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
@@ -12,14 +13,17 @@ import {
 
 @scoped(Lifecycle.ContainerScoped)
 export class LoaderService {
+	public static readonly DEFAULT_DRACO_DECODER_PATH =
+		"https://www.gstatic.com/draco/versioned/decoders/1.5.7/";
+
 	public readonly loadingManager = new LoadingManager();
 	public readonly loaders: {
-		audioLoader?: AudioLoader;
-		dracoLoader?: DRACOLoader;
-		gltfLoader?: GLTFLoader;
-		imageLoader?: ImageBitmapLoader;
-		videoLoader?: LoaderService["videoLoader"];
-		fontLoader?: FontLoader;
+		audio?: AudioLoader;
+		draco?: DRACOLoader;
+		gltf?: GLTFLoader;
+		image?: ImageBitmapLoader;
+		video?: LoaderService["videoLoader"];
+		font?: FontLoader;
 	} = {};
 
 	public sources: LoaderSource[] = [];
@@ -51,12 +55,12 @@ export class LoaderService {
 	}
 
 	private _initLoaders() {
-		this.loaders.dracoLoader = new DRACOLoader(this.loadingManager);
-		this.loaders.audioLoader = new AudioLoader(this.loadingManager);
-		this.loaders.fontLoader = new FontLoader(this.loadingManager);
-		this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
-		this.loaders.imageLoader = new ImageBitmapLoader(this.loadingManager);
-		this.loaders.videoLoader = this.videoLoader;
+		this.loaders.draco = new DRACOLoader(this.loadingManager);
+		this.loaders.audio = new AudioLoader(this.loadingManager);
+		this.loaders.font = new FontLoader(this.loadingManager);
+		this.loaders.gltf = new GLTFLoader(this.loadingManager);
+		this.loaders.image = new ImageBitmapLoader(this.loadingManager);
+		this.loaders.video = this.videoLoader;
 	}
 
 	public _initSources(sources: LoaderSource[]) {
@@ -71,13 +75,12 @@ export class LoaderService {
 	}
 
 	public setDracoDecoder(dracoDecoderPath?: string) {
-		if (!this.loaders.dracoLoader) return;
+		if (!this.loaders.draco) return;
 
-		this.loaders.dracoLoader.setDecoderPath(
-			dracoDecoderPath ??
-				"https://www.gstatic.com/draco/versioned/decoders/1.5.7/"
+		this.loaders.draco.setDecoderPath(
+			dracoDecoderPath ?? LoaderService.DEFAULT_DRACO_DECODER_PATH
 		);
-		this.loaders.gltfLoader?.setDRACOLoader(this.loaders.dracoLoader);
+		this.loaders.gltf?.setDRACOLoader(this.loaders.draco);
 	}
 
 	public handleLoad({
@@ -101,34 +104,136 @@ export class LoaderService {
 
 		onLoad?.(firstSource);
 
-		for (const source of this.sources) {
-			if (this.loadedResources[source.name] || typeof source.path !== "string")
+		let loaderConfig: Omit<Properties<Loader>, "manager"> | undefined;
+		let dracoDecoderConfig:
+			| {
+					decoderPath: string;
+					decoderConfig: any;
+					workerLimit: number;
+			  }
+			| undefined;
+
+		const applyDynamicConfig = (source: LoaderSource) => {
+			const loader = this.loaders[source.type];
+			const options = source.options || {};
+
+			if (!(loader instanceof Loader)) return;
+
+			loaderConfig = copyProperties(loader, [
+				"crossOrigin",
+				"requestHeader",
+				"resourcePath",
+				"path",
+				"withCredentials"
+			]);
+
+			if (options.crossOrigin) loader.setCrossOrigin(options.crossOrigin);
+			if (options.requestHeader) loader.setRequestHeader(options.requestHeader);
+			if (options.resourcePath) loader.setResourcePath(options.resourcePath);
+			if (options.path) loader.setPath(options.path);
+			if (options.withCredentials)
+				loader.setWithCredentials(options.withCredentials);
+		};
+
+		const resetDynamicConfig = (source: LoaderSource) => {
+			const loader = this.loaders[source.type];
+			const options = source.options || {};
+
+			if (!(loader instanceof Loader) || !loaderConfig) return;
+
+			if (options.crossOrigin) loader.setCrossOrigin(loaderConfig.crossOrigin);
+			if (options.requestHeader)
+				loader.setRequestHeader(loaderConfig.requestHeader);
+			if (options.resourcePath)
+				loader.setResourcePath(loaderConfig.resourcePath);
+			if (options.path) loader.setPath(loaderConfig.path);
+			if (options.withCredentials)
+				loader.setWithCredentials(loaderConfig.withCredentials);
+		};
+
+		const applyDynamicDracoDecoderConfig = (source: LoaderSource) => {
+			const loader = this.loaders.draco;
+			const options = source.options?.draco || {};
+
+			if (!loader || !this.loaders[source.type] || source.type !== "gltf")
 				return;
 
+			dracoDecoderConfig = copyProperties(loader as any, [
+				"decoderPath",
+				"decoderConfig",
+				"workerLimit"
+			]);
+
+			if (options.path) loader.setDecoderPath(options.path);
+			if (options.config) loader.setDecoderConfig(options.config);
+			if (options.workerLimit) loader.setWorkerLimit(options.workerLimit);
+		};
+
+		const resetDynamicDracoDecoderConfig = (source: LoaderSource) => {
+			const loader = this.loaders.draco;
+			const options = source.options?.draco || {};
+
+			if (
+				!loader ||
+				!dracoDecoderConfig ||
+				source.type !== "gltf" ||
+				!this.loaders[source.type]
+			)
+				return;
+
+			if (options.path) loader.setDecoderPath(dracoDecoderConfig.decoderPath);
+			if (options.config)
+				loader.setDecoderConfig(dracoDecoderConfig.decoderConfig);
+			if (options.workerLimit)
+				loader.setWorkerLimit(dracoDecoderConfig.workerLimit);
+		};
+
+		for (const source of this.sources) {
+			if (this.loadedResources[source.name] || typeof source.path !== "string")
+				continue;
+
+			applyDynamicConfig(source);
+			applyDynamicDracoDecoderConfig(source);
+
 			if (source.type === "gltf")
-				this.loaders.gltfLoader?.load(source.path, (model) =>
+				this.loaders.gltf?.load(source.path, (model) =>
 					onLoad?.(source, model)
 				);
 
 			if (source.type === "audio")
-				this.loaders.audioLoader?.load(source.path, (audioBuffer) =>
+				this.loaders.audio?.load(source.path, (audioBuffer) =>
 					onLoad?.(source, audioBuffer)
 				);
 
-			if (source.type === "image")
-				this.loaders.imageLoader?.load(source.path, (image) =>
-					onLoad?.(source, image)
-				);
+			if (source.type === "image" && this.loaders.image) {
+				this.loaders.image.load(source.path, async (loaderImage) => {
+					let image = loaderImage;
+
+					if (source.options?.imageBitmap) {
+						const options = {
+							...this.loaders.image?.options,
+							...source.options?.imageBitmap
+						};
+						image = await createImageBitmap(image, options);
+						loaderImage.close();
+					}
+
+					onLoad?.(source, image);
+				});
+			}
 
 			if (source.type === "video")
-				this.loaders.videoLoader?.load(source.path, (videoElement) =>
+				this.loaders.video?.load(source.path, (videoElement) =>
 					onLoad?.(source, videoElement)
 				);
 
 			if (source.type === "font")
-				this.loaders.fontLoader?.load(source.path, (font) =>
-					onLoad?.(source, font)
-				);
+				this.loaders.font?.load(source.path, (font) => onLoad?.(source, font));
+
+			resetDynamicConfig(source);
+			resetDynamicDracoDecoderConfig(source);
 		}
 	}
+
+	dispose() {}
 }
