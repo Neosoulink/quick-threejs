@@ -1,5 +1,15 @@
 # @quick-threejs/reactive
 
+## 0.1.49
+
+### Patch Changes
+
+- 4c84854: # 04-03-2026
+
+  ## refactor(reactive): loader source dynamic options
+
+  - Add `LoaderSource#options` to dynamically apply options to loaders.
+
 ## 0.1.48
 
 ### Patch Changes
