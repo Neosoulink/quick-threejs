@@ -72,8 +72,10 @@ export class LoaderModule implements Module {
 		return this._controller.loadCompleted$;
 	}
 
-	public setDracoDecoder(dracoDecoderPath: string) {
-		this._service.setDracoDecoder(dracoDecoderPath);
+	public setDracoDecoder(
+		...params: Parameters<LoaderService["setDracoDecoder"]>
+	) {
+		this._service.setDracoDecoder(...params);
 	}
 
 	public dispose() {
