@@ -61,7 +61,7 @@
 		"@types/node": "^24.3.1",
 		"@types/stats.js": "^0.17.4",
 		"@types/three": "^0.183.1 ",
-		"babel-jest": "^29.7.0",
+		"babel-jest": "^30.3.0",
 		"events": "^3.3.0",
 		"jest": "^30.3.0",
 		"reflect-metadata": "^0.2.2",
