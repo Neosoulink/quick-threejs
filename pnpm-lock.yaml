@@ -291,8 +291,8 @@ importers:
         specifier: ^9.17.0
         version: 9.17.0(jiti@2.7.0)
       eslint-config-prettier:
-        specifier: ^9.1.0
-        version: 9.1.0(eslint@9.17.0(jiti@2.7.0))
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.17.0(jiti@2.7.0))
       eslint-config-turbo:
         specifier: ^2.9.18
         version: 2.9.18(eslint@9.17.0(jiti@2.7.0))(turbo@2.9.18)
@@ -3414,8 +3414,14 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-config-prettier@9.1.0:
-    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
+  eslint-config-prettier@10.1.8:
+    resolution: {integrity: sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
+
+  eslint-config-prettier@9.1.2:
+    resolution: {integrity: sha512-iI1f+D2ViGn+uvv5HuHVUamg8ll4tN+JRHGc6IJi4TP9Kl976C57fzPXgseXNs8v0iA8aSJpHsTWjDb9QJamGQ==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -8975,7 +8981,7 @@ snapshots:
       '@rushstack/eslint-patch': 1.10.4
       '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.17.0(jiti@2.7.0))(typescript@5.7.3))(eslint@9.17.0(jiti@2.7.0))(typescript@5.7.3)
       '@typescript-eslint/parser': 7.18.0(eslint@9.17.0(jiti@2.7.0))(typescript@5.7.3)
-      eslint-config-prettier: 9.1.0(eslint@9.17.0(jiti@2.7.0))
+      eslint-config-prettier: 9.1.2(eslint@9.17.0(jiti@2.7.0))
       eslint-import-resolver-alias: 1.1.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@9.17.0(jiti@2.7.0))(typescript@5.7.3))(eslint-import-resolver-typescript@3.6.3)(eslint@9.17.0(jiti@2.7.0)))
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@9.17.0(jiti@2.7.0))(typescript@5.7.3))(eslint-plugin-import@2.31.0)(eslint@9.17.0(jiti@2.7.0))
       eslint-plugin-eslint-comments: 3.2.0(eslint@9.17.0(jiti@2.7.0))
@@ -9889,7 +9895,11 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-prettier@9.1.0(eslint@9.17.0(jiti@2.7.0)):
+  eslint-config-prettier@10.1.8(eslint@9.17.0(jiti@2.7.0)):
+    dependencies:
+      eslint: 9.17.0(jiti@2.7.0)
+
+  eslint-config-prettier@9.1.2(eslint@9.17.0(jiti@2.7.0)):
     dependencies:
       eslint: 9.17.0(jiti@2.7.0)
 
