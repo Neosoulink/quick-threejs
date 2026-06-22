@@ -22,7 +22,7 @@
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
-		"@react-router/dev": "^7.9.0",
+		"@react-router/dev": "^8.0.1",
 		"@tailwindcss/postcss": "^4.2.1",
 		"@types/node": "^25.5.0",
 		"@types/react": "^19.1.12",
