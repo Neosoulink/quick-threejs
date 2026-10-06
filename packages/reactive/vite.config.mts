@@ -7,14 +7,15 @@ import configs from "@quick-threejs/config";
 export default defineConfig({
 	...configs.vite,
 	build: {
+		...configs.vite.build,
 		lib: {
 			entry: {
-				main: resolve(__dirname, "src/main.ts"),
-				worker: resolve(__dirname, "src/main.worker.ts")
+				main: resolve(import.meta.dirname, "src/main.ts"),
+				worker: resolve(import.meta.dirname, "src/main.worker.ts")
 			},
 			name: "QuickThreeReactive"
 		},
-		rollupOptions: {
+		rolldownOptions: {
 			external: [
 				"three",
 				"three/webgpu",
@@ -30,8 +31,8 @@ export default defineConfig({
 
 	resolve: {
 		alias: {
-			"@": resolve(__dirname, "./src")
+			"@": resolve(import.meta.dirname, "./src")
 		}
 	},
-	plugins: [dts(), glslify()]
+	plugins: [...(configs.vite.plugins ?? []), dts(), glslify()]
 });

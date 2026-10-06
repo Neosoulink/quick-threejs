@@ -6,12 +6,13 @@ import configs from "@quick-threejs/config";
 export default defineConfig({
 	...configs.vite,
 	build: {
+		...configs.vite.build,
 		lib: {
-			entry: resolve(__dirname, "src/main.ts"),
+			entry: resolve(import.meta.dirname, "src/main.ts"),
 			name: "QuickThreeUtils",
 			fileName: "main"
 		},
-		rollupOptions: {
+		rolldownOptions: {
 			external: ["threads", "three"],
 			output: {
 				globals: {
@@ -23,8 +24,8 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			"@": resolve(__dirname, "src/")
+			"@": resolve(import.meta.dirname, "src/")
 		}
 	},
-	plugins: [dts()]
+	plugins: [...(configs.vite.plugins ?? []), dts()]
 });

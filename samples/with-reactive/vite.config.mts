@@ -5,7 +5,8 @@ import configs from "@quick-threejs/config";
 export default defineConfig({
 	...configs.vite,
 	build: {
-		rollupOptions: {
+		...configs.vite.build,
+		rolldownOptions: {
 			input: {
 				worker: "src/main.worker.ts",
 				index: "index.html"
@@ -18,7 +19,7 @@ export default defineConfig({
 
 	resolve: {
 		alias: {
-			"@": resolve(__dirname, "src/")
+			"@": resolve(import.meta.dirname, "src/")
 		}
 	}
 });
