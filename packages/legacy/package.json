@@ -35,7 +35,7 @@
 		"test": "jest --passWithNoTests"
 	},
 	"dependencies": {
-		"three": "^0.184.0"
+		"three": "^0.186.0"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^8.0.2",
@@ -43,7 +43,7 @@
 		"@types/events": "^3.0.3",
 		"@types/jest": "^30.0.0",
 		"@types/stats.js": "^0.17.4",
-		"@types/three": "^0.184.1",
+		"@types/three": "^0.186.0",
 		"babel-jest": "^30.4.1",
 		"events": "^3.3.0",
 		"jest": "^30.3.0",

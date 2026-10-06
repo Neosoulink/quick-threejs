@@ -27,15 +27,15 @@
 	"dependencies": {
 		"@quick-threejs/utils": "workspace:*",
 		"threads": "^1.7.0",
-		"three": "^0.184.0"
+		"three": "^0.186.0"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
 		"@types/node": "^24.3.1",
-		"@types/three": "^0.184.1"
+		"@types/three": "^0.186.0"
 	},
 	"peerDependencies": {
 		"threads": "^1.7.0",
-		"three": "^0.184.0"
+		"three": "^0.186.0"
 	}
 }
