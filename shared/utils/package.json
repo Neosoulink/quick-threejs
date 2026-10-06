@@ -25,14 +25,14 @@
 	"module": "./dist/main.mjs",
 	"types": "./dist/main.d.ts",
 	"dependencies": {
-		"three": "^0.184.0"
+		"three": "^0.186.0"
 	},
 	"devDependencies": {
 		"@quick-threejs/config": "workspace:*",
 		"@types/node": "^24.3.1",
-		"@types/three": "^0.184.1"
+		"@types/three": "^0.186.0"
 	},
 	"peerDependencies": {
-		"three": "^0.184.0"
+		"three": "^0.186.0"
 	}
 }
