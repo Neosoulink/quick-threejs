@@ -1,5 +1,16 @@
 # basic-sample
 
+## 0.1.15
+
+### Patch Changes
+
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
+- Updated dependencies [1b28aa0]
+  - @quick-threejs/legacy@0.1.13
+
 ## 0.1.14
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.22
+
+### Patch Changes
+
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
 ## 0.1.21
 
 ### Patch Changes
