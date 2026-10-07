@@ -1,5 +1,17 @@
 # with-reactive
 
+## 0.0.46
+
+### Patch Changes
+
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
+- Updated dependencies [1b28aa0]
+  - @quick-threejs/reactive@0.1.53
+  - @quick-threejs/utils@0.1.22
+
 ## 0.0.45
 
 ### Patch Changes

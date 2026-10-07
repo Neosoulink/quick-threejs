@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/utils",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"description": "Shared utilities for quick-threejs",
 	"repository": {
 		"type": "git",
