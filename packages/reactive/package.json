@@ -67,7 +67,7 @@
 		"@types/three": "^0.186.0",
 		"babel-jest": "^30.4.1",
 		"events": "^3.3.0",
-		"jest": "^30.3.0",
+		"jest": "^30.5.2",
 		"reflect-metadata": "^0.2.2",
 		"ts-jest": "^29.4.9",
 		"ts-node": "^10.9.2",
