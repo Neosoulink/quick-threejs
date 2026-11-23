@@ -1,57 +1,53 @@
 // @ts-check
 
-const { resolve } = require("node:path");
-
-const project = resolve(process.cwd(), "tsconfig.json");
+const eslint = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+const prettier = require("eslint-config-prettier/flat");
+const turbo = require("eslint-config-turbo/flat");
+const globals = require("globals");
 
 /**
  * @description
  *
- * Minimal ESLint configuration for TypeScript projects.
+ * Minimal flat ESLint configuration for TypeScript projects.
  *
- * Using **Legacy** configuration.
- *
- * @see [legacy-eslint-setup](https://typescript-eslint.io/getting-started/legacy-eslint-setup)
+ * @see [typescript-eslint](https://typescript-eslint.io/getting-started)
  */
-module.exports = {
-	extends: ["eslint:recommended", "prettier", "eslint-config-turbo"],
-	parser: "@typescript-eslint/parser",
-	env: {
-		node: true
+module.exports = tseslint.config(
+	{
+		ignores: [
+			"**/__tests__/**",
+			"**/*.*.js",
+			"**/*.d.ts",
+			"**/*.config.ts",
+			"**/node_modules/**",
+			"**/dist/**",
+			"**/lib/**"
+		]
 	},
-	settings: {
-		"import/resolver": {
-			typescript: {
-				project
+	eslint.configs.recommended,
+	tseslint.configs.recommended,
+	prettier,
+	...turbo.default,
+	{
+		languageOptions: {
+			globals: {
+				...globals.node
 			}
+		},
+		rules: {
+			"@typescript-eslint/ban-ts-comment": "off",
+			"@typescript-eslint/no-duplicate-enum-values": "off",
+			"@typescript-eslint/no-empty-object-type": "off",
+			"@typescript-eslint/no-explicit-any": "off",
+			"@typescript-eslint/no-this-alias": "off",
+			"@typescript-eslint/no-unused-vars": "warn",
+			"@typescript-eslint/no-var-requires": "off",
+			"no-undef": "off",
+			"no-unused-vars": "off",
+			eqeqeq: "error",
+			quotes: ["error", "double"],
+			semi: ["error", "always"]
 		}
-	},
-	overrides: [
-		{
-			files: ["*.js?(x)", "*.ts?(x)"]
-		}
-	],
-	rules: {
-		"@typescript-eslint/ban-ts-comment": "off",
-		"@typescript-eslint/no-duplicate-enum-values": "off",
-		"@typescript-eslint/no-empty-object-type": "off",
-		"@typescript-eslint/no-explicit-any": "off",
-		"@typescript-eslint/no-this-alias": "off",
-		"@typescript-eslint/no-unused-vars": "warn",
-		"@typescript-eslint/no-var-requires": "off",
-		"no-undef": "off",
-		"no-unused-vars": "off",
-		eqeqeq: "error",
-		quotes: ["error", "double"],
-		semi: ["error", "always"]
-	},
-	ignorePatterns: [
-		"**/__tests__/*",
-		"*.*.js",
-		"*.d.ts",
-		"*.config.ts",
-		"node_modules/",
-		"dist/",
-		"lib/"
-	]
-};
+	}
+);

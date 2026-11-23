@@ -8,5 +8,5 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "dev"
-    reviewers:
-      - "Neosoulink"
+    assignees:
+      - "dependabot"
