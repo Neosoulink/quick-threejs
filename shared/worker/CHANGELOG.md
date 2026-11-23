@@ -4,6 +4,17 @@
 
 ### Patch Changes
 
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
+- Updated dependencies [1b28aa0]
+  - @quick-threejs/utils@0.1.22
+
+## 0.1.21
+
+### Patch Changes
+
 - ac4b82b: # 06-19-2026
 
   ## fix(reactive): lifecycle teardown, performance, and worker stability

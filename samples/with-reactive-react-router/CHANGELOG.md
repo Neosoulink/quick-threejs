@@ -1,5 +1,16 @@
 # with-reactive-react-router
 
+## 0.0.32
+
+### Patch Changes
+
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
+- Updated dependencies [1b28aa0]
+  - @quick-threejs/reactive@0.1.53
+
 ## 0.0.31
 
 ### Patch Changes

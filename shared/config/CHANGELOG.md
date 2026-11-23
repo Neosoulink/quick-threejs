@@ -1,5 +1,13 @@
 # @quick-threejs/config
 
+## 0.1.15
+
+### Patch Changes
+
+- 1b28aa0: # 10-06-2026
+
+  Resources dependencies upgrades
+
 ## 0.1.14
 
 ### Patch Changes
