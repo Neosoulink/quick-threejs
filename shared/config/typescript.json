@@ -10,7 +10,9 @@
 
 		"declaration": true,
 		"esModuleInterop": true,
+		"ignoreDeprecations": "6.0",
 		"moduleResolution": "node",
+		"types": ["*"],
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"noImplicitAny": false,
