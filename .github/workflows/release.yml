@@ -57,12 +57,13 @@ jobs:
         run: pnpm build:packages
 
       - name: Create Release Pull Request & Release
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          commit: "chore(version): upgrade packages"
-          title: "chore(version): upgrade packages"
-          createGithubReleases: true
-          publish: pnpm run release
+          pr-title: "chore(version): upgrade packages"
+          commit-message: "chore(version): upgrade packages"
+          create-github-releases: true
+          publish-script: pnpm run release
+          version-script: pnpm changeset version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
