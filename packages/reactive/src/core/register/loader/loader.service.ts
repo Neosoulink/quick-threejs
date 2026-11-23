@@ -1,4 +1,4 @@
-import { copyProperties, Properties } from "@quick-threejs/utils";
+import { copyProperties } from "@quick-threejs/utils";
 import { Lifecycle, scoped } from "tsyringe";
 import { AudioLoader, ImageBitmapLoader, Loader, LoadingManager } from "three";
 import { FontLoader } from "three/examples/jsm/Addons";
@@ -104,7 +104,18 @@ export class LoaderService {
 
 		onLoad?.(firstSource);
 
-		let loaderConfig: Omit<Properties<Loader>, "manager"> | undefined;
+		let loaderConfig:
+			| ReturnType<
+					typeof copyProperties<
+						Loader,
+						| "crossOrigin"
+						| "requestHeader"
+						| "resourcePath"
+						| "path"
+						| "withCredentials"
+					>
+			  >
+			| undefined;
 		let dracoDecoderConfig:
 			| {
 					decoderPath: string;

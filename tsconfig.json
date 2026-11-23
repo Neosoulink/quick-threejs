@@ -1,3 +1,4 @@
 {
-	"extends": "@quick-threejs/config/typescript"
+	"extends": "@quick-threejs/config/typescript",
+	"exclude": ["packages/reactive/vite.config.mts"]
 }

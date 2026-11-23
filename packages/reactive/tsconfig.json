@@ -12,5 +12,5 @@
 		}
 	},
 	"include": ["src"],
-	"exclude": ["*.config.mjs", "*.config.ts"]
+	"exclude": ["*.config.mjs", "*.config.ts", "vite.config.mts"]
 }
