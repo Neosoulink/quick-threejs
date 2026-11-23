@@ -1,6 +1,6 @@
 {
 	"name": "@quick-threejs/worker",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"description": "Worker thread pool utilities for quick-threejs",
 	"repository": {
 		"type": "git",

@@ -1,5 +1,17 @@
 # @quick-threejs/config
 
+## 0.1.16
+
+### Patch Changes
+
+- 6158c3f: # 23-11-2026
+
+  - Export the shared ESLint setup as a flat config and stop loading it through the legacy compatibility layer.
+
+- 1f9034e: # 23-11-2026
+
+  - Upgrade Three.js, Vite, and TypeScript, including the TypeScript 6 config required for package builds.
+
 ## 0.1.15
 
 ### Patch Changes

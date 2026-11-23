@@ -1,5 +1,13 @@
 # @quick-threejs/utils
 
+## 0.1.23
+
+### Patch Changes
+
+- 1f9034e: # 23-11-2026
+
+  - Upgrade Three.js, Vite, and TypeScript, including the TypeScript 6 config required for package builds.
+
 ## 0.1.22
 
 ### Patch Changes
