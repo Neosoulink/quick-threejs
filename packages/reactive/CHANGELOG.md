@@ -1,5 +1,17 @@
 # @quick-threejs/reactive
 
+## 0.1.54
+
+### Patch Changes
+
+- 1f9034e: # 23-11-2026
+
+  - Upgrade Three.js, Vite, and TypeScript, including the TypeScript 6 config required for package builds.
+
+- Updated dependencies [1f9034e]
+  - @quick-threejs/worker@0.1.22
+  - @quick-threejs/utils@0.1.23
+
 ## 0.1.53
 
 ### Patch Changes
